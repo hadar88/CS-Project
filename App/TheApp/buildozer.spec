@@ -34,7 +34,7 @@ source.include_patterns = assets/*,images/*.png,images/*.jpg,images/*.jpeg,image
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.1
+version = 0.2
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -42,7 +42,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,ffpyplayer
+requirements = python3,kivy,ffpyplayer,onnxruntime
 
 # (str) Custom source folders for requirementsa presplah image for an app called NutriPlan which creates nutrition menus
 # Sets custom source for any requirements with recipes

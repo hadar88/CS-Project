@@ -1,3 +1,5 @@
+import onnxruntime as ort
+import numpy as np
 import json
 import time
 from kivy.app import App
@@ -16,7 +18,7 @@ d = open(DATA_PATH, "r")
 data = json.load(d)
 d.close()
 
-MODEL_PATH = "model_scripted.pt"
+MODEL_PATH = "model.onxx"
 
 #######################################################################
 
@@ -1487,14 +1489,25 @@ class LoadingWindow(Screen):
         self.build_menu()
 
     def build_menu(self):
-        # change the vector to tensor
-        # call the model to get the menu
-        # set the menu in the json file to the menu from the model
+        # load the model "model.onnx"
+        # convert the vector to a tensor using numpy
+        # run the model on the tensor
+
+        session = ort.InferenceSession(MODEL_PATH)
+
+        input_vector = np.array(self.vector).reshape(1, -1)
+
+        print(session.get_inputs()[0].shape)
+
+        input_name = session.get_inputs()[0].name
+        
+        output = session.run(None, {input_name: input_vector})
+
+        print(output)
 
         time.sleep(5)
         self.next()
         
-
 class WindowManager(ScreenManager):
     def __init__(self, **kw):
         super(WindowManager, self).__init__(**kw)

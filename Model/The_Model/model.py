@@ -91,7 +91,7 @@ class MenuGenerator(nn.Module):
             num_layers=2
         )
 
-        self.food_fc = nn.Linear(256, 7 * 3 * 10 * 222)
+        self.food_fc = nn.Linear(256, 7 * 3 * 10 * 223)
         self.amount_fc = nn.Linear(256, 7 * 3 * 10)
 
         self.activation = nn.ReLU()
@@ -105,7 +105,7 @@ class MenuGenerator(nn.Module):
         x = x.squeeze(0)
 
         food_logits = self.food_fc(x)
-        food_logits = food_logits.view(-1, 7, 3, 10, 222)
+        food_logits = food_logits.view(-1, 7, 3, 10, 223)
 
         amount = self.amount_fc(x)
         amount = amount.view(-1, 7, 3, 10, 1)
@@ -465,7 +465,7 @@ def evaluate_on_random_sample(dataloader, model, device):
     print("Model's prediction:")
     print(transform2(y_pred.squeeze(), data, device, bound))
     print("Ground truth:")
-    print(transform2(y, data, device))\
+    print(transform2(y, data, device))
     
 
 def evaluate_transformer_on_random_sample(dataloader, model, device):
