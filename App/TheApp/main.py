@@ -11,12 +11,33 @@ from kivy.uix.image import Image
 from kivy.uix.spinner import Spinner
 from kivy.uix.checkbox import CheckBox
 
-DATA_PATH = "data.json"
-d = open(DATA_PATH, "r")
-data = json.load(d)
-d.close()
+#######################################################################
 
-MODEL_PATH = "model.onxx"
+DATA_PATH = "data.json"
+f = open(DATA_PATH, "r")
+data = json.load(f)
+f.close()
+
+#######################################################################
+
+FOODS_MENU_DATA_PATH = "../../Data/layouts/FoodsByID.json"
+f = open(FOODS_MENU_DATA_PATH, "r")
+foods_menu_data = json.load(f)
+f.close()
+
+#######################################################################
+
+FOODS_DICT_PATH = "../../Data/food_data/FoodData.json"
+f = open(FOODS_DICT_PATH, "r")
+foods_dict = json.load(f)
+f.close()
+
+#######################################################################
+
+UNITS_PATH = "../../Data/food_data/Units.json"
+f = open(UNITS_PATH, "r")
+units = json.load(f)
+f.close()
 
 #######################################################################
 
@@ -202,6 +223,16 @@ def get_vector(current_weight, goal_weight, goal_time, height, age, gender, goal
         
     return vec
 
+def get_meal(day, meal):
+    menu = data["menu"]
+    m = menu[day][meal]
+    a = {}
+    for i in m:
+        if int(i) != 0:
+            a[i] = m[i]
+
+    return a
+
 #######################################################################
 
 class ColoredLabel(Label):
@@ -356,6 +387,7 @@ class MainWindow(Screen):
     
     def on_enter(self):
         # get all the data from the json file and display it
+        # use get_meal(day, meal) to get the meal
         pass
 
 ################################
