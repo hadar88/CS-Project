@@ -389,6 +389,8 @@ class MainWindow(Screen):
     def on_enter(self):
         # get all the data from the json file and display it
         # use get_meal(day, meal) to get the meal
+        days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
+        meals = ["breakfast", "lunch", "dinner"]
         pass
 
 ################################
