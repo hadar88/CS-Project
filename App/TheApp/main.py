@@ -1,4 +1,3 @@
-from torch import load, tensor
 import json
 import time
 from kivy.app import App
@@ -441,7 +440,8 @@ class CreateAccountWindow(Screen):
             font_size = 50, 
             hint_text = "Password", 
             size_hint=(0.8, 0.1), 
-            pos_hint={"x": 0.1, "top": 0.56}
+            pos_hint={"x": 0.1, "top": 0.56},
+            password=True  # This makes the input display as "*"
         )
         self.window.add_widget(self.password)
 
