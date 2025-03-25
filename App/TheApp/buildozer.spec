@@ -42,14 +42,14 @@ version = 0.2
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,ffpyplayer,onnxruntime
+requirements = python3,kivy
 
 # (str) Custom source folders for requirementsa presplah image for an app called NutriPlan which creates nutrition menus
 # Sets custom source for any requirements with recipes
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/presplash3.png
+presplash.filename = %(source.dir)s/presplash4.png
 
 # (str) Icon of the application
 icon.filename = %(source.dir)s/logo.png

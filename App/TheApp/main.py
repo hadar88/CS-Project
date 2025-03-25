@@ -1,5 +1,3 @@
-import onnxruntime as ort
-import numpy as np
 import json
 import time
 from kivy.app import App
@@ -254,6 +252,7 @@ class LoginWindow(Screen):
             hint_text = "Password", 
             size_hint=(0.8, 0.1), 
             pos_hint={"x": 0.1, "top": 0.56}, 
+            password=True
         )
         self.window.add_widget(self.password)
 
@@ -443,7 +442,7 @@ class CreateAccountWindow(Screen):
             hint_text = "Password", 
             size_hint=(0.8, 0.1), 
             pos_hint={"x": 0.1, "top": 0.56},
-            password=True  # This makes the input display as "*"
+            password=True 
         )
         self.window.add_widget(self.password)
 
@@ -1489,21 +1488,11 @@ class LoadingWindow(Screen):
         self.build_menu()
 
     def build_menu(self):
-        # load the model "model.onnx"
-        # convert the vector to a tensor using numpy
-        # run the model on the tensor
-
-        session = ort.InferenceSession(MODEL_PATH)
-
-        input_vector = np.array(self.vector).reshape(1, -1)
-
-        print(session.get_inputs()[0].shape)
-
-        input_name = session.get_inputs()[0].name
+        # 1. load the model 
+        # 2. convert the vector to a tensor
+        # 3. run the model on the tensor
+        # 4. put the results in the json file
         
-        output = session.run(None, {input_name: input_vector})
-
-        print(output)
 
         time.sleep(5)
         self.next()
