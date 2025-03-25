@@ -229,7 +229,8 @@ def get_meal(day, meal):
     a = {}
     for i in m:
         if int(i) != 0:
-            a[i] = m[i]
+            name = foods_menu_data[i]["Name"]
+            a[name] = m[i]
 
     return a
 
