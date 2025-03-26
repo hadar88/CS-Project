@@ -223,6 +223,8 @@ def get_vector(current_weight, goal_weight, goal_time, height, age, gender, goal
         
     return vec
 
+#######################################################################
+
 def get_meal(day, meal):
     menu = data["menu"]
     m = menu[day][meal]
@@ -1523,12 +1525,8 @@ class LoadingWindow(Screen):
         self.build_menu()
 
     def build_menu(self):
-        # 1. load the model 
-        # 2. convert the vector to a tensor
-        # 3. run the model on the tensor
-        # 4. put the results in the json file
-        
-        
+        # 1. give the model to the server
+        # 2. put the results in the json file
 
         time.sleep(5)
         self.next()

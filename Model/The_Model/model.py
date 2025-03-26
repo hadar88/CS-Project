@@ -44,7 +44,7 @@ def main():
         criterion_food_id = nn.CrossEntropyLoss()
         criterion_amount = nn.MSELoss()
 
-        train_transformer_model(dataloader, model, criterion_food_id, criterion_amount, optimizer, 10, device, True)
+        train_transformer_model(dataloader, model, criterion_food_id, criterion_amount, optimizer, 100, device, True)
 
         # criterions_and_epochs = [
         #     (nn.MSELoss(), 5000),
@@ -346,7 +346,7 @@ def train_transformer_model(dataloader, model, criterion_food_id, criterion_amou
             food_logits, pred_amounts = model(x)
 
             # reshape for loss computation
-            food_logits = food_logits.view(-1, 222)
+            food_logits = food_logits.view(-1, 223)
             ids = ids.view(-1)
 
             pred_amounts = pred_amounts.view(-1, 1)
