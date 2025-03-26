@@ -182,44 +182,52 @@ def get_vector(current_weight, goal_weight, goal_time, height, age, gender, goal
 
     result = calculate_nutritional_data(goal, activity_type, activity, c)
 
-    vec = [c, result[0], result[1], result[2], result[3]]
+    # vec = [c, result[0], result[1], result[2], result[3]]
+
+    vec = {}
+    vec["calories"] = c
+    vec["carbohydrates"] = result[0]
+    vec["sugars"] = result[1]
+    vec["fats"] = result[2]
+    vec["proteins"] = result[3]
+    
     
     if vegeterian == "1":
-        vec.append(1)
+        vec["vegeterian"] = 1
     else:
-        vec.append(0)
+        vec["vegeterian"] = 0
     if vegan == "1":
-        vec.append(1)
+        vec["vegan"] = 1
     else:
-        vec.append(0)
+        vec["vegan"] = 0
     if eggs == "1":
-        vec.append(0)
+        vec["eggs"] = 0
     else:
-        vec.append(1)
+        vec["eggs"] = 1
     if milk == "1":
-        vec.append(0)
+        vec["milk"] = 0
     else:
-        vec.append(1)
+        vec["milk"] = 1        
     if nuts == "1":
-        vec.append(0)
+        vec["nuts"] = 0
     else:
-        vec.append(1)
+        vec["nuts"] = 1
     if fish == "1":
-        vec.append(0)
+        vec["fish"] = 0
     else:
-        vec.append(1)
+        vec["fish"] = 1
     if sesame == "1":
-        vec.append(0)
+        vec["sesame"] = 0
     else:
-        vec.append(1)
+        vec["sesame"] = 1
     if soy == "1":
-        vec.append(0)
+        vec["soy"] = 0
     else:
-        vec.append(1)
+        vec["soy"] = 1
     if gluten == "1":
-        vec.append(0)
+        vec["gluten"] = 0
     else:
-        vec.append(1)
+        vec["gluten"] = 1
         
     return vec
 
@@ -230,7 +238,7 @@ def get_meal(day, meal):
     m = menu[day][meal]
     a = {}
     for i in m:
-        if int(i) != 0:
+        if int(i) != 0 and int(m[i]) != 0:
             name = foods_menu_data[i]["Name"]
             a[name] = m[i]
 
@@ -290,13 +298,31 @@ class LoginWindow(Screen):
         )
         self.window.add_widget(self.password)
 
+        self.showpassword = ColoredLabel(
+            text = "Show password", 
+            font_size = 40, 
+            size_hint = (0.2, 0.05), 
+            pos_hint = {"x": 0.3, "top": 0.45},
+            color=(1, 1, 1, 1),
+            text_color=(0, 1, 0, 1)
+        )
+        self.window.add_widget(self.showpassword)
+
+        self.showpasswordInput = CheckBox(
+            size_hint=(0.1, 0.1),
+            pos_hint={"x": 0.55, "top": 0.475},
+            color=(1, 0, 0, 1),
+            on_press = self.show_password
+        )
+        self.window.add_widget(self.showpasswordInput)
+
         self.loginButton = Button(
             text = "Login", 
             font_size = 100, 
             background_color = (1, 1, 1, 1), 
             # background_normal = "",
             size_hint = (0.8, 0.1),
-            pos_hint = {"x": 0.1, "top": 0.44},
+            pos_hint = {"x": 0.1, "top": 0.39},
             on_press = self.login
         )
         self.window.add_widget(self.loginButton)
@@ -304,8 +330,8 @@ class LoginWindow(Screen):
         self.errorMassage = ColoredLabel(
             text = "", 
             font_size = 50, 
-            size_hint = (0.8, 0.1), 
-            pos_hint = {"x": 0.1, "top": 0.32},
+            size_hint = (0.8, 0.05), 
+            pos_hint = {"x": 0.1, "top": 0.27},
             color=(1, 1, 1, 1),
             text_color=(1, 0, 0, 1)
         )
@@ -347,6 +373,7 @@ class LoginWindow(Screen):
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
         self.manager.current = "createAccount"
+        self.showpasswordInput.active = False
         
     def go_home(self, instance):
         self.errorMassage.text = ""
@@ -354,6 +381,9 @@ class LoginWindow(Screen):
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
         self.manager.current = "main"
+
+    def show_password(self, instance):
+        self.password.password = not self.password.password
 
 ################################
 
@@ -483,15 +513,23 @@ class CreateAccountWindow(Screen):
         )
         self.window.add_widget(self.password)
 
-        self.errorMassage = ColoredLabel(
-            text = "", 
-            font_size = 50, 
-            size_hint = (0.8, 0.1), 
-            pos_hint = {"x": 0.1, "top": 0.44},
+        self.showpassword = ColoredLabel(
+            text = "Show password", 
+            font_size = 40, 
+            size_hint = (0.2, 0.05), 
+            pos_hint = {"x": 0.3, "top": 0.45},
             color=(1, 1, 1, 1),
-            text_color=(1, 0, 0, 1)
+            text_color=(0, 1, 0, 1)
         )
-        self.window.add_widget(self.errorMassage)
+        self.window.add_widget(self.showpassword)
+
+        self.showpasswordInput = CheckBox(
+            size_hint=(0.1, 0.1),
+            pos_hint={"x": 0.55, "top": 0.475},
+            color=(1, 0, 0, 1),
+            on_press = self.show_password
+        )
+        self.window.add_widget(self.showpasswordInput)
 
         self.login = Button(
             text = "Login", 
@@ -499,10 +537,20 @@ class CreateAccountWindow(Screen):
             background_color = (1, 1, 1, 1), 
             # background_normal = "",
             size_hint = (0.4, 0.1),
-            pos_hint = {"x": 0.3, "top": 0.32},
+            pos_hint = {"x": 0.3, "top": 0.39},
             on_press = self.log_in
         )
         self.window.add_widget(self.login)
+
+        self.errorMassage = ColoredLabel(
+            text = "", 
+            font_size = 50, 
+            size_hint = (0.8, 0.05), 
+            pos_hint = {"x": 0.1, "top": 0.27},
+            color=(1, 1, 1, 1),
+            text_color=(1, 0, 0, 1)
+        )
+        self.window.add_widget(self.errorMassage)
 
         self.submit = Button(
             text = "Submit", 
@@ -531,6 +579,7 @@ class CreateAccountWindow(Screen):
             json.dump(data, file)
         self.manager.current = "login"
         self.errorMassage.text = ""
+        self.showpasswordInput.active = False
 
     def registration(self, instance):
         username = self.userName.text
@@ -547,6 +596,9 @@ class CreateAccountWindow(Screen):
                 json.dump(data, file)
             self.manager.current = "registration1"
             self.errorMassage.text = ""
+
+    def show_password(self, instance):
+        self.password.password = not self.password.password
 
 ################################
 
