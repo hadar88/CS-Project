@@ -44,7 +44,7 @@ def main():
         criterion_food_id = nn.CrossEntropyLoss()
         criterion_amount = nn.MSELoss()
 
-        train_transformer_model(dataloader, model, criterion_food_id, criterion_amount, optimizer, 100, device, True)
+        train_transformer_model(dataloader, model, criterion_food_id, criterion_amount, optimizer, 20, device, True)
 
         # criterions_and_epochs = [
         #     (nn.MSELoss(), 5000),
@@ -474,10 +474,10 @@ def evaluate_transformer_on_random_sample(dataloader, model, device):
 
     print("Here is a random prediction:")
 
-    print("Reading the foods data...\n")
-    FOODS_DATA_PATH = "../../Data/layouts/FoodsByID.json"
-    foods = open(FOODS_DATA_PATH, "r")
-    data = json.load(foods)
+    # print("Reading the foods data...\n")
+    # FOODS_DATA_PATH = "../../Data/layouts/FoodsByID.json"
+    # foods = open(FOODS_DATA_PATH, "r")
+    # data = json.load(foods)
 
     random_index = torch.randint(0, len(dataloader.dataset), (1,)).item()
     x, y_id, y_amount = dataloader.dataset[random_index]
@@ -496,12 +496,12 @@ def evaluate_transformer_on_random_sample(dataloader, model, device):
     print(pred_amount.squeeze())
     print()
 
-    print("The ground truth was:")
-    print("IDs:")
-    print(y_id.squeeze())
-    print("Amounts:")
-    print(y_amount.squeeze())
-    print()
+    # print("The ground truth was:")
+    # print("IDs:")
+    # print(y_id.squeeze())
+    # print("Amounts:")
+    # print(y_amount.squeeze())
+    # print()
 
     # print("Here's a comparison between the ground truth and the model's prediction:")
     # print("Model's prediction:")
