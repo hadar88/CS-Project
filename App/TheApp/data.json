@@ -28,7 +28,7 @@
     "fat": "",
     "protein": "",
     "menu": {
-        "sunday": {"breakfast": {"20":15, "13":15, "0":0}, "lunch": {}, "dinner": {}},
+        "sunday": {"breakfast": {}, "lunch": {}, "dinner": {}},
         "monday": {"breakfast": {}, "lunch": {}, "dinner": {}},
         "tuesday": {"breakfast": {}, "lunch": {}, "dinner": {}},
         "wednesday": {"breakfast": {}, "lunch": {}, "dinner": {}},

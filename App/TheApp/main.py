@@ -20,21 +20,21 @@ f.close()
 
 #######################################################################
 
-FOODS_MENU_DATA_PATH = "../../Data/layouts/FoodsByID.json"
+FOODS_MENU_DATA_PATH = "FoodsByID.json"
 f = open(FOODS_MENU_DATA_PATH, "r")
 foods_menu_data = json.load(f)
 f.close()
 
 #######################################################################
 
-FOODS_DICT_PATH = "../../Data/food_data/FoodData.json"
+FOODS_DICT_PATH = "FoodData.json"
 f = open(FOODS_DICT_PATH, "r")
 foods_dict = json.load(f)
 f.close()
 
 #######################################################################
 
-UNITS_PATH = "../../Data/food_data/Units.json"
+UNITS_PATH = "Units.json"
 f = open(UNITS_PATH, "r")
 units = json.load(f)
 f.close()
@@ -1527,6 +1527,7 @@ class LoadingWindow(Screen):
         # 2. convert the vector to a tensor
         # 3. run the model on the tensor
         # 4. put the results in the json file
+        
         
 
         time.sleep(5)
