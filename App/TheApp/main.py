@@ -1,5 +1,6 @@
 import json
 import time
+import requests
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -1513,7 +1514,7 @@ class LoadingWindow(Screen):
 
         ###
 
-        self.vector = []
+        self.vector = {}
 
         self.loading = ColoredLabel(
             text = "Loading...", 
@@ -1566,22 +1567,37 @@ class LoadingWindow(Screen):
                                             vegetarian_temp, vegan_temp, egg_allergy_temp, milk_allergy_temp, nuts_allergy_temp,
                                             fish_allergy_temp, sesame_allergy_temp, soy_allergy_temp, gluten_allergy_temp)
         
-        data["calories"] = self.vector[0]
-        data["carbohydrates"] = self.vector[1]
-        data["sugar"] = self.vector[2]
-        data["fat"] = self.vector[3]
-        data["protein"] = self.vector[4]
+        data["calories"] = self.vector["calories"]
+        data["carbohydrates"] = self.vector["carbohydrates"]
+        data["sugars"] = self.vector["sugars"]
+        data["fats"] = self.vector["fats"]
+        data["proteins"] = self.vector["proteins"]
+
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
 
         self.build_menu()
 
     def build_menu(self):
-        # 1. give the model to the server
-        # 2. put the results in the json file
+        # 1. give the vector to the server
+        # 2. put the results that come from the server in the json file
+
+        try:
+            server_url = "http://127.0.0.1:5000/predict"
+            response = requests.post(server_url, json=self.vector)
+
+            if response.status_code == 200:
+                result = response.json()
+                print(result)
+            else:
+                print("Error: " + str(response.status_code))
+        except Exception as e:
+            print("Error: " + str(e))
 
         time.sleep(5)
         self.next()
+
+################################
         
 class WindowManager(ScreenManager):
     def __init__(self, **kw):
