@@ -245,6 +245,24 @@ def get_meal(day, meal):
 
     return a
 
+def convert_to_dict(data):
+    days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
+    meals = ["breakfast", "lunch", "dinner"]
+    
+    nested_data = data.get("output", [])
+    structured_dict = {}
+    
+    for i, group in enumerate(nested_data):
+        group_key = days[i]
+        structured_dict[group_key] = {}
+    
+        for j, sub_group in enumerate(group):
+            sub_group_key = meals[j]
+            structured_dict[group_key][sub_group_key] = {}
+    
+            for k, pair in enumerate(sub_group):
+                structured_dict[group_key][sub_group_key][pair[0]] = round(pair[1], 2)
+
 #######################################################################
 
 class ColoredLabel(Label):
@@ -1579,16 +1597,18 @@ class LoadingWindow(Screen):
         self.build_menu()
 
     def build_menu(self):
-        
-        # put the results that come from the server in the json file
-
         try:
             server_url = "http://127.0.0.1:5000/predict"
             response = requests.post(server_url, json=self.vector)
 
             if response.status_code == 200:
                 result = response.json()
-                print(result)
+
+                result = convert_to_dict(result)
+
+                print(result) # delete this line
+                # put the results that come from the server in the json file
+
             else:
                 print("Error: " + str(response.status_code))
         except Exception as e:
