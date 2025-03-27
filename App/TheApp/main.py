@@ -263,6 +263,8 @@ def convert_to_dict(data):
             for k, pair in enumerate(sub_group):
                 structured_dict[group_key][sub_group_key][pair[0]] = round(pair[1], 2)
 
+    return structured_dict
+
 #######################################################################
 
 class ColoredLabel(Label):
@@ -1587,9 +1589,9 @@ class LoadingWindow(Screen):
         
         data["calories"] = self.vector["calories"]
         data["carbohydrates"] = self.vector["carbohydrates"]
-        data["sugars"] = self.vector["sugars"]
-        data["fats"] = self.vector["fats"]
-        data["proteins"] = self.vector["proteins"]
+        data["sugar"] = self.vector["sugars"]
+        data["fat"] = self.vector["fats"]
+        data["protein"] = self.vector["proteins"]
 
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
@@ -1603,10 +1605,11 @@ class LoadingWindow(Screen):
 
             if response.status_code == 200:
                 result = response.json()
-
+                
                 result = convert_to_dict(result)
 
                 print(result) # delete this line
+
                 # put the results that come from the server in the json file
 
             else:
