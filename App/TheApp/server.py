@@ -72,8 +72,6 @@ def predict():
 
     merged_pred = merge_ids_and_amounts(pred_id, pred_amount)
 
-    print(f{"merged_pred": merged_pred})
-
     return jsonify({"output": merged_pred.tolist()})
 
     # return jsonify({"output": output})

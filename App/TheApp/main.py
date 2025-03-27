@@ -1579,8 +1579,8 @@ class LoadingWindow(Screen):
         self.build_menu()
 
     def build_menu(self):
-        # 1. give the vector to the server
-        # 2. put the results that come from the server in the json file
+        
+        # put the results that come from the server in the json file
 
         try:
             server_url = "http://127.0.0.1:5000/predict"
