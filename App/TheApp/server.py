@@ -68,13 +68,9 @@ def predict():
 
     pred_amount = pred_amount.squeeze(-1)
 
-    # merge the id's and amounts in the output
-
     merged_pred = merge_ids_and_amounts(pred_id, pred_amount)
 
     return jsonify({"output": merged_pred.tolist()})
-
-    # return jsonify({"output": output})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

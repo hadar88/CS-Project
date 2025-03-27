@@ -1605,17 +1605,15 @@ class LoadingWindow(Screen):
 
             if response.status_code == 200:
                 result = response.json()
-                
                 result = convert_to_dict(result)
-
                 data["menu"] = result
-
             else:
                 print("Error: " + str(response.status_code))
+                
         except Exception as e:
             print("Error: " + str(e))
 
-        time.sleep(5)
+        time.sleep(1)
         self.next()
 
 ################################
