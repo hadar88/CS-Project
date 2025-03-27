@@ -1600,7 +1600,7 @@ class LoadingWindow(Screen):
 
     def build_menu(self):
         try:
-            server_url = "http://127.0.0.1:5000/predict"
+            server_url = "http://127.0.0.1:5000/predict" # change to server url
             response = requests.post(server_url, json=self.vector)
 
             if response.status_code == 200:
@@ -1608,9 +1608,7 @@ class LoadingWindow(Screen):
                 
                 result = convert_to_dict(result)
 
-                print(result) # delete this line
-
-                # put the results that come from the server in the json file
+                data["menu"] = result
 
             else:
                 print("Error: " + str(response.status_code))
