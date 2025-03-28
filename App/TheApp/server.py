@@ -53,7 +53,7 @@ app = Flask(__name__)
 @app.route("/predict", methods=["POST"])
 def predict():
     data = request.json
-
+    print("got data")
     vec = []
     for key in data:
         vec.append(data[key])

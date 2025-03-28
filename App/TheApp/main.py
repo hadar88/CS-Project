@@ -188,9 +188,9 @@ def get_vector(current_weight, goal_weight, goal_time, height, age, gender, goal
     vec = {}
     vec["calories"] = c
     vec["carbohydrates"] = result[0]
-    vec["sugars"] = result[1]
-    vec["fats"] = result[2]
-    vec["proteins"] = result[3]
+    vec["sugar"] = result[1]
+    vec["fat"] = result[2]
+    vec["protein"] = result[3]
     
     
     if vegeterian == "1":
@@ -1589,9 +1589,9 @@ class LoadingWindow(Screen):
         
         data["calories"] = self.vector["calories"]
         data["carbohydrates"] = self.vector["carbohydrates"]
-        data["sugar"] = self.vector["sugars"]
-        data["fat"] = self.vector["fats"]
-        data["protein"] = self.vector["proteins"]
+        data["sugar"] = self.vector["sugar"]
+        data["fat"] = self.vector["fat"]
+        data["protein"] = self.vector["protein"]
 
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
@@ -1604,6 +1604,7 @@ class LoadingWindow(Screen):
             response = requests.post(server_url, json=self.vector)
 
             if response.status_code == 200:
+                print("got response")
                 result = response.json()
                 result = convert_to_dict(result)
                 data["menu"] = result
