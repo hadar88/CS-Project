@@ -1,6 +1,8 @@
 import json
 import time
 import requests
+import datetime
+import threading
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -265,6 +267,14 @@ def convert_to_dict(data):
 
     return structured_dict
 
+def check_time():
+    while True:
+        now = datetime.datetime.now()
+        if now.weekday() == 5 and now.hour == 23 and now.minute == 59:
+            print("It's the time!")
+            time.sleep(60)  # Wait a minute to avoid printing multiple times in the same minute
+        time.sleep(1)  # Check every second
+        
 #######################################################################
 
 class ColoredLabel(Label):
@@ -1637,6 +1647,7 @@ class WindowManager(ScreenManager):
         
 class MainApp(App):
     def build(self):
+        threading.Thread(target=check_time, daemon=True).start()
         return WindowManager()
 
 if __name__ == "__main__":
