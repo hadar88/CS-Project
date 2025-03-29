@@ -242,9 +242,12 @@ def get_meal(day, meal):
     a = {}
     for i in m:
         if int(i) != 0 and int(m[i]) != 0:
-            name = foods_menu_data[i]["Name"]
-            a[name] = m[i]
-
+            key = str(i)
+            if key in foods_menu_data:
+                name = foods_menu_data[key]["Name"]
+                a[name] = m[i]
+            else:
+                print(f"Warning: Key {key} not found in foods_menu_data")
     return a
 
 def convert_to_dict(data):
@@ -263,9 +266,11 @@ def convert_to_dict(data):
             structured_dict[group_key][sub_group_key] = {}
     
             for k, pair in enumerate(sub_group):
-                structured_dict[group_key][sub_group_key][pair[0]] = round(pair[1], 2)
+                structured_dict[group_key][sub_group_key][int(pair[0])] = round(pair[1], 2)
 
     return structured_dict
+
+#######################################################################
 
 def check_time():
     while True:
@@ -451,9 +456,10 @@ class MainWindow(Screen):
     
     def on_enter(self):
         # get all the data from the json file and display it
-        # use get_meal(day, meal) to get the meal
+        # use get_meal(day, meal) to get the meals
         days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
         meals = ["breakfast", "lunch", "dinner"]
+        
         pass
 
 ################################
@@ -1647,7 +1653,7 @@ class WindowManager(ScreenManager):
         
 class MainApp(App):
     def build(self):
-        threading.Thread(target=check_time, daemon=True).start()
+        # threading.Thread(target=check_time, daemon=True).start()
         return WindowManager()
 
 if __name__ == "__main__":
