@@ -274,7 +274,7 @@ def check_time():
             print("It's the time!")
             time.sleep(60)  # Wait a minute to avoid printing multiple times in the same minute
         time.sleep(1)  # Check every second
-        
+
 #######################################################################
 
 class ColoredLabel(Label):
@@ -798,13 +798,13 @@ class Registration2Window(Screen):
 
         ###
 
-        self.home = Button(
+        self.back = Button(
             background_normal="back.png",
             size_hint=(0.1125, 0.07), 
             pos_hint={"x": 0, "top": 1},
             on_press=self.previous
         )
-        self.window.add_widget(self.home)
+        self.window.add_widget(self.back)
 
         self.title = ColoredLabel(
             text = "Registration", 
@@ -966,13 +966,13 @@ class Registration3Window(Screen):
 
         ###
 
-        self.home = Button(
+        self.back = Button(
             background_normal="back.png",
             size_hint=(0.1125, 0.07), 
             pos_hint={"x": 0, "top": 1},
             on_press=self.previous
         )
-        self.window.add_widget(self.home)
+        self.window.add_widget(self.back)
 
         self.title = ColoredLabel(
             text = "Registration", 
@@ -1092,13 +1092,13 @@ class Registration4Window(Screen):
 
         ###
 
-        self.home = Button(
+        self.back = Button(
             background_normal="back.png",
             size_hint=(0.1125, 0.07), 
             pos_hint={"x": 0, "top": 1},
             on_press=self.previous
         )
-        self.window.add_widget(self.home)
+        self.window.add_widget(self.back)
 
         self.title = ColoredLabel(
             text = "Registration", 
@@ -1300,13 +1300,13 @@ class Registration5Window(Screen):
 
         self.idealBodyWeight = 0
 
-        self.home = Button(
+        self.back = Button(
             background_normal="back.png",
             size_hint=(0.1125, 0.07), 
             pos_hint={"x": 0, "top": 1},
             on_press=self.previous
         )
-        self.window.add_widget(self.home)
+        self.window.add_widget(self.back)
 
         self.title = ColoredLabel(
             text = "Registration", 
@@ -1423,13 +1423,13 @@ class Registration6Window(Screen):
 
         self.time = 0
 
-        self.home = Button(
+        self.back = Button(
             background_normal="back.png",
             size_hint=(0.1125, 0.07), 
             pos_hint={"x": 0, "top": 1},
             on_press=self.previous
         )
-        self.window.add_widget(self.home)
+        self.window.add_widget(self.back)
 
         self.title = ColoredLabel(
             text = "Registration", 
