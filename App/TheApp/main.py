@@ -172,7 +172,7 @@ def calculate_calories(current_weight, goal_weight, goal_time, height, age, gend
     i = 1 if current_weight <= goal_weight else -1
     return a + i * p
 
-def get_vector(current_weight, goal_weight, goal_time, height, age, gender, goal, cardio, strength, muscle, activity, vegeterian, vegan, eggs, milk, nuts, fish, sesame, soy, gluten):
+def get_vector(current_weight, goal_weight, goal_time, height, age, gender, goal, cardio, strength, muscle, activity, vegetarian, vegan, eggs, milk, nuts, fish, sesame, soy, gluten):
     activity_type = []
     if cardio == "1":
         activity_type.append("cardio")
@@ -195,10 +195,10 @@ def get_vector(current_weight, goal_weight, goal_time, height, age, gender, goal
     vec["protein"] = result[3]
     
     
-    if vegeterian == "1":
-        vec["vegeterian"] = 1
+    if vegetarian == "1":
+        vec["vegetarian"] = 1
     else:
-        vec["vegeterian"] = 0
+        vec["vegetarian"] = 0
     if vegan == "1":
         vec["vegan"] = 1
     else:
@@ -464,9 +464,9 @@ class MainWindow(Screen):
 
 ################################
 
-class SecondWindow(Screen):
+class PersonalDataWindow(Screen):
     def __init__(self, **kw):
-        super(SecondWindow, self).__init__(**kw)
+        super(PersonalDataWindow, self).__init__(**kw)
         self.cols = 1
 
         self.window = FloatLayout(size_hint=(1, 1))
@@ -486,7 +486,51 @@ class SecondWindow(Screen):
         self.window.add_widget(self.home)
 
         self.temp = ColoredLabel(
-            text = "Second", 
+            text = "Personal data", 
+            font_size = 50, 
+            size_hint = (0.4, 0.4), 
+            pos_hint = {"x": 0.3, "top": 0.7},
+            color=(0, 0, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.temp)
+
+        ###
+
+        self.add_widget(self.window)
+
+    def _update_rect(self, instance, value):
+        self.rect.pos = instance.pos
+        self.rect.size = instance.size
+
+    def go_home(self, instance):
+        self.manager.current = "main"
+
+################################
+
+class StatisticsWindow(Screen):
+    def __init__(self, **kw):
+        super(StatisticsWindow, self).__init__(**kw)
+        self.cols = 1
+
+        self.window = FloatLayout(size_hint=(1, 1))
+        with self.window.canvas.before:
+            Color(1, 1, 1, 1) 
+            self.rect = Rectangle(size=self.window.size, pos=self.window.pos)
+            self.window.bind(size=self._update_rect, pos=self._update_rect)
+
+        ###
+
+        self.home = Button(
+            background_normal="home.png",
+            size_hint=(0.1125, 0.07), 
+            pos_hint={"x": 0, "top": 1},
+            on_press=self.go_home
+        )
+        self.window.add_widget(self.home)
+
+        self.temp = ColoredLabel(
+            text = "Statistics", 
             font_size = 50, 
             size_hint = (0.4, 0.4), 
             pos_hint = {"x": 0.3, "top": 0.7},
@@ -1616,11 +1660,11 @@ class LoadingWindow(Screen):
 
     def build_menu(self):
         try:
-            server_url = "http://127.0.0.1:5000/predict" # change to server url
+            server_url = "http://172.19.68.185:5000/predict" # change to server url
             response = requests.post(server_url, json=self.vector)
 
             if response.status_code == 200:
-                print("got response")
+                print("got response") # debug
                 result = response.json()
                 result = convert_to_dict(result)
                 data["menu"] = result
@@ -1642,7 +1686,8 @@ class WindowManager(ScreenManager):
         self.add_widget(LoginWindow(name = "login"))
         self.add_widget(LoadingWindow(name = "loading"))
         self.add_widget(MainWindow(name = "main"))
-        self.add_widget(SecondWindow(name = "second"))
+        self.add_widget(PersonalDataWindow(name = "personalData"))
+        self.add_widget(StatisticsWindow(name = "statistics"))
         self.add_widget(CreateAccountWindow(name = "createAccount"))
         self.add_widget(Registration1Window(name = "registration1"))
         self.add_widget(Registration2Window(name = "registration2"))

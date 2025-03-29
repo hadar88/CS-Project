@@ -13,7 +13,7 @@ This script build templates of menus for the file `MenusInput.json` with a range
 
 ## `find_in_menu.py` 
 
-This script finds the foods in a certain menu that are vegeterian, vegan or contain some kind of allergan.
+This script finds the foods in a certain menu that are vegetarian, vegan or contain some kind of allergan.
 [View Script](./find_in_menu.py)
 
 ## `menu_calculator.py`
