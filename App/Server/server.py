@@ -12,6 +12,10 @@ class Server:
         @self.app.route("/")
         def home():
             return jsonify({"message": "Welcome to the NutriPlan API!"})
+        
+        @self.app.route("/wakeup", methods=["GET"])
+        def wakeup():
+            return jsonify({"message": "Server is awake!"})
 
         @self.app.route("/predict", methods=["POST"])
         def predict():

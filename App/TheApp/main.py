@@ -1661,8 +1661,11 @@ class LoadingWindow(Screen):
 
     def build_menu(self):
         try:
-            server_url = "https://cs-project-m5hy.onrender.com/predict" 
-            response = requests.post(server_url, json=self.vector)
+            server_url = "https://cs-project-m5hy.onrender.com/"
+
+            requests.get(server_url + "wakeup")
+
+            response = requests.post(server_url + "predict", json=self.vector)
 
             if response.status_code == 200:
                 result = response.json()
@@ -1674,7 +1677,6 @@ class LoadingWindow(Screen):
         except Exception as e:
             print("Error: " + str(e))
 
-        time.sleep(1)
         self.next()
 
 ################################
