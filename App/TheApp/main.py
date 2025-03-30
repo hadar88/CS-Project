@@ -185,8 +185,6 @@ def get_vector(current_weight, goal_weight, goal_time, height, age, gender, goal
 
     result = calculate_nutritional_data(goal, activity_type, activity, c)
 
-    # vec = [c, result[0], result[1], result[2], result[3]]
-
     vec = {}
     vec["calories"] = c
     vec["carbohydrates"] = result[0]
@@ -459,6 +457,9 @@ class MainWindow(Screen):
         # use get_meal(day, meal) to get the meals
         days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
         meals = ["breakfast", "lunch", "dinner"]
+
+        meal = get_meal("sunday", "breakfast")
+        self.temp.text = str(meal)
         
         pass
 
@@ -1660,13 +1661,13 @@ class LoadingWindow(Screen):
 
     def build_menu(self):
         try:
-            server_url = "http://172.19.68.185:5000/predict" # change to server url
+            server_url = "http://nutriplan-w0tc.onrender.com/predict" 
             response = requests.post(server_url, json=self.vector)
 
             if response.status_code == 200:
-                print("got response") # debug
                 result = response.json()
                 result = convert_to_dict(result)
+                print(result)
                 data["menu"] = result
             else:
                 print("Error: " + str(response.status_code))
