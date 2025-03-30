@@ -409,9 +409,6 @@ class LoginWindow(Screen):
 
     def createAccount(self, instance):
         self.errorMassage.text = ""
-        data["stage"] = "createAccount"
-        with open(DATA_PATH, "w") as file:
-            json.dump(data, file)
         self.manager.current = "createAccount"
         self.showpasswordInput.active = False
         
@@ -425,11 +422,6 @@ class LoginWindow(Screen):
     def show_password(self, instance):
         self.password.password = not self.password.password
 
-    def on_enter(self):
-        # data["stage"] = "login"
-        # with open(DATA_PATH, "w") as file:
-        #     json.dump(data, file)
-        pass
 ################################
 
 class MainWindow(Screen):
@@ -667,10 +659,6 @@ class CreateAccountWindow(Screen):
     def log_in(self, instance):
         self.userName.text = ""
         self.password.text = ""
-        if(data["logincompleted"] == False):
-            data["stage"] = "login"
-        with open(DATA_PATH, "w") as file:
-            json.dump(data, file)
         self.manager.current = "login"
         self.errorMassage.text = ""
         self.showpasswordInput.active = False
