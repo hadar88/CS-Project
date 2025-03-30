@@ -397,7 +397,13 @@ class LoginWindow(Screen):
         self.password.text = ""
         if(data["username"] == username and data["password"] == password and username != "" and password != ""):
             self.errorMassage.text = ""
-            self.manager.current = data["stage"]
+            if(data["logincompleted"]):
+                data["stage"] = "main"
+                with open(DATA_PATH, "w") as file:
+                    json.dump(data, file)
+                self.manager.current = "main"
+            else:
+                self.manager.current = data["stage"]
         else:
             self.errorMassage.text = "Invalid username or password"
 
@@ -683,6 +689,9 @@ class CreateAccountWindow(Screen):
                 json.dump(data, file)
             self.manager.current = "registration1"
             self.errorMassage.text = ""
+            data["logincompleted"] = False
+            with open(DATA_PATH, "w") as file:
+                json.dump(data, file)
 
     def show_password(self, instance):
         self.password.password = not self.password.password
@@ -1576,6 +1585,9 @@ class Registration6Window(Screen):
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.manager.current = "loading"
+            data["logincompleted"] = True
+            with open(DATA_PATH, "w") as file:
+                json.dump(data, file)
 
     def previous(self, instance):
         self.manager.current = "registration5"
