@@ -667,7 +667,8 @@ class CreateAccountWindow(Screen):
     def log_in(self, instance):
         self.userName.text = ""
         self.password.text = ""
-        data["stage"] = "login"
+        if(data["logincompleted"] == False):
+            data["stage"] = "login"
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
         self.manager.current = "login"
