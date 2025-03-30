@@ -419,6 +419,10 @@ class LoginWindow(Screen):
     def show_password(self, instance):
         self.password.password = not self.password.password
 
+    def on_enter(self):
+        data["stage"] = "login"
+        with open(DATA_PATH, "w") as file:
+            json.dump(data, file)
 ################################
 
 class MainWindow(Screen):
