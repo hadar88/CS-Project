@@ -45,7 +45,7 @@ def merge_ids_and_amounts(ids, amounts):
 
 MODEL_PATH = "model.pth"
 model = MenuGenerator()
-model.load_state_dict(torch.load(MODEL_PATH))
+model.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device('cpu')))
 model.eval()
 
 app = Flask(__name__)
