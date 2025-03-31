@@ -310,7 +310,7 @@ class LoginWindow(Screen):
 
         self.logo = Image(
             source = "logo.png", size_hint = (0.3, 0.3), pos_hint = {"x": 0.35, "top": 1}
-            )
+        )
         self.window.add_widget(self.logo)
 
         self.userName = TextInput(
