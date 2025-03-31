@@ -409,13 +409,6 @@ class LoginWindow(Screen):
         self.errorMassage.text = ""
         self.manager.current = "createAccount"
         self.showpasswordInput.active = False
-        
-    # def go_home(self, instance):
-    #     self.errorMassage.text = ""
-    #     data["stage"] = "main"
-    #     with open(DATA_PATH, "w") as file:
-    #         json.dump(data, file)
-    #     self.manager.current = "main"
 
     def show_password(self, instance):
         self.password.password = not self.password.password
@@ -533,6 +526,138 @@ class StatisticsWindow(Screen):
 
         self.temp = ColoredLabel(
             text = "Statistics", 
+            font_size = 50, 
+            size_hint = (0.4, 0.4), 
+            pos_hint = {"x": 0.3, "top": 0.7},
+            color=(0, 0, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.temp)
+
+        ###
+
+        self.add_widget(self.window)
+
+    def _update_rect(self, instance, value):
+        self.rect.pos = instance.pos
+        self.rect.size = instance.size
+
+    def go_home(self, instance):
+        self.manager.current = "main"
+
+################################
+
+class MenuWindow(Screen):
+    def __init__(self, **kw):
+        super(MenuWindow, self).__init__(**kw)
+        self.cols = 1
+
+        self.window = FloatLayout(size_hint=(1, 1))
+        with self.window.canvas.before:
+            Color(1, 1, 1, 1) 
+            self.rect = Rectangle(size=self.window.size, pos=self.window.pos)
+            self.window.bind(size=self._update_rect, pos=self._update_rect)
+
+        ###
+
+        self.home = Button(
+            background_normal="home.png",
+            size_hint=(0.1125, 0.07), 
+            pos_hint={"x": 0, "top": 1},
+            on_press=self.go_home
+        )
+        self.window.add_widget(self.home)
+
+        self.temp = ColoredLabel(
+            text = "Menu", 
+            font_size = 50, 
+            size_hint = (0.4, 0.4), 
+            pos_hint = {"x": 0.3, "top": 0.7},
+            color=(0, 0, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.temp)
+
+        ###
+
+        self.add_widget(self.window)
+
+    def _update_rect(self, instance, value):
+        self.rect.pos = instance.pos
+        self.rect.size = instance.size
+
+    def go_home(self, instance):
+        self.manager.current = "main"
+        
+################################
+
+class WeeklymenuWindow(Screen):
+    def __init__(self, **kw):
+        super(WeeklymenuWindow, self).__init__(**kw)
+        self.cols = 1
+
+        self.window = FloatLayout(size_hint=(1, 1))
+        with self.window.canvas.before:
+            Color(1, 1, 1, 1) 
+            self.rect = Rectangle(size=self.window.size, pos=self.window.pos)
+            self.window.bind(size=self._update_rect, pos=self._update_rect)
+
+        ###
+
+        self.home = Button(
+            background_normal="home.png",
+            size_hint=(0.1125, 0.07), 
+            pos_hint={"x": 0, "top": 1},
+            on_press=self.go_home
+        )
+        self.window.add_widget(self.home)
+
+        self.temp = ColoredLabel(
+            text = "Weekly menu", 
+            font_size = 50, 
+            size_hint = (0.4, 0.4), 
+            pos_hint = {"x": 0.3, "top": 0.7},
+            color=(0, 0, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.temp)
+
+        ###
+
+        self.add_widget(self.window)
+
+    def _update_rect(self, instance, value):
+        self.rect.pos = instance.pos
+        self.rect.size = instance.size
+
+    def go_home(self, instance):
+        self.manager.current = "main"
+
+################################
+
+class DictionaryWindow(Screen):
+    def __init__(self, **kw):
+        super(DictionaryWindow, self).__init__(**kw)
+        self.cols = 1
+
+        self.window = FloatLayout(size_hint=(1, 1))
+        with self.window.canvas.before:
+            Color(1, 1, 1, 1) 
+            self.rect = Rectangle(size=self.window.size, pos=self.window.pos)
+            self.window.bind(size=self._update_rect, pos=self._update_rect)
+
+        ###
+
+        self.home = Button(
+            background_normal="home.png",
+            size_hint=(0.1125, 0.07), 
+            pos_hint={"x": 0, "top": 1},
+            on_press=self.go_home
+        )
+        self.window.add_widget(self.home)
+
+        self.temp = ColoredLabel(
+            text = "Dictionary", 
             font_size = 50, 
             size_hint = (0.4, 0.4), 
             pos_hint = {"x": 0.3, "top": 0.7},
@@ -1694,6 +1819,9 @@ class WindowManager(ScreenManager):
         self.add_widget(MainWindow(name = "main"))
         self.add_widget(PersonalDataWindow(name = "personalData"))
         self.add_widget(StatisticsWindow(name = "statistics"))
+        self.add_widget(MenuWindow(name = "menu"))
+        self.add_widget(WeeklymenuWindow(name = "weeklyMenu"))
+        self.add_widget(DictionaryWindow(name = "dictionary"))
         self.add_widget(CreateAccountWindow(name = "createAccount"))
         self.add_widget(Registration1Window(name = "registration1"))
         self.add_widget(Registration2Window(name = "registration2"))
