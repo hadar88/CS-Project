@@ -1,12 +1,16 @@
 from flask import Flask, jsonify, request
 import torch
 from utils import merge_ids_and_amounts
+import threading
+import time
+import requests 
 
 class Server:
     def __init__(self, model):
         self.model = model
         self.app = Flask(__name__)
         self.setup_routes()
+        self.start_wakeup_thread()
         
     def setup_routes(self):
         @self.app.route("/")
@@ -39,6 +43,18 @@ class Server:
             merged_pred = merge_ids_and_amounts(pred_id, pred_amount)
 
             return jsonify({"output": merged_pred.tolist()})
+        
+    def start_wakeup_thread(self):
+        def send_wakeup_request():
+            while True:
+                try:
+                    requests.get("http://cs-project-m5hy.onrender.com/wakeup")
+                except Exception as e:
+                    print(f"Failed to send wakeup request: {e}")
+                time.sleep(10)
+
+        # Start the thread as a daemon so it doesn't block server shutdown
+        threading.Thread(target=send_wakeup_request, daemon=True).start()
 
     def run(self, host="0.0.0.0", port=5000):
         self.app.run(host=host, port=port, debug=False)
