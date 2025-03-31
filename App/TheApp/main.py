@@ -393,8 +393,6 @@ class LoginWindow(Screen):
     def login(self, instance):
         username = self.userName.text
         password = self.password.text
-        self.userName.text = ""
-        self.password.text = ""
         if(data["username"] == username and data["password"] == password and username != "" and password != ""):
             self.errorMassage.text = ""
             if(data["logincompleted"]):
@@ -412,12 +410,12 @@ class LoginWindow(Screen):
         self.manager.current = "createAccount"
         self.showpasswordInput.active = False
         
-    def go_home(self, instance):
-        self.errorMassage.text = ""
-        data["stage"] = "main"
-        with open(DATA_PATH, "w") as file:
-            json.dump(data, file)
-        self.manager.current = "main"
+    # def go_home(self, instance):
+    #     self.errorMassage.text = ""
+    #     data["stage"] = "main"
+    #     with open(DATA_PATH, "w") as file:
+    #         json.dump(data, file)
+    #     self.manager.current = "main"
 
     def show_password(self, instance):
         self.password.password = not self.password.password

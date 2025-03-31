@@ -51,7 +51,7 @@ class Server:
                     requests.get("http://cs-project-m5hy.onrender.com/wakeup")
                 except Exception as e:
                     print(f"Failed to send wakeup request: {e}")
-                time.sleep(10)
+                time.sleep(720)
 
         # Start the thread as a daemon so it doesn't block server shutdown
         threading.Thread(target=send_wakeup_request, daemon=True).start()
