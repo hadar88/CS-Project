@@ -113,7 +113,7 @@ def check_bmi(weight, height):
     elif b < 25:
         return ("Healthy", (0, 1, 0, 1))
     elif b < 30:
-        return ("Overweight", (1, 1, 0, 0))
+        return ("Overweight", (1, 1, 0, 1))
     elif b < 40:
         return ("Obese", (1, 0.5, 0, 1))
     else:
@@ -659,8 +659,8 @@ class PersonalDataWindow(Screen):
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 3/12},
             disabled=True,
-            background_disabled_normal="",  # Remove default background
-            background_color=(0.68, 0.68, 0.68, 1),  # Set custom background color
+            background_disabled_normal="",
+            background_color=(0.68, 0.68, 0.68, 1), 
             disabled_color=(0.376, 0.376, 0.376, 1),  
         )
         self.window.add_widget(self.activityupdateInput)
@@ -698,6 +698,15 @@ class PersonalDataWindow(Screen):
 
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
+
+        self.weightupdateInput.disabled = True
+        self.heightupdateInput.disabled = True
+        self.targetweightupdateInput.disabled = True
+        self.activityupdateInput.disabled = True
+        self.weightupdateButton.background_normal = "pencil.png"
+        self.heightupdateButton.background_normal = "pencil.png"
+        self.targetweightupdateButton.background_normal = "pencil.png"
+        self.activityupdateButton.background_normal = "pencil.png"
 
         self.manager.current = "main"
 
