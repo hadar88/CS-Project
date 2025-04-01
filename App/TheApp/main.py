@@ -549,7 +549,7 @@ class PersonalDataWindow(Screen):
 
         self.weightLabel = ColoredLabel(
             text = "Weight: ",
-            font_size = 30,
+            font_size = 50,
             size_hint = (0.2, 0.05),
             pos_hint = {"x": 0.15, "top": 0.5},
             color=(1, 1, 1, 1),
@@ -564,13 +564,15 @@ class PersonalDataWindow(Screen):
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 0.5},
             input_filter="float",
-            disabled = True
+            disabled = True, 
+            halign="center"
         )
+        self.weightupdateInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.weightupdateInput)
 
         self.weightupdateButton = Button(
             background_normal = "pencil.png",
-            size_hint=(0.1125, 0.07),
+            size_hint=(0.08, 0.05),
             pos_hint = {"x": 0.8, "top": 0.5},
             on_press = self.weightupdate
         )
@@ -578,7 +580,7 @@ class PersonalDataWindow(Screen):
 
         self.heightLabel = ColoredLabel(
             text = "Height: ",
-            font_size = 30,
+            font_size = 50,
             size_hint = (0.2, 0.05),
             pos_hint = {"x": 0.15, "top": 5/12},
             color=(1, 1, 1, 1),
@@ -593,13 +595,15 @@ class PersonalDataWindow(Screen):
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 5/12},
             input_filter="float",
-            disabled = True
+            disabled = True,
+            halign="center"
         )
+        self.heightupdateInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.heightupdateInput)
 
         self.heightupdateButton = Button(
             background_normal = "pencil.png",
-            size_hint=(0.1125, 0.07),
+            size_hint=(0.08, 0.05),
             pos_hint = {"x": 0.8, "top": 5/12},
             on_press = self.heightupdate
         )
@@ -607,7 +611,7 @@ class PersonalDataWindow(Screen):
 
         self.targetweightLabel = ColoredLabel(
             text = "Target weight: ",
-            font_size = 30,
+            font_size = 50,
             size_hint = (0.2, 0.05),
             pos_hint = {"x": 0.15, "top": 4/12},
             color=(1, 1, 1, 1),
@@ -622,13 +626,15 @@ class PersonalDataWindow(Screen):
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 4/12},
             input_filter="float",
-            disabled = True
+            disabled = True,
+            halign="center"
         )
+        self.targetweightupdateInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.targetweightupdateInput)
 
         self.targetweightupdateButton = Button(
             background_normal = "pencil.png",
-            size_hint=(0.1125, 0.07),
+            size_hint=(0.08, 0.05),
             pos_hint = {"x": 0.8, "top": 4/12},
             on_press = self.targetweightupdate
         )
@@ -636,7 +642,7 @@ class PersonalDataWindow(Screen):
 
         self.activityLabel = ColoredLabel(
             text = "Activity: ",
-            font_size = 30,
+            font_size = 50,
             size_hint = (0.2, 0.05),
             pos_hint = {"x": 0.15, "top": 3/12},
             color=(1, 1, 1, 1),
@@ -660,7 +666,7 @@ class PersonalDataWindow(Screen):
 
         self.activityupdateButton = Button(
             background_normal = "pencil.png",
-            size_hint=(0.1125, 0.07),
+            size_hint=(0.08, 0.05),
             pos_hint = {"x": 0.8, "top": 3/12},
             on_press = self.activityupdate
         )
@@ -674,7 +680,18 @@ class PersonalDataWindow(Screen):
         self.rect.pos = instance.pos
         self.rect.size = instance.size
 
+    def _update_text_padding(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
+
     def go_home(self, instance):
+        data["historic_weight"] = data["historic_weight"] + [int(data["weight"])]
+        data["historic_weight_timestamps"] = data["historic_weight_timestamps"] + [datetime.datetime.now().date().isoformat()]
+        bmi_temp = bmi(int(data["weight"]), int(data["height"]))
+        data["historic_bmi"] = data["historic_bmi"] + [bmi_temp]
+        data["historic_bmi_timestamps"] = data["historic_bmi_timestamps"] + [datetime.datetime.now().date().isoformat()]
+        with open(DATA_PATH, "w") as file:
+            json.dump(data, file)
+
         self.manager.current = "main"
 
     def weightupdate(self, instance):
@@ -691,7 +708,7 @@ class PersonalDataWindow(Screen):
         if self.heightupdateInput.disabled:
             self.heightupdateButton.background_normal = "vee.png"
         else:
-            data["height"] = self.heightupdateInput
+            data["height"] = self.heightupdateInput.text
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.heightupdateButton.background_normal = "pencil.png"
@@ -701,7 +718,7 @@ class PersonalDataWindow(Screen):
         if self.targetweightupdateInput.disabled:
             self.targetweightupdateButton.background_normal = "vee.png"
         else:
-            data["goal weight"] = self.targetweightupdateInput
+            data["goal weight"] = self.targetweightupdateInput.text
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.targetweightupdateButton.background_normal = "pencil.png"
@@ -2004,12 +2021,9 @@ class LoadingWindow(Screen):
         data["fat"] = self.vector["fat"]
         data["protein"] = self.vector["protein"]
 
-        data["historic_weight"] = data["historic_weight"] + [current_weight_temp]
-        data["historic_weight_timestamps"] = data["historic_weight_timestamps"] + [datetime.datetime.now()]
+        data["historic_weight"][datetime.datetime.now().date().isoformat()] = [current_weight_temp]
         bmi_temp = bmi(current_weight_temp, height_temp)
-        data["historic_bmi"] = data["historic_bmi"] + [bmi_temp]
-        data["historic_bmi_timestamps"] = data["historic_bmi_timestamps"] + [datetime.datetime.now()]
-
+        data["historic_bmi"][datetime.datetime.now().date().isoformat()] = [bmi_temp]
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
 
