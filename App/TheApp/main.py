@@ -685,13 +685,13 @@ class PersonalDataWindow(Screen):
 
     def go_home(self, instance):
         today = datetime.datetime.now().date().isoformat()
-        bmi_temp = bmi(int(data["weight"]), int(data["weight"]))
+        bmi_temp = bmi(int(data["weight"]), int(data["height"]))
 
         if data["history_times"] and data["history_times"][-1] == today:
-            data["historic_weight"] = data["historic_weight"][:-1] + [data["weight"]]
+            data["historic_weight"] = data["historic_weight"][:-1] + [float(data["weight"])]
             data["historic_bmi"] = data["historic_bmi"][:-1] + [bmi_temp] 
         else:
-            data["historic_weight"] = data["historic_weight"] + [data["weight"]]
+            data["historic_weight"] = data["historic_weight"] + [float(data["weight"])]
             data["historic_bmi"] = data["historic_bmi"] + [bmi_temp]
             data["history_times"] = data["history_times"] + [today] 
 
