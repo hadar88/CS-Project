@@ -107,17 +107,17 @@ def bmi(weight, height):
 def check_bmi(weight, height):
     b = bmi(weight, height)
     if b < 16:
-        return "Severely underweight"
+        return ("Severely underweight", (0, 0, 1, 1))
     elif b < 18.5:
-        return "Underweight"
+        return ("Underweight", (0, 1, 1, 1))
     elif b < 25:
-        return "Healthy"
+        return ("Healthy", (0, 1, 0, 1))
     elif b < 30:
-        return "Overweight"
+        return ("Overweight", (1, 1, 0, 0))
     elif b < 40:
-        return "Obese"
+        return ("Obese", (1, 0.5, 0, 1))
     else:
-        return "Extremely obese"
+        return ("Extremely obese", (1, 0, 0, 1))
 
 def bmr(weight, height, age, gender):
     if(gender == "Male"):
