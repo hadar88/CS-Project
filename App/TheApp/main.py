@@ -769,16 +769,17 @@ class StatisticsWindow(Screen):
         )
         self.window.add_widget(self.home)
 
-        self.temp = ColoredLabel(
+        self.title = ColoredLabel(
             text = "Statistics",
-            font_size = 50,
-            size_hint = (0.4, 0.4),
-            pos_hint = {"x": 0.3, "top": 0.7},
-            color=(0, 0, 1, 1),
+            font_size = 100,
+            size_hint = (0.8, 0.2),
+            pos_hint = {"x": 0.1, "top": 0.8},
+            color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
-        self.window.add_widget(self.temp)
-
+        self.window.add_widget(self.title)
+        
+        
         ###
 
         self.add_widget(self.window)
