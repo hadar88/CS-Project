@@ -684,11 +684,17 @@ class PersonalDataWindow(Screen):
         instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
 
     def go_home(self, instance):
-        data["historic_weight"] = data["historic_weight"] + [int(data["weight"])]
-        data["historic_weight_timestamps"] = data["historic_weight_timestamps"] + [datetime.datetime.now().date().isoformat()]
-        bmi_temp = bmi(int(data["weight"]), int(data["height"]))
-        data["historic_bmi"] = data["historic_bmi"] + [bmi_temp]
-        data["historic_bmi_timestamps"] = data["historic_bmi_timestamps"] + [datetime.datetime.now().date().isoformat()]
+        today = datetime.datetime.now().date().isoformat()
+        bmi_temp = bmi(int(data["weight"]), int(data["weight"]))
+
+        if data["history_times"] and data["history_times"][-1] == today:
+            data["historic_weight"] = data["historic_weight"][:-1] + [data["weight"]]
+            data["historic_bmi"] = data["historic_bmi"][:-1] + [bmi_temp] 
+        else:
+            data["historic_weight"] = data["historic_weight"] + [data["weight"]]
+            data["historic_bmi"] = data["historic_bmi"] + [bmi_temp]
+            data["history_times"] = data["history_times"] + [today] 
+
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
 
@@ -2021,9 +2027,19 @@ class LoadingWindow(Screen):
         data["fat"] = self.vector["fat"]
         data["protein"] = self.vector["protein"]
 
-        data["historic_weight"][datetime.datetime.now().date().isoformat()] = [current_weight_temp]
+        today = datetime.datetime.now().date().isoformat()
         bmi_temp = bmi(current_weight_temp, height_temp)
-        data["historic_bmi"][datetime.datetime.now().date().isoformat()] = [bmi_temp]
+
+        if data["history_times"] and data["history_times"][-1] == today:
+            data["historic_weight"] = data["historic_weight"][:-1] + [current_weight_temp]
+            data["historic_bmi"] = data["historic_bmi"][:-1] + [bmi_temp] 
+        else:
+            data["historic_weight"] = data["historic_weight"] + [current_weight_temp]
+            data["historic_bmi"] = data["historic_bmi"] + [bmi_temp]
+            data["history_times"] = data["history_times"] + [today] 
+
+        
+
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
 

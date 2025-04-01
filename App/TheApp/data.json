@@ -66,5 +66,7 @@
         }
     },
     "historic_weight": [],
-    "historic_bmi": []
+    "historic_bmi": [],
+    "history_times": []
+
 }
