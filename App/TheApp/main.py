@@ -560,7 +560,8 @@ class PersonalDataWindow(Screen):
             pos_hint={"x": 0.4, "top": 0.5},
             input_filter="float",
             disabled = True, 
-            halign="center"
+            halign="center",
+            # disabled_foreground_color=(0, 0, 0, 1)
         )
         self.weightupdateInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.weightupdateInput)
@@ -591,7 +592,8 @@ class PersonalDataWindow(Screen):
             pos_hint={"x": 0.4, "top": 5/12},
             input_filter="float",
             disabled = True,
-            halign="center"
+            halign="center",
+            # disabled_foreground_color=(0, 0, 0, 1)
         )
         self.heightupdateInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.heightupdateInput)
@@ -622,7 +624,8 @@ class PersonalDataWindow(Screen):
             pos_hint={"x": 0.4, "top": 4/12},
             input_filter="float",
             disabled = True,
-            halign="center"
+            halign="center",
+            # disabled_foreground_color=(0, 0, 0, 1)
         )
         self.targetweightupdateInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.targetweightupdateInput)
@@ -649,13 +652,16 @@ class PersonalDataWindow(Screen):
             font_size=40,
             text=data["activity"],
             values=("sedentary",
-                "lightly active",
-                "moderately active",
-                "active",
-                "extremely active"),
+            "lightly active",
+            "moderately active",
+            "active",
+            "extremely active"),
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 3/12},
-            disabled=True
+            disabled=True,
+            background_disabled_normal="",  # Remove default background
+            background_color=(0.68, 0.68, 0.68, 1),  # Set custom background color
+            disabled_color=(0.376, 0.376, 0.376, 1),  
         )
         self.window.add_widget(self.activityupdateInput)
 
