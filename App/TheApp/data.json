@@ -24,10 +24,15 @@
     "goal weight": "",
     "goal time": "",
     "calories": "",
+    "calories today": 0,
     "carbohydrates": "",
+    "carbohydrates today": 0,
     "sugar": "",
+    "sugar today": 0,
     "fat": "",
+    "fat today": 0,
     "protein": "",
+    "protein today": 0,
     "menu": {
         "sunday": {
             "breakfast": {},
@@ -68,5 +73,4 @@
     "historic_weight": [],
     "historic_bmi": [],
     "history_times": []
-
 }
