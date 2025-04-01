@@ -492,11 +492,6 @@ class MainWindow(Screen):
         self.rect.size = instance.size
 
     def on_enter(self):
-        # get all the data from the json file and display it
-        # use get_meal(day, meal) to get the meals
-        days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
-        meals = ["breakfast", "lunch", "dinner"]
-
         pass
 
     def personalData(self, instance):
@@ -559,7 +554,7 @@ class PersonalDataWindow(Screen):
 
         self.weightupdateInput = TextInput(
             multiline = False,
-            font_size = 30,
+            font_size = 40,
             text = data["weight"], 
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 0.5},
@@ -572,7 +567,7 @@ class PersonalDataWindow(Screen):
 
         self.weightupdateButton = Button(
             background_normal = "pencil.png",
-            size_hint=(0.08, 0.05),
+            size_hint=(0.1, 0.05),
             pos_hint = {"x": 0.8, "top": 0.5},
             on_press = self.weightupdate
         )
@@ -590,7 +585,7 @@ class PersonalDataWindow(Screen):
 
         self.heightupdateInput = TextInput(
             multiline = False,
-            font_size = 30,
+            font_size = 40,
             text = data["height"],
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 5/12},
@@ -603,7 +598,7 @@ class PersonalDataWindow(Screen):
 
         self.heightupdateButton = Button(
             background_normal = "pencil.png",
-            size_hint=(0.08, 0.05),
+            size_hint=(0.1, 0.05),
             pos_hint = {"x": 0.8, "top": 5/12},
             on_press = self.heightupdate
         )
@@ -621,7 +616,7 @@ class PersonalDataWindow(Screen):
 
         self.targetweightupdateInput = TextInput(
             multiline = False,
-            font_size = 30,
+            font_size = 40,
             text = data["goal weight"],
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 4/12},
@@ -634,7 +629,7 @@ class PersonalDataWindow(Screen):
 
         self.targetweightupdateButton = Button(
             background_normal = "pencil.png",
-            size_hint=(0.08, 0.05),
+            size_hint=(0.1, 0.05),
             pos_hint = {"x": 0.8, "top": 4/12},
             on_press = self.targetweightupdate
         )
@@ -651,22 +646,22 @@ class PersonalDataWindow(Screen):
         self.window.add_widget(self.activityLabel)
 
         self.activityupdateInput = Spinner(
-            font_size = 30,
-            text = data["activity"],
+            font_size=40,
+            text=data["activity"],
             values=("sedentary",
-                    "lightly active",
-                    "moderately active",
-                    "active",
-                    "extremely active"),
+                "lightly active",
+                "moderately active",
+                "active",
+                "extremely active"),
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 3/12},
-            disabled = True
+            disabled=True
         )
         self.window.add_widget(self.activityupdateInput)
 
         self.activityupdateButton = Button(
             background_normal = "pencil.png",
-            size_hint=(0.08, 0.05),
+            size_hint=(0.1, 0.05),
             pos_hint = {"x": 0.8, "top": 3/12},
             on_press = self.activityupdate
         )
@@ -778,6 +773,16 @@ class StatisticsWindow(Screen):
             text_color=(0, 0, 0, 1)
         )
         self.window.add_widget(self.title)
+
+        self.bmiLabel = ColoredLabel(
+            text = "BMI: ",
+            font_size = 50,
+            size_hint = (0.2, 0.05),
+            pos_hint = {"x": 0.15, "top": 0.5},
+            color=(1, 1, 1, 1),
+            text_color=(0, 1, 0, 1)
+        )
+        self.window.add_widget(self.bmiLabel)
         
         
         ###
@@ -790,6 +795,12 @@ class StatisticsWindow(Screen):
 
     def go_home(self, instance):
         self.manager.current = "main"
+
+    def on_enter(self):
+        ## get all the data from the json file and display it
+        bmi_temp, bmi_color = check_bmi(int(data["weight"]), int(data["height"]))
+        self.bmiLabel.text = "BMI: " + str(bmi(int(data["weight"]), int(data["height"]))) + " " + str(bmi_temp)
+        self.bmiLabel.color = bmi_color
 
 ################################
 
