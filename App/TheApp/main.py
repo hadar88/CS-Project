@@ -541,18 +541,28 @@ class PersonalDataWindow(Screen):
             text = "Personal Data",
             font_size = 100,
             size_hint = (0.8, 0.2),
-            pos_hint = {"x": 0.1, "top": 0.9},
+            pos_hint = {"x": 0.1, "top": 0.8},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
         self.window.add_widget(self.title)
 
+        self.weightLabel = ColoredLabel(
+            text = "Weight: ",
+            font_size = 30,
+            size_hint = (0.2, 0.05),
+            pos_hint = {"x": 0.15, "top": 0.5},
+            color=(1, 1, 1, 1),
+            text_color=(0, 1, 0, 1)
+        )
+        self.window.add_widget(self.weightLabel)
+
         self.weightupdateInput = TextInput(
             multiline = False,
-            font_size = 50,
-            text = "100.0",
-            size_hint=(0.4, 0.1),
-            pos_hint={"x": 0.3, "top": 0.7},
+            font_size = 30,
+            text = data["weight"], 
+            size_hint=(0.35, 0.05),
+            pos_hint={"x": 0.4, "top": 0.5},
             input_filter="float",
             disabled = True
         )
@@ -561,10 +571,100 @@ class PersonalDataWindow(Screen):
         self.weightupdateButton = Button(
             background_normal = "pencil.png",
             size_hint=(0.1125, 0.07),
-            pos_hint = {"x": 0.8, "top": 0.7},
+            pos_hint = {"x": 0.8, "top": 0.5},
             on_press = self.weightupdate
         )
         self.window.add_widget(self.weightupdateButton)
+
+        self.heightLabel = ColoredLabel(
+            text = "Height: ",
+            font_size = 30,
+            size_hint = (0.2, 0.05),
+            pos_hint = {"x": 0.15, "top": 5/12},
+            color=(1, 1, 1, 1),
+            text_color=(0, 1, 0, 1)
+        )
+        self.window.add_widget(self.heightLabel)
+
+        self.heightupdateInput = TextInput(
+            multiline = False,
+            font_size = 30,
+            text = data["height"],
+            size_hint=(0.35, 0.05),
+            pos_hint={"x": 0.4, "top": 5/12},
+            input_filter="float",
+            disabled = True
+        )
+        self.window.add_widget(self.heightupdateInput)
+
+        self.heightupdateButton = Button(
+            background_normal = "pencil.png",
+            size_hint=(0.1125, 0.07),
+            pos_hint = {"x": 0.8, "top": 5/12},
+            on_press = self.heightupdate
+        )
+        self.window.add_widget(self.heightupdateButton)
+
+        self.targetweightLabel = ColoredLabel(
+            text = "Target weight: ",
+            font_size = 30,
+            size_hint = (0.2, 0.05),
+            pos_hint = {"x": 0.15, "top": 4/12},
+            color=(1, 1, 1, 1),
+            text_color=(0, 1, 0, 1)
+        )
+        self.window.add_widget(self.targetweightLabel)
+
+        self.targetweightupdateInput = TextInput(
+            multiline = False,
+            font_size = 30,
+            text = data["goal weight"],
+            size_hint=(0.35, 0.05),
+            pos_hint={"x": 0.4, "top": 4/12},
+            input_filter="float",
+            disabled = True
+        )
+        self.window.add_widget(self.targetweightupdateInput)
+
+        self.targetweightupdateButton = Button(
+            background_normal = "pencil.png",
+            size_hint=(0.1125, 0.07),
+            pos_hint = {"x": 0.8, "top": 4/12},
+            on_press = self.targetweightupdate
+        )
+        self.window.add_widget(self.targetweightupdateButton)
+
+        self.activityLabel = ColoredLabel(
+            text = "Activity: ",
+            font_size = 30,
+            size_hint = (0.2, 0.05),
+            pos_hint = {"x": 0.15, "top": 3/12},
+            color=(1, 1, 1, 1),
+            text_color=(0, 1, 0, 1)
+        )
+        self.window.add_widget(self.activityLabel)
+
+        self.activityupdateInput = Spinner(
+            font_size = 30,
+            text = data["activity"],
+            values=("sedentary",
+                    "lightly active",
+                    "moderately active",
+                    "active",
+                    "extremely active"),
+            size_hint=(0.35, 0.05),
+            pos_hint={"x": 0.4, "top": 3/12},
+            disabled = True
+        )
+        self.window.add_widget(self.activityupdateInput)
+
+        self.activityupdateButton = Button(
+            background_normal = "pencil.png",
+            size_hint=(0.1125, 0.07),
+            pos_hint = {"x": 0.8, "top": 3/12},
+            on_press = self.activityupdate
+        )
+        self.window.add_widget(self.activityupdateButton)
 
         ###
 
@@ -579,10 +679,49 @@ class PersonalDataWindow(Screen):
 
     def weightupdate(self, instance):
         if self.weightupdateInput.disabled:
-            self.updateButton.background_normal = "vee.png"
+            self.weightupdateButton.background_normal = "vee.png"
         else:
-            self.updateButton.background_normal = "pencil.png"
+            data["weight"] = self.weightupdateInput.text
+            with open(DATA_PATH, "w") as file:
+                json.dump(data, file)
+            self.weightupdateButton.background_normal = "pencil.png"
         self.weightupdateInput.disabled = not self.weightupdateInput.disabled
+        
+    def heightupdate(self, instance):
+        if self.heightupdateInput.disabled:
+            self.heightupdateButton.background_normal = "vee.png"
+        else:
+            data["height"] = self.heightupdateInput
+            with open(DATA_PATH, "w") as file:
+                json.dump(data, file)
+            self.heightupdateButton.background_normal = "pencil.png"
+        self.heightupdateInput.disabled = not self.heightupdateInput.disabled
+
+    def targetweightupdate(self, instance):
+        if self.targetweightupdateInput.disabled:
+            self.targetweightupdateButton.background_normal = "vee.png"
+        else:
+            data["goal weight"] = self.targetweightupdateInput
+            with open(DATA_PATH, "w") as file:
+                json.dump(data, file)
+            self.targetweightupdateButton.background_normal = "pencil.png"
+        self.targetweightupdateInput.disabled = not self.targetweightupdateInput.disabled
+
+    def activityupdate(self, instance):
+        if self.activityupdateInput.disabled:
+            self.activityupdateButton.background_normal = "vee.png"
+        else:
+            data["activity"] = self.activityupdateInput.text
+            with open(DATA_PATH, "w") as file:
+                json.dump(data, file)
+            self.activityupdateButton.background_normal = "pencil.png"
+        self.activityupdateInput.disabled = not self.activityupdateInput.disabled
+    
+    def on_enter(self):
+        self.weightupdateInput.text = data["weight"]
+        self.heightupdateInput.text = data["height"]
+        self.targetweightupdateInput.text = data["goal weight"]
+        self.activityupdateInput.text = data["activity"]
 
 ################################
 
@@ -992,7 +1131,6 @@ class Registration1Window(Screen):
             size_hint=(0.44, 0.1),
             pos_hint={"x": 0.51, "top": 0.34},
             font_size = 50
-
         )
         self.window.add_widget(self.genderInput)
 
@@ -1866,6 +2004,12 @@ class LoadingWindow(Screen):
         data["fat"] = self.vector["fat"]
         data["protein"] = self.vector["protein"]
 
+        data["historic_weight"] = data["historic_weight"] + [current_weight_temp]
+        data["historic_weight_timestamps"] = data["historic_weight_timestamps"] + [datetime.datetime.now()]
+        bmi_temp = bmi(current_weight_temp, height_temp)
+        data["historic_bmi"] = data["historic_bmi"] + [bmi_temp]
+        data["historic_bmi_timestamps"] = data["historic_bmi_timestamps"] + [datetime.datetime.now()]
+
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
 
@@ -1897,9 +2041,9 @@ class WindowManager(ScreenManager):
     def __init__(self, **kw):
         super(WindowManager, self).__init__(**kw)
 
-        # self.add_widget(LoginWindow(name = "login"))
-        # self.add_widget(LoadingWindow(name = "loading"))
-        # self.add_widget(MainWindow(name = "main"))
+        self.add_widget(LoginWindow(name = "login"))
+        self.add_widget(LoadingWindow(name = "loading"))
+        self.add_widget(MainWindow(name = "main"))
         self.add_widget(PersonalDataWindow(name = "personalData"))
         self.add_widget(StatisticsWindow(name = "statistics"))
         self.add_widget(MenuWindow(name = "menu"))
