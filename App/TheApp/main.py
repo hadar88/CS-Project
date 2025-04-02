@@ -521,6 +521,7 @@ class PersonalDataWindow(Screen):
             Color(1, 1, 1, 1)
             self.rect = Rectangle(size=self.window.size, pos=self.window.pos)
             self.window.bind(size=self._update_rect, pos=self._update_rect)
+        self.window.bind(on_keyboard=self.on_back_button)
 
         ###
 
@@ -689,11 +690,11 @@ class PersonalDataWindow(Screen):
         bmi_temp = bmi(int(data["weight"]), int(data["height"]))
 
         if data["history_times"] and data["history_times"][-1] == today:
-            data["historic_weight"] = data["historic_weight"][:-1] + [float(data["weight"])]
-            data["historic_bmi"] = data["historic_bmi"][:-1] + [bmi_temp] 
+            data["history_weight"] = data["history_weight"][:-1] + [float(data["weight"])]
+            data["history_bmi"] = data["history_bmi"][:-1] + [bmi_temp] 
         else:
-            data["historic_weight"] = data["historic_weight"] + [float(data["weight"])]
-            data["historic_bmi"] = data["historic_bmi"] + [bmi_temp]
+            data["history_weight"] = data["history_weight"] + [float(data["weight"])]
+            data["history_bmi"] = data["history_bmi"] + [bmi_temp]
             data["history_times"] = data["history_times"] + [today] 
 
         with open(DATA_PATH, "w") as file:
@@ -756,6 +757,12 @@ class PersonalDataWindow(Screen):
         self.targetweightupdateInput.text = data["goal weight"]
         self.activityupdateInput.text = data["activity"]
 
+    def on_back_button(self, window, key, *args):
+        if key == 27: 
+            self.manager.current = "main" 
+            return True
+        return False
+    
 ################################
 
 class StatisticsWindow(Screen):
@@ -832,7 +839,6 @@ class StatisticsWindow(Screen):
         history_weight = data["history_weight"]
         history_bmi = data["history_bmi"]
         history_times = data["history_times"]
-
 
 ################################
 
@@ -2081,11 +2087,11 @@ class LoadingWindow(Screen):
         bmi_temp = bmi(current_weight_temp, height_temp)
 
         if data["history_times"] and data["history_times"][-1] == today:
-            data["historic_weight"] = data["historic_weight"][:-1] + [current_weight_temp]
-            data["historic_bmi"] = data["historic_bmi"][:-1] + [bmi_temp] 
+            data["history_weight"] = data["history_weight"][:-1] + [current_weight_temp]
+            data["history_bmi"] = data["history_bmi"][:-1] + [bmi_temp] 
         else:
-            data["historic_weight"] = data["historic_weight"] + [current_weight_temp]
-            data["historic_bmi"] = data["historic_bmi"] + [bmi_temp]
+            data["history_weight"] = data["history_weight"] + [current_weight_temp]
+            data["history_bmi"] = data["history_bmi"] + [bmi_temp]
             data["history_times"] = data["history_times"] + [today] 
 
         
