@@ -13,6 +13,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.spinner import Spinner
 from kivy.uix.checkbox import CheckBox
+from kivy.core.window import Window
 
 #######################################################################
 
@@ -521,7 +522,6 @@ class PersonalDataWindow(Screen):
             Color(1, 1, 1, 1)
             self.rect = Rectangle(size=self.window.size, pos=self.window.pos)
             self.window.bind(size=self._update_rect, pos=self._update_rect)
-        self.window.bind(on_keyboard=self.on_back_button)
 
         ###
 
@@ -674,6 +674,16 @@ class PersonalDataWindow(Screen):
         )
         self.window.add_widget(self.activityupdateButton)
 
+        self.errorMessage = ColoredLabel(
+            text = "",
+            font_size = 50,
+            size_hint = (0.8, 0.06),
+            pos_hint = {"x": 0.1, "top": 0.13},
+            color=(1, 1, 1, 1),
+            text_color=(1, 0, 0, 1)
+        )
+        self.window.add_widget(self.errorMessage)
+
         ###
 
         self.add_widget(self.window)
@@ -686,60 +696,73 @@ class PersonalDataWindow(Screen):
         instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
 
     def go_home(self, instance):
-        today = datetime.datetime.now().date().isoformat()
-        bmi_temp = bmi(int(data["weight"]), int(data["height"]))
+        if(self.errorMessage.text == ""):
+            today = datetime.datetime.now().date().isoformat()
+            bmi_temp = bmi(int(data["weight"]), int(data["height"]))
 
-        if data["history_times"] and data["history_times"][-1] == today:
-            data["history_weight"] = data["history_weight"][:-1] + [float(data["weight"])]
-            data["history_bmi"] = data["history_bmi"][:-1] + [bmi_temp] 
-        else:
-            data["history_weight"] = data["history_weight"] + [float(data["weight"])]
-            data["history_bmi"] = data["history_bmi"] + [bmi_temp]
-            data["history_times"] = data["history_times"] + [today] 
+            if data["history_times"] and data["history_times"][-1] == today:
+                data["history_weight"] = data["history_weight"][:-1] + [float(data["weight"])]
+                data["history_bmi"] = data["history_bmi"][:-1] + [bmi_temp] 
+            else:
+                data["history_weight"] = data["history_weight"] + [float(data["weight"])]
+                data["history_bmi"] = data["history_bmi"] + [bmi_temp]
+                data["history_times"] = data["history_times"] + [today] 
 
-        with open(DATA_PATH, "w") as file:
-            json.dump(data, file)
+            with open(DATA_PATH, "w") as file:
+                json.dump(data, file)
 
-        self.weightupdateInput.disabled = True
-        self.heightupdateInput.disabled = True
-        self.targetweightupdateInput.disabled = True
-        self.activityupdateInput.disabled = True
-        self.weightupdateButton.background_normal = "pencil.png"
-        self.heightupdateButton.background_normal = "pencil.png"
-        self.targetweightupdateButton.background_normal = "pencil.png"
-        self.activityupdateButton.background_normal = "pencil.png"
+            self.weightupdateInput.disabled = True
+            self.heightupdateInput.disabled = True
+            self.targetweightupdateInput.disabled = True
+            self.activityupdateInput.disabled = True
+            self.weightupdateButton.background_normal = "pencil.png"
+            self.heightupdateButton.background_normal = "pencil.png"
+            self.targetweightupdateButton.background_normal = "pencil.png"
+            self.activityupdateButton.background_normal = "pencil.png"
 
-        self.manager.current = "main"
+            self.manager.current = "main"
 
     def weightupdate(self, instance):
         if self.weightupdateInput.disabled:
             self.weightupdateButton.background_normal = "vee.png"
+            self.weightupdateInput.disabled = not self.weightupdateInput.disabled
+        elif(self.weightupdateInput.text == "" or int(self.weightupdateInput.text) < 40): 
+            self.errorMessage.text = "Weight must be greater than 40 kg"
         else:
             data["weight"] = self.weightupdateInput.text
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.weightupdateButton.background_normal = "pencil.png"
-        self.weightupdateInput.disabled = not self.weightupdateInput.disabled
+            self.weightupdateInput.disabled = not self.weightupdateInput.disabled
+            self.errorMessage.text = ""
         
     def heightupdate(self, instance):
         if self.heightupdateInput.disabled:
             self.heightupdateButton.background_normal = "vee.png"
+            self.heightupdateInput.disabled = not self.heightupdateInput.disabled
+        elif(self.heightupdateInput.text == "" or int(self.heightupdateInput.text) < 140 or int(self.heightupdateInput.text) > 250):
+            self.errorMessage.text = "Height must be between 140 and 250 cm"
         else:
             data["height"] = self.heightupdateInput.text
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.heightupdateButton.background_normal = "pencil.png"
-        self.heightupdateInput.disabled = not self.heightupdateInput.disabled
+            self.heightupdateInput.disabled = not self.heightupdateInput.disabled
+            self.errorMessage.text = ""
 
     def targetweightupdate(self, instance):
         if self.targetweightupdateInput.disabled:
             self.targetweightupdateButton.background_normal = "vee.png"
+            self.targetweightupdateInput.disabled = not self.targetweightupdateInput.disabled
+        elif(self.targetweightupdateInput.text == "" or int(self.targetweightupdateInput.text) < 40):
+            self.errorMessage.text = "Weight must be greater than 40 kg"
         else:
             data["goal weight"] = self.targetweightupdateInput.text
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.targetweightupdateButton.background_normal = "pencil.png"
-        self.targetweightupdateInput.disabled = not self.targetweightupdateInput.disabled
+            self.targetweightupdateInput.disabled = not self.targetweightupdateInput.disabled
+            self.errorMessage.text = ""
 
     def activityupdate(self, instance):
         if self.activityupdateInput.disabled:
@@ -757,12 +780,6 @@ class PersonalDataWindow(Screen):
         self.targetweightupdateInput.text = data["goal weight"]
         self.activityupdateInput.text = data["activity"]
 
-    def on_back_button(self, window, key, *args):
-        if key == 27: 
-            self.manager.current = "main" 
-            return True
-        return False
-    
 ################################
 
 class StatisticsWindow(Screen):
