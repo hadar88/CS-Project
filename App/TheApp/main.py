@@ -817,6 +817,23 @@ class StatisticsWindow(Screen):
         self.bmiLabel.text = "BMI: " + str(bmi(int(data["weight"]), int(data["height"]))) + " " + str(bmi_temp)
         self.bmiLabel.color = bmi_color
 
+        calories = data["calories"]
+        carbohydrates = data["carbohydrates"]
+        sugar = data["sugar"]
+        fat = data["fat"]
+        protein = data["protein"]
+
+        calories_today = data["calories today"]
+        carbohydrates_today = data["carbohydrates today"]
+        sugar_today = data["sugar today"]
+        fat_today = data["fat today"]
+        protein_today = data["protein today"]
+
+        history_weight = data["history_weight"]
+        history_bmi = data["history_bmi"]
+        history_times = data["history_times"]
+
+
 ################################
 
 class MenuWindow(Screen):
@@ -1220,6 +1237,12 @@ class Registration1Window(Screen):
         gender_input = self.genderInput.text
         if(weight_input == "" or height_input == "" or age_input == "" or gender_input == "Select a gender"):
             self.errorMessage.text = "Please fill in all fields"
+        elif(int(weight_input) < 40):
+            self.errorMessage.text = "Weight must be greater than 40 kg"
+        elif(int(height_input) < 140 or int(height_input) > 250):
+            self.errorMessage.text = "Height must be between 140 and 250 cm"
+        elif(int(age_input) < 18 or int(age_input) > 100):
+            self.errorMessage.text = "Age must be between 18 and 100 years"
         else:
             data["weight"] = weight_input
             data["height"] = height_input
@@ -1265,7 +1288,7 @@ class Registration2Window(Screen):
         self.window.add_widget(self.title)
 
         self.activityLabel = ColoredLabel(
-            text = "I am:",
+            text = "Level of activity:",
             font_size = 60,
             size_hint = (0.44, 0.1),
             pos_hint = {"x": 0.05, "top": 0.7},
@@ -1463,7 +1486,7 @@ class Registration3Window(Screen):
 
         self.dietInput = Spinner(
             text="Diet",
-            values=("Vegetarian", "Vegan", "None"),
+            values=("Vegetarian", "Vegan", "Regular"),
             size_hint=(0.44, 0.1),
             pos_hint={"x": 0.51, "top": 0.46},
             font_size = 40

@@ -70,7 +70,7 @@
             "dinner": {}
         }
     },
-    "historic_weight": [],
-    "historic_bmi": [],
+    "history_weight": [],
+    "history_bmi": [],
     "history_times": []
 }
