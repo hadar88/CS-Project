@@ -515,6 +515,7 @@ class MainWindow(Screen):
 class PersonalDataWindow(Screen):
     def __init__(self, **kw):
         super(PersonalDataWindow, self).__init__(**kw)
+        Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
         self.window = FloatLayout(size_hint=(1, 1))
@@ -696,31 +697,30 @@ class PersonalDataWindow(Screen):
         instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
 
     def go_home(self, instance):
-        if(self.errorMessage.text == ""):
-            today = datetime.datetime.now().date().isoformat()
-            bmi_temp = bmi(int(data["weight"]), int(data["height"]))
+        today = datetime.datetime.now().date().isoformat()
+        bmi_temp = bmi(int(data["weight"]), int(data["height"]))
 
-            if data["history_times"] and data["history_times"][-1] == today:
-                data["history_weight"] = data["history_weight"][:-1] + [float(data["weight"])]
-                data["history_bmi"] = data["history_bmi"][:-1] + [bmi_temp] 
-            else:
-                data["history_weight"] = data["history_weight"] + [float(data["weight"])]
-                data["history_bmi"] = data["history_bmi"] + [bmi_temp]
-                data["history_times"] = data["history_times"] + [today] 
+        if data["history_times"] and data["history_times"][-1] == today:
+            data["history_weight"] = data["history_weight"][:-1] + [float(data["weight"])]
+            data["history_bmi"] = data["history_bmi"][:-1] + [bmi_temp] 
+        else:
+            data["history_weight"] = data["history_weight"] + [float(data["weight"])]
+            data["history_bmi"] = data["history_bmi"] + [bmi_temp]
+            data["history_times"] = data["history_times"] + [today] 
 
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
+        with open(DATA_PATH, "w") as file:
+            json.dump(data, file)
 
-            self.weightupdateInput.disabled = True
-            self.heightupdateInput.disabled = True
-            self.targetweightupdateInput.disabled = True
-            self.activityupdateInput.disabled = True
-            self.weightupdateButton.background_normal = "pencil.png"
-            self.heightupdateButton.background_normal = "pencil.png"
-            self.targetweightupdateButton.background_normal = "pencil.png"
-            self.activityupdateButton.background_normal = "pencil.png"
+        self.weightupdateInput.disabled = True
+        self.heightupdateInput.disabled = True
+        self.targetweightupdateInput.disabled = True
+        self.activityupdateInput.disabled = True
+        self.weightupdateButton.background_normal = "pencil.png"
+        self.heightupdateButton.background_normal = "pencil.png"
+        self.targetweightupdateButton.background_normal = "pencil.png"
+        self.activityupdateButton.background_normal = "pencil.png"
 
-            self.manager.current = "main"
+        self.manager.current = "main"
 
     def weightupdate(self, instance):
         if self.weightupdateInput.disabled:
@@ -775,16 +775,28 @@ class PersonalDataWindow(Screen):
         self.activityupdateInput.disabled = not self.activityupdateInput.disabled
     
     def on_enter(self):
+        Window.bind(on_keyboard=self.on_keyboard)
         self.weightupdateInput.text = data["weight"]
         self.heightupdateInput.text = data["height"]
         self.targetweightupdateInput.text = data["goal weight"]
         self.activityupdateInput.text = data["activity"]
+
+    def on_leave(self):
+        Window.unbind(on_keyboard=self.on_keyboard)
+
+    def on_keyboard(self, window, key, *args):
+        if key == 27:
+            if self.manager.current == "personalData":
+                self.manager.current = "main"
+                return True
+        return False
 
 ################################
 
 class StatisticsWindow(Screen):
     def __init__(self, **kw):
         super(StatisticsWindow, self).__init__(**kw)
+        Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
         self.window = FloatLayout(size_hint=(1, 1))
@@ -836,6 +848,7 @@ class StatisticsWindow(Screen):
         self.manager.current = "main"
 
     def on_enter(self):
+        Window.bind(on_keyboard=self.on_keyboard)
         ## get all the data from the json file and display it
         bmi_temp, bmi_color = check_bmi(int(data["weight"]), int(data["height"]))
         self.bmiLabel.text = "BMI: " + str(bmi(int(data["weight"]), int(data["height"]))) + " " + str(bmi_temp)
@@ -857,11 +870,22 @@ class StatisticsWindow(Screen):
         history_bmi = data["history_bmi"]
         history_times = data["history_times"]
 
+    def on_leave(self):
+        Window.unbind(on_keyboard=self.on_keyboard)
+
+    def on_keyboard(self, window, key, *args):
+        if key == 27:
+            if self.manager.current == "statistics":
+                self.manager.current = "main"
+                return True
+        return False
+
 ################################
 
 class MenuWindow(Screen):
     def __init__(self, **kw):
         super(MenuWindow, self).__init__(**kw)
+        Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
         self.window = FloatLayout(size_hint=(1, 1))
@@ -901,11 +925,25 @@ class MenuWindow(Screen):
     def go_home(self, instance):
         self.manager.current = "main"
 
+    def on_enter(self):
+        Window.bind(on_keyboard=self.on_keyboard)
+        
+    def on_leave(self):
+        Window.unbind(on_keyboard=self.on_keyboard)
+
+    def on_keyboard(self, window, key, *args):
+        if key == 27:
+            if self.manager.current == "menu":
+                self.manager.current = "main"
+                return True
+        return False
+        
 ################################
 
 class WeeklymenuWindow(Screen):
     def __init__(self, **kw):
         super(WeeklymenuWindow, self).__init__(**kw)
+        Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
         self.window = FloatLayout(size_hint=(1, 1))
@@ -945,11 +983,25 @@ class WeeklymenuWindow(Screen):
     def go_home(self, instance):
         self.manager.current = "main"
 
+    def on_enter(self):
+        Window.bind(on_keyboard=self.on_keyboard)
+
+    def on_leave(self):
+        Window.unbind(on_keyboard=self.on_keyboard)
+
+    def on_keyboard(self, window, key, *args):
+        if key == 27:
+            if self.manager.current == "weeklyMenu":
+                self.manager.current = "main"
+                return True
+        return False
+        
 ################################
 
 class DictionaryWindow(Screen):
     def __init__(self, **kw):
         super(DictionaryWindow, self).__init__(**kw)
+        Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
         self.window = FloatLayout(size_hint=(1, 1))
@@ -989,6 +1041,19 @@ class DictionaryWindow(Screen):
     def go_home(self, instance):
         self.manager.current = "main"
 
+    def on_enter(self):
+        Window.bind(on_keyboard=self.on_keyboard)
+
+    def on_leave(self):
+        Window.unbind(on_keyboard=self.on_keyboard)
+
+    def on_keyboard(self, window, key, *args):
+        if key == 27:
+            if self.manager.current == "dictionary":
+                self.manager.current = "main"
+                return True
+        return False
+        
 ################################
 
 class CreateAccountWindow(Screen):
@@ -1282,6 +1347,7 @@ class Registration1Window(Screen):
 class Registration2Window(Screen):
     def __init__(self, **kw):
         super(Registration2Window, self).__init__(**kw)
+        Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
         self.window = FloatLayout(size_hint=(1, 1))
@@ -1445,11 +1511,25 @@ class Registration2Window(Screen):
         self.manager.current = "registration1"
         self.errorMessage.text = ""
 
+    def on_enter(self):
+        Window.bind(on_keyboard=self.on_keyboard)
+    
+    def on_leave(self):
+        Window.unbind(on_keyboard=self.on_keyboard)
+    
+    def on_keyboard(self, window, key, *args):
+        if key == 27:
+            if self.manager.current == "registration2":
+                self.manager.current = "registration1"
+                return True
+        return False
+
 ################################
 
 class Registration3Window(Screen):
     def __init__(self, **kw):
         super(Registration3Window, self).__init__(**kw)
+        Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
         self.window = FloatLayout(size_hint=(1, 1))
@@ -1571,11 +1651,25 @@ class Registration3Window(Screen):
         self.manager.current = "registration2"
         self.errorMessage.text = ""
 
+    def on_enter(self):
+        Window.bind(on_keyboard=self.on_keyboard)
+
+    def on_leave(self):
+        Window.unbind(on_keyboard=self.on_keyboard)
+
+    def on_keyboard(self, window, key, *args):
+        if key == 27:
+            if self.manager.current == "registration3":
+                self.manager.current = "registration2"
+                return True
+        return False
+
 ################################
 
 class Registration4Window(Screen):
     def __init__(self, **kw):
         super(Registration4Window, self).__init__(**kw)
+        Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
         self.window = FloatLayout(size_hint=(1, 1))
@@ -1777,11 +1871,25 @@ class Registration4Window(Screen):
     def previous(self, instance):
         self.manager.current = "registration3"
 
+    def on_enter(self):
+        Window.bind(on_keyboard=self.on_keyboard)
+
+    def on_leave(self):
+        Window.unbind(on_keyboard=self.on_keyboard)
+
+    def on_keyboard(self, window, key, *args):
+        if key == 27:
+            if self.manager.current == "registration4":
+                self.manager.current = "registration3"
+                return True
+        return False
+
 ################################
 
 class Registration5Window(Screen):
     def __init__(self, **kw):
         super(Registration5Window, self).__init__(**kw)
+        Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
         self.window = FloatLayout(size_hint=(1, 1))
@@ -1897,14 +2005,26 @@ class Registration5Window(Screen):
         self.errorMessage.text = ""
 
     def on_enter(self):
+        Window.bind(on_keyboard=self.on_keyboard)
         idealBodyWeight = ideal_body_weight(int(data["height"]), data["gender"])
         self.suggestedWeight.text = "Suggested weight: " + str(idealBodyWeight) + " kg"
+
+    def on_leave(self):
+        Window.unbind(on_keyboard=self.on_keyboard)
+
+    def on_keyboard(self, window, key, *args):
+        if key == 27:
+            if self.manager.current == "registration5":
+                self.manager.current = "registration4"
+                return True
+        return False
 
 ################################
 
 class Registration6Window(Screen):
     def __init__(self, **kw):
         super(Registration6Window, self).__init__(**kw)
+        Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
         self.window = FloatLayout(size_hint=(1, 1))
@@ -2023,8 +2143,19 @@ class Registration6Window(Screen):
         self.errorMessage.text = ""
 
     def on_enter(self):
+        Window.bind(on_keyboard=self.on_keyboard)
         self.time = time_of_change(int(data["weight"]), int(data["goal weight"]))
         self.suggestedTime.text = "Suggested time: " + str(self.time) + " weeks"
+
+    def on_leave(self):
+        Window.unbind(on_keyboard=self.on_keyboard)
+
+    def on_keyboard(self, window, key, *args):
+        if key == 27:
+            if self.manager.current == "registration6":
+                self.manager.current = "registration5"
+                return True
+        return False 
 
 ################################
 
