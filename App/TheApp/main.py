@@ -787,7 +787,7 @@ class PersonalDataWindow(Screen):
     def on_keyboard(self, window, key, *args):
         if key == 27:
             if self.manager.current == "personalData":
-                self.manager.current = "main"
+                self.go_home(self)
                 return True
         return False
 
@@ -876,7 +876,7 @@ class StatisticsWindow(Screen):
     def on_keyboard(self, window, key, *args):
         if key == 27:
             if self.manager.current == "statistics":
-                self.manager.current = "main"
+                self.go_home(self)
                 return True
         return False
 
@@ -934,7 +934,7 @@ class MenuWindow(Screen):
     def on_keyboard(self, window, key, *args):
         if key == 27:
             if self.manager.current == "menu":
-                self.manager.current = "main"
+                self.go_home(self)
                 return True
         return False
         
@@ -992,7 +992,7 @@ class WeeklymenuWindow(Screen):
     def on_keyboard(self, window, key, *args):
         if key == 27:
             if self.manager.current == "weeklyMenu":
-                self.manager.current = "main"
+                self.go_home(self)
                 return True
         return False
         
@@ -1050,7 +1050,7 @@ class DictionaryWindow(Screen):
     def on_keyboard(self, window, key, *args):
         if key == 27:
             if self.manager.current == "dictionary":
-                self.manager.current = "main"
+                self.go_home(self)
                 return True
         return False
         
@@ -1520,7 +1520,7 @@ class Registration2Window(Screen):
     def on_keyboard(self, window, key, *args):
         if key == 27:
             if self.manager.current == "registration2":
-                self.manager.current = "registration1"
+                self.previous(self)
                 return True
         return False
 
@@ -1660,7 +1660,7 @@ class Registration3Window(Screen):
     def on_keyboard(self, window, key, *args):
         if key == 27:
             if self.manager.current == "registration3":
-                self.manager.current = "registration2"
+                self.previous(self)
                 return True
         return False
 
@@ -1880,7 +1880,7 @@ class Registration4Window(Screen):
     def on_keyboard(self, window, key, *args):
         if key == 27:
             if self.manager.current == "registration4":
-                self.manager.current = "registration3"
+                self.previous(self)
                 return True
         return False
 
@@ -2015,7 +2015,7 @@ class Registration5Window(Screen):
     def on_keyboard(self, window, key, *args):
         if key == 27:
             if self.manager.current == "registration5":
-                self.manager.current = "registration4"
+                self.previous(self)
                 return True
         return False
 
@@ -2153,7 +2153,7 @@ class Registration6Window(Screen):
     def on_keyboard(self, window, key, *args):
         if key == 27:
             if self.manager.current == "registration6":
-                self.manager.current = "registration5"
+                self.previous(self)
                 return True
         return False 
 
