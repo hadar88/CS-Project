@@ -913,17 +913,17 @@ class StatisticsWindow(Screen):
         self.bmiLabel.text = "BMI: " + str(bmi(int(data["weight"]), int(data["height"]))) + " " + str(bmi_temp)
         self.bmiLabel.color = bmi_color
 
-        calories = data["calories"]
-        carbohydrates = data["carbohydrates"]
-        sugar = data["sugar"]
-        fat = data["fat"]
-        protein = data["protein"]
+        calories = str(data["calories"])
+        carbohydrates = str(data["carbohydrates"])
+        sugar = str(data["sugar"])
+        fat = str(data["fat"])
+        protein = str(data["protein"])
 
-        calories_today = data["calories today"]
-        carbohydrates_today = data["carbohydrates today"]
-        sugar_today = data["sugar today"]
-        fat_today = data["fat today"]
-        protein_today = data["protein today"]
+        calories_today = str(data["calories today"])
+        carbohydrates_today = str(data["carbohydrates today"])
+        sugar_today = str(data["sugar today"])
+        fat_today = str(data["fat today"])
+        protein_today = str(data["protein today"])
 
         history_weight = data["history_weight"]
         history_bmi = data["history_bmi"]
