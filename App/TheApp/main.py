@@ -825,6 +825,16 @@ class StatisticsWindow(Screen):
         )
         self.window.add_widget(self.title)
 
+        self.weightHeightLabel = ColoredLabel(
+            text = "",
+            font_size = 50,
+            size_hint = (0.2, 0.05),
+            pos_hint = {"x": 0.15, "top": 0.5},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.weightHeightLabel)
+
         self.bmiLabel = ColoredLabel(
             text = "BMI: ",
             font_size = 50,
@@ -835,7 +845,56 @@ class StatisticsWindow(Screen):
         )
         self.window.add_widget(self.bmiLabel)
         
-        
+        self.caloriesLabel = ColoredLabel(
+            text = "",
+            font_size = 50,
+            size_hint = (0.2, 0.05),
+            pos_hint = {"x": 0.15, "top": 4/12},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.caloriesLabel)
+
+        self.carbohydratesLabel = ColoredLabel(
+            text = "",
+            font_size = 50,
+            size_hint = (0.2, 0.05),
+            pos_hint = {"x": 0.15, "top": 3/12},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.carbohydratesLabel)
+
+        self.sugarLabel = ColoredLabel(
+            text = "",
+            font_size = 50,
+            size_hint = (0.2, 0.05),
+            pos_hint = {"x": 0.15, "top": 2/12},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.sugarLabel)
+
+        self.fatLabel = ColoredLabel(
+            text = "",
+            font_size = 50,
+            size_hint = (0.2, 0.05),
+            pos_hint = {"x": 0.15, "top": 1/12},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.fatLabel)
+
+        self.proteinLabel = ColoredLabel(
+            text = "",
+            font_size = 50,
+            size_hint = (0.2, 0.05),
+            pos_hint = {"x": 0.15, "top": 0},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.proteinLabel)
+
         ###
 
         self.add_widget(self.window)
@@ -869,6 +928,14 @@ class StatisticsWindow(Screen):
         history_weight = data["history_weight"]
         history_bmi = data["history_bmi"]
         history_times = data["history_times"]
+
+        self.weightHeightLabel.text = data["weight"]+ " Kg | " + data["height"] + " cm"
+        self.caloriesLabel.text = calories_today + "/" + calories + "Kcal calories"
+        self.carbohydratesLabel.text = carbohydrates_today + "/" + carbohydrates + "g carbohydrates"
+        self.sugarLabel.text = sugar_today + "/" + sugar + "g sugar"
+        self.fatLabel.text = fat_today + "/" + fat + "g fat"
+        self.proteinLabel.text = protein_today + "/" + protein + "g protein"
+
 
     def on_leave(self):
         Window.unbind(on_keyboard=self.on_keyboard)

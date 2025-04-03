@@ -1,10 +1,10 @@
 {
     "Protein": "g",
     "Fat": "g",
-    "Carbohydrate": "g",
+    "Carbohydrates": "g",
     "Calories": "kcal",
     "Water": "g",
-    "Sugars": "g",
+    "Sugar": "g",
     "Fiber": "g",
     "Cholesterol": "mg",
     "Saturated fat": "g",
