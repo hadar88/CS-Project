@@ -15,6 +15,10 @@ from kivy.uix.spinner import Spinner
 from kivy.uix.checkbox import CheckBox
 from kivy.core.window import Window
 
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
 #######################################################################
 
 DATA_PATH = "data.json"
@@ -107,15 +111,18 @@ def bmi(weight, height):
 
 def check_bmi(weight, height):
     b = bmi(weight, height)
-    if b < 16:
+    return bmi_decs_and_color(b)
+    
+def bmi_decs_and_color(bmi_val):
+    if bmi_val < 16:
         return ("Severely underweight", (0, 0, 1, 1))
-    elif b < 18.5:
+    elif bmi_val < 18.5:
         return ("Underweight", (0, 1, 1, 1))
-    elif b < 25:
+    elif bmi_val < 25:
         return ("Healthy", (0, 1, 0, 1))
-    elif b < 30:
+    elif bmi_val < 30:
         return ("Overweight", (1, 1, 0, 1))
-    elif b < 40:
+    elif bmi_val < 40:
         return ("Obese", (1, 0.5, 0, 1))
     else:
         return ("Extremely obese", (1, 0, 0, 1))
@@ -271,13 +278,20 @@ def convert_to_dict(data):
 
 #######################################################################
 
-def check_time():
-    while True:
-        now = datetime.datetime.now()
-        if now.weekday() == 5 and now.hour == 23 and now.minute == 59:
-            print("It's the time!")
-            time.sleep(60)  # Wait a minute to avoid printing multiple times in the same minute
-        time.sleep(1)  # Check every second
+# def check_time1():
+#     while True:
+#         now = datetime.datetime.now()
+#         if now.hour == 23 and now.minute == 59: # now.weekday() == 5
+#             data["calories today"] = 0
+#             data["carbohydrates today"] = 0
+#             data["sugar today"] = 0
+#             data["fat today"] = 0
+#             data["protein today"] = 0
+#             with open(DATA_PATH, "w") as file:
+#                 json.dump(data, file)
+                
+#             time.sleep(60)  # Wait a minute to avoid printing multiple times in the same minute
+#         time.sleep(1)  # Check every second
 
 #######################################################################
 
@@ -700,7 +714,7 @@ class PersonalDataWindow(Screen):
         today = datetime.datetime.now().date().isoformat()
         bmi_temp = bmi(int(data["weight"]), int(data["height"]))
 
-        if data["history_times"] and data["history_times"][-1] == today:
+        if data["history_times"] and today in data["history_times"]:
             data["history_weight"] = data["history_weight"][:-1] + [float(data["weight"])]
             data["history_bmi"] = data["history_bmi"][:-1] + [bmi_temp] 
         else:
@@ -819,7 +833,7 @@ class StatisticsWindow(Screen):
             text = "Statistics",
             font_size = 100,
             size_hint = (0.8, 0.2),
-            pos_hint = {"x": 0.1, "top": 0.8},
+            pos_hint = {"x": 0.1, "top": 39/40},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -827,19 +841,19 @@ class StatisticsWindow(Screen):
 
         self.weightHeightLabel = ColoredLabel(
             text = "",
-            font_size = 50,
-            size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0.55},
+            font_size = 30,
+            size_hint = (0.4, 0.05),
+            pos_hint = {"x": 0.3, "top": 0.8},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
         self.window.add_widget(self.weightHeightLabel)
 
         self.bmiLabel = ColoredLabel(
-            text = "BMI: ",
-            font_size = 50,
-            size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.3, "top": 0.475},
+            text = "",
+            font_size = 30,
+            size_hint = (0.6, 0.05),
+            pos_hint = {"x": 0.2, "top": 29/40},
             color=(1, 1, 1, 1),
             text_color=(0, 1, 0, 1)
         )
@@ -847,9 +861,9 @@ class StatisticsWindow(Screen):
         
         self.caloriesLabel = ColoredLabel(
             text = "",
-            font_size = 50,
-            size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0.4},
+            font_size = 30,
+            size_hint = (0.6, 0.05),
+            pos_hint = {"x": 0.2, "top": 26/40},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -857,9 +871,9 @@ class StatisticsWindow(Screen):
 
         self.carbohydratesLabel = ColoredLabel(
             text = "",
-            font_size = 50,
-            size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0.325},
+            font_size = 30,
+            size_hint = (0.6, 0.05),
+            pos_hint = {"x": 0.2, "top": 23/40},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -867,9 +881,9 @@ class StatisticsWindow(Screen):
 
         self.sugarLabel = ColoredLabel(
             text = "",
-            font_size = 50,
-            size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0.25},
+            font_size = 30,
+            size_hint = (0.6, 0.05),
+            pos_hint = {"x": 0.2, "top": 20/40},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -877,9 +891,9 @@ class StatisticsWindow(Screen):
 
         self.fatLabel = ColoredLabel(
             text = "",
-            font_size = 50,
-            size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0.175},
+            font_size = 30,
+            size_hint = (0.6, 0.05),
+            pos_hint = {"x": 0.2, "top": 17/40},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -887,13 +901,20 @@ class StatisticsWindow(Screen):
 
         self.proteinLabel = ColoredLabel(
             text = "",
-            font_size = 50,
-            size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0.1},
+            font_size = 30,
+            size_hint = (0.6, 0.05),
+            pos_hint = {"x": 0.2, "top": 14/40},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
         self.window.add_widget(self.proteinLabel)
+
+        self.graphWeight = Image(
+            source = "",
+            size_hint = (0.25, 0.25),
+            pos_hint = {"x": 3/8, "top": 11/40},
+        )
+        self.window.add_widget(self.graphWeight)
 
         ###
 
@@ -908,7 +929,7 @@ class StatisticsWindow(Screen):
 
     def on_enter(self):
         Window.bind(on_keyboard=self.on_keyboard)
-        ## get all the data from the json file and display it
+
         bmi_temp, bmi_color = check_bmi(int(data["weight"]), int(data["height"]))
         self.bmiLabel.text = "BMI: " + str(bmi(int(data["weight"]), int(data["height"]))) + " " + str(bmi_temp)
         self.bmiLabel.color = bmi_color
@@ -936,7 +957,24 @@ class StatisticsWindow(Screen):
         self.fatLabel.text = fat_today + "/" + fat + " g Fat"
         self.proteinLabel.text = protein_today + "/" + protein + " g Protein"
 
+        history_times = [datetime.datetime.strptime(date, "%Y-%m-%d") for date in history_times]
 
+        plt.figure()  # Create a new figure to avoid overlapping with the previous plot
+
+        for i in range(len(history_bmi)):
+            color = bmi_decs_and_color(history_bmi[i])[1]
+            plt.plot(history_times[i:i+2], history_weight[i:i+2], color=color)
+
+        plt.xticks([history_times[0], history_times[-1]], 
+               [history_times[0].strftime("%Y-%m-%d"), history_times[-1].strftime("%Y-%m-%d")])
+        
+        plt.title("Weight History")
+        plt.savefig("weight_history.png")
+        plt.close()  # Close the figure to free up memory
+
+        self.graphWeight.source = "weight_history.png"
+        self.graphWeight.reload()
+        
     def on_leave(self):
         Window.unbind(on_keyboard=self.on_keyboard)
 
@@ -2301,15 +2339,13 @@ class LoadingWindow(Screen):
         today = datetime.datetime.now().date().isoformat()
         bmi_temp = bmi(current_weight_temp, height_temp)
 
-        if data["history_times"] and data["history_times"][-1] == today:
+        if data["history_times"] and today in data["history_times"]:
             data["history_weight"] = data["history_weight"][:-1] + [current_weight_temp]
             data["history_bmi"] = data["history_bmi"][:-1] + [bmi_temp] 
         else:
             data["history_weight"] = data["history_weight"] + [current_weight_temp]
             data["history_bmi"] = data["history_bmi"] + [bmi_temp]
             data["history_times"] = data["history_times"] + [today] 
-
-        
 
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
@@ -2360,8 +2396,27 @@ class WindowManager(ScreenManager):
 
 class MainApp(App):
     def build(self):
-        # threading.Thread(target=check_time, daemon=True).start()
+        self.reset_day()
+        self.end_of_week()
+        # threading.Thread(target=check_time1, daemon=True).start()
         return WindowManager()
+    
+    def reset_day(self):
+        entry_time = datetime.datetime.now().date().isoformat()
+        last_visit_time = data["last_visit_time"]
+        if last_visit_time != entry_time:
+            data["calories today"] = 0
+            data["carbohydrates today"] = 0
+            data["sugar today"] = 0
+            data["fat today"] = 0
+            data["protein today"] = 0
+            data["last_visit_time"] = entry_time
+            with open(DATA_PATH, "w") as file:
+                json.dump(data, file)
+
+    def end_of_week(self):
+        # clear the self menu
+        pass
 
 if __name__ == "__main__":
     MainApp().run()

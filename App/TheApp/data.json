@@ -72,5 +72,6 @@
     },
     "history_weight": [],
     "history_bmi": [],
-    "history_times": []
+    "history_times": [],
+    "last_visit_time": ""
 }

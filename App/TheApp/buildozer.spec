@@ -42,7 +42,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,requests
+requirements = python3,kivy,requests,matplotlib
 
 # (str) Custom source folders for requirementsa presplah image for an app called NutriPlan which creates nutrition menus
 # Sets custom source for any requirements with recipes
