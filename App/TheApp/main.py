@@ -829,7 +829,7 @@ class StatisticsWindow(Screen):
             text = "",
             font_size = 50,
             size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0.5},
+            pos_hint = {"x": 0.15, "top": 0.55},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -839,7 +839,7 @@ class StatisticsWindow(Screen):
             text = "BMI: ",
             font_size = 50,
             size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0.5},
+            pos_hint = {"x": 0.3, "top": 0.475},
             color=(1, 1, 1, 1),
             text_color=(0, 1, 0, 1)
         )
@@ -849,7 +849,7 @@ class StatisticsWindow(Screen):
             text = "",
             font_size = 50,
             size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 4/12},
+            pos_hint = {"x": 0.15, "top": 0.4},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -859,7 +859,7 @@ class StatisticsWindow(Screen):
             text = "",
             font_size = 50,
             size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 3/12},
+            pos_hint = {"x": 0.15, "top": 0.325},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -869,7 +869,7 @@ class StatisticsWindow(Screen):
             text = "",
             font_size = 50,
             size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 2/12},
+            pos_hint = {"x": 0.15, "top": 0.25},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -879,7 +879,7 @@ class StatisticsWindow(Screen):
             text = "",
             font_size = 50,
             size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 1/12},
+            pos_hint = {"x": 0.15, "top": 0.175},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -889,7 +889,7 @@ class StatisticsWindow(Screen):
             text = "",
             font_size = 50,
             size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0},
+            pos_hint = {"x": 0.15, "top": 0.1},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -913,28 +913,28 @@ class StatisticsWindow(Screen):
         self.bmiLabel.text = "BMI: " + str(bmi(int(data["weight"]), int(data["height"]))) + " " + str(bmi_temp)
         self.bmiLabel.color = bmi_color
 
-        calories = str(data["calories"])
-        carbohydrates = str(data["carbohydrates"])
-        sugar = str(data["sugar"])
-        fat = str(data["fat"])
-        protein = str(data["protein"])
+        calories = f"{int(data['calories'])}"
+        carbohydrates = f"{int(data['carbohydrates'])}"
+        sugar = f"{data['sugar']:.2f}"
+        fat = f"{data['fat']:.2f}"
+        protein = f"{data['protein']:.2f}"
 
-        calories_today = str(data["calories today"])
-        carbohydrates_today = str(data["carbohydrates today"])
-        sugar_today = str(data["sugar today"])
-        fat_today = str(data["fat today"])
-        protein_today = str(data["protein today"])
+        calories_today = f"{int(data['calories today'])}"
+        carbohydrates_today = f"{int(data['carbohydrates today'])}"
+        sugar_today = f"{data['sugar today']:.2f}"
+        fat_today = f"{data['fat today']:.2f}"
+        protein_today = f"{data['protein today']:.2f}"
 
         history_weight = data["history_weight"]
         history_bmi = data["history_bmi"]
         history_times = data["history_times"]
 
         self.weightHeightLabel.text = data["weight"]+ " Kg | " + data["height"] + " cm"
-        self.caloriesLabel.text = calories_today + "/" + calories + "Kcal calories"
-        self.carbohydratesLabel.text = carbohydrates_today + "/" + carbohydrates + "g carbohydrates"
-        self.sugarLabel.text = sugar_today + "/" + sugar + "g sugar"
-        self.fatLabel.text = fat_today + "/" + fat + "g fat"
-        self.proteinLabel.text = protein_today + "/" + protein + "g protein"
+        self.caloriesLabel.text = calories_today + "/" + calories + " Kcal Calories"
+        self.carbohydratesLabel.text = carbohydrates_today + "/" + carbohydrates + " g Carbohydrates"
+        self.sugarLabel.text = sugar_today + "/" + sugar + " g Sugar"
+        self.fatLabel.text = fat_today + "/" + fat + " g Fat"
+        self.proteinLabel.text = protein_today + "/" + protein + " g Protein"
 
 
     def on_leave(self):
