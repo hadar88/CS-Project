@@ -841,7 +841,7 @@ class StatisticsWindow(Screen):
 
         self.weightHeightLabel = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 60,
             size_hint = (0.4, 0.05),
             pos_hint = {"x": 0.3, "top": 0.8},
             color=(1, 1, 1, 1),
@@ -851,9 +851,9 @@ class StatisticsWindow(Screen):
 
         self.bmiLabel = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 60,
             size_hint = (0.6, 0.05),
-            pos_hint = {"x": 0.2, "top": 29/40},
+            pos_hint = {"x": 0.2, "top": 0.725},
             color=(1, 1, 1, 1),
             text_color=(0, 1, 0, 1)
         )
@@ -861,9 +861,9 @@ class StatisticsWindow(Screen):
         
         self.caloriesLabel = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 60,
             size_hint = (0.6, 0.05),
-            pos_hint = {"x": 0.2, "top": 26/40},
+            pos_hint = {"x": 0.2, "top": 0.65},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -871,9 +871,9 @@ class StatisticsWindow(Screen):
 
         self.carbohydratesLabel = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 60,
             size_hint = (0.6, 0.05),
-            pos_hint = {"x": 0.2, "top": 23/40},
+            pos_hint = {"x": 0.2, "top": 0.575},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -881,9 +881,9 @@ class StatisticsWindow(Screen):
 
         self.sugarLabel = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 60,
             size_hint = (0.6, 0.05),
-            pos_hint = {"x": 0.2, "top": 20/40},
+            pos_hint = {"x": 0.2, "top": 0.5},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -891,9 +891,9 @@ class StatisticsWindow(Screen):
 
         self.fatLabel = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 60,
             size_hint = (0.6, 0.05),
-            pos_hint = {"x": 0.2, "top": 17/40},
+            pos_hint = {"x": 0.2, "top": 0.425},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -901,9 +901,9 @@ class StatisticsWindow(Screen):
 
         self.proteinLabel = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 60,
             size_hint = (0.6, 0.05),
-            pos_hint = {"x": 0.2, "top": 14/40},
+            pos_hint = {"x": 0.2, "top": 0.35},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -911,8 +911,8 @@ class StatisticsWindow(Screen):
 
         self.graphWeight = Image(
             source = "",
-            size_hint = (0.25, 0.25),
-            pos_hint = {"x": 3/8, "top": 11/40},
+            size_hint = (0.6, 0.45),
+            pos_hint = {"x": 0.2, "top": 0.4},
         )
         self.window.add_widget(self.graphWeight)
 
@@ -927,7 +927,7 @@ class StatisticsWindow(Screen):
     def go_home(self, instance):
         self.manager.current = "main"
 
-    def on_enter(self):
+    def on_enter(self): 
         Window.bind(on_keyboard=self.on_keyboard)
 
         bmi_temp, bmi_color = check_bmi(int(data["weight"]), int(data["height"]))
@@ -951,26 +951,27 @@ class StatisticsWindow(Screen):
         history_times = data["history_times"]
 
         self.weightHeightLabel.text = data["weight"]+ " Kg | " + data["height"] + " cm"
-        self.caloriesLabel.text = calories_today + "/" + calories + " Kcal Calories"
-        self.carbohydratesLabel.text = carbohydrates_today + "/" + carbohydrates + " g Carbohydrates"
-        self.sugarLabel.text = sugar_today + "/" + sugar + " g Sugar"
-        self.fatLabel.text = fat_today + "/" + fat + " g Fat"
-        self.proteinLabel.text = protein_today + "/" + protein + " g Protein"
+        self.caloriesLabel.text = calories_today + "/" + calories + " Kcal Calories today"
+        self.carbohydratesLabel.text = carbohydrates_today + "/" + carbohydrates + " g Carbohydrates today"
+        self.sugarLabel.text = sugar_today + "/" + sugar + " g Sugar today"
+        self.fatLabel.text = fat_today + "/" + fat + " g Fat today"
+        self.proteinLabel.text = protein_today + "/" + protein + " g Protein today"
 
         history_times = [datetime.datetime.strptime(date, "%Y-%m-%d") for date in history_times]
 
-        plt.figure()  # Create a new figure to avoid overlapping with the previous plot
+        plt.figure() 
 
         for i in range(len(history_bmi)):
             color = bmi_decs_and_color(history_bmi[i])[1]
             plt.plot(history_times[i:i+2], history_weight[i:i+2], color=color)
 
         plt.xticks([history_times[0], history_times[-1]], 
-               [history_times[0].strftime("%Y-%m-%d"), history_times[-1].strftime("%Y-%m-%d")])
+               [history_times[0].strftime("%Y-%m-%d"), history_times[-1].strftime("%Y-%m-%d")], fontsize=10)
+        plt.yticks(fontsize=10) 
         
-        plt.title("Weight History")
+        plt.title("Weight History", fontsize=15)
         plt.savefig("weight_history.png")
-        plt.close()  # Close the figure to free up memory
+        plt.close()
 
         self.graphWeight.source = "weight_history.png"
         self.graphWeight.reload()
