@@ -117,11 +117,11 @@ def bmi_decs_and_color(bmi_val):
     if bmi_val < 16:
         return ("Severely underweight", (0, 0, 1, 1))
     elif bmi_val < 18.5:
-        return ("Underweight", (0, 1, 1, 1))
+        return ("Underweight", (0, 1, 0.9, 1))
     elif bmi_val < 25:
         return ("Healthy", (0, 1, 0, 1))
     elif bmi_val < 30:
-        return ("Overweight", (1, 1, 0, 1))
+        return ("Overweight", (1, 0.9, 0, 1))
     elif bmi_val < 40:
         return ("Obese", (1, 0.5, 0, 1))
     else:
@@ -966,10 +966,10 @@ class StatisticsWindow(Screen):
             plt.plot(history_times[i:i+2], history_weight[i:i+2], color=color)
 
         plt.xticks([history_times[0], history_times[-1]], 
-               [history_times[0].strftime("%Y-%m-%d"), history_times[-1].strftime("%Y-%m-%d")], fontsize=10)
-        plt.yticks(fontsize=10) 
+               [history_times[0].strftime("%d-%m-%Y"), history_times[-1].strftime("%d-%m-%Y")], fontsize=15)
+        plt.yticks(fontsize=15) 
         
-        plt.title("Weight History", fontsize=15)
+        plt.title("Weight History", fontsize=20)
         plt.savefig("weight_history.png")
         plt.close()
 
