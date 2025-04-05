@@ -274,6 +274,8 @@ def convert_to_dict(data):
 
     return structured_dict
 
+#######################################################################
+
 def clean_self_menu():
     self_menu = data["self_menu"]
 
@@ -285,10 +287,9 @@ def clean_self_menu():
     with open(DATA_PATH, "w") as file:
         json.dump(data, file)
 
-def add_dish(day, meal, food_name, amount):
+def add_food(day, meal, food_name, amount):
     self_menu = data["self_menu"]
     self_menu[day][meal][food_name] = amount
-    
 
     calories_today = data["calories today"]
     carbohydrates_today = data["carbohydrates today"]
@@ -313,7 +314,8 @@ def add_dish(day, meal, food_name, amount):
     with open(DATA_PATH, "w") as file:
         json.dump(data, file)
 
-
+def get_food_data(food_name):
+    return foods_dict[food_name]
 
 #######################################################################
 
@@ -855,7 +857,7 @@ class StatisticsWindow(Screen):
             text = "Statistics",
             font_size = 100,
             size_hint = (0.8, 0.2),
-            pos_hint = {"x": 0.1, "top": 39/40},
+            pos_hint = {"x": 0.1, "top": 0.975},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -1032,15 +1034,172 @@ class MenuWindow(Screen):
         )
         self.window.add_widget(self.home)
 
-        self.temp = ColoredLabel(
+        self.title = ColoredLabel(
             text = "Menu",
+            font_size = 100,
+            size_hint = (0.8, 0.2),
+            pos_hint = {"x": 0.1, "top": 0.975},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.title)
+
+        self.sundayButton = Button(
+            text = "Sunday",
+            font_size = 40,
+            background_color = (1, 1, 1, 1),
+            # background_normal = "",
+            size_hint = (1/7, 0.1),
+            pos_hint = {"x": 0.0, "top": 0.8},
+            on_press = self.sunday
+        )
+        self.window.add_widget(self.sundayButton)
+
+        self.mondayButton = Button(
+            text = "Monday",
+            font_size = 40,
+            background_color = (1, 1, 1, 1),
+            # background_normal = "",
+            size_hint = (1/7, 0.1),
+            pos_hint = {"x": 1/7, "top": 0.8},
+            on_press = self.monday
+        )
+        self.window.add_widget(self.mondayButton)
+
+        self.tuesdayButton = Button(
+            text = "Tuesday",
+            font_size = 40,
+            background_color = (1, 1, 1, 1),
+            # background_normal = "",
+            size_hint = (1/7, 0.1),
+            pos_hint = {"x": 2/7, "top": 0.8},
+            on_press = self.tuesday
+        )
+        self.window.add_widget(self.tuesdayButton)
+
+        self.wednesdayButton = Button(
+            text = "Wednesday",
+            font_size = 40,
+            background_color = (1, 1, 1, 1),
+            # background_normal = "",
+            size_hint = (1/7, 0.1),
+            pos_hint = {"x": 3/7, "top": 0.8},
+            on_press = self.wednesday
+        )
+        self.window.add_widget(self.wednesdayButton)
+
+        self.thursdayButton = Button(
+            text = "Thursday",
+            font_size = 40,
+            background_color = (1, 1, 1, 1),
+            # background_normal = "",
+            size_hint = (1/7, 0.1),
+            pos_hint = {"x": 4/7, "top": 0.8},
+            on_press = self.thursday
+        )
+        self.window.add_widget(self.thursdayButton)
+
+        self.fridayButton = Button(
+            text = "Friday",
+            font_size = 40,
+            background_color = (1, 1, 1, 1),
+            # background_normal = "",
+            size_hint = (1/7, 0.1),
+            pos_hint = {"x": 5/7, "top": 0.8},
+            on_press = self.friday
+        )
+        self.window.add_widget(self.fridayButton)
+
+        self.saturdayButton = Button(
+            text = "Saturday",
+            font_size = 40,
+            background_color = (1, 1, 1, 1),
+            # background_normal = "",
+            size_hint = (1/7, 0.1),
+            pos_hint = {"x": 6/7, "top": 0.8},
+            on_press = self.saturday
+        )
+        self.window.add_widget(self.saturdayButton)
+
+        self.secondtitle = ColoredLabel(
+            text = "Select a day",
             font_size = 50,
-            size_hint = (0.4, 0.4),
-            pos_hint = {"x": 0.3, "top": 0.7},
+            size_hint = (0.8, 0.1),
+            pos_hint = {"x": 0.1, "top": 0.7},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.secondtitle)
+
+        self.lines = ColoredLabel(
+            text = "",
+            font_size = 40,
+            size_hint = (1, 0.1),
+            pos_hint = {"x": 0, "top": 0.6},
+            color=(0, 0, 0, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.lines)
+
+        self.breakfastLabel = ColoredLabel(
+            text = "Breakfast",
+            font_size = 40,
+            size_hint = (0.3315, 0.1),
+            pos_hint = {"x": 0, "top": 0.6},
             color=(0, 0, 1, 1),
             text_color=(0, 0, 0, 1)
         )
-        self.window.add_widget(self.temp)
+        self.window.add_widget(self.breakfastLabel)
+
+        self.breakfastdata = ColoredLabel(
+            text = "",
+            font_size = 40,
+            size_hint = (0.3315, 0.5),
+            pos_hint = {"x": 0, "top": 0.5},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.breakfastdata)
+
+        self.lunchLabel = ColoredLabel(
+            text = "Lunch",
+            font_size = 40,
+            size_hint = (0.3315, 0.1),
+            pos_hint = {"x": 0.33425, "top": 0.6},
+            color=(0, 0, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.lunchLabel)
+
+        self.lunchdata = ColoredLabel(
+            text = "",
+            font_size = 40,
+            size_hint = (0.3315, 0.55),
+            pos_hint = {"x": 0.33425, "top": 0.5},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.lunchdata)
+
+        self.dinnerLabel = ColoredLabel(
+            text = "Dinner",
+            font_size = 40,
+            size_hint = (0.3315, 0.1),
+            pos_hint = {"x": 0.6685, "top": 0.6},
+            color=(0, 0, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.dinnerLabel)
+
+        self.dinnerdata = ColoredLabel(
+            text = "",
+            font_size = 40,
+            size_hint = (0.3315, 0.55),
+            pos_hint = {"x": 0.6685, "top": 0.5},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1)
+        )
+        self.window.add_widget(self.dinnerdata)
 
         ###
 
@@ -1058,6 +1217,7 @@ class MenuWindow(Screen):
         
     def on_leave(self):
         Window.unbind(on_keyboard=self.on_keyboard)
+        self.secondtitle.text = "Select a day"
 
     def on_keyboard(self, window, key, *args):
         if key == 27:
@@ -1066,6 +1226,69 @@ class MenuWindow(Screen):
                 return True
         return False
         
+    def sunday(self, instance):
+        self.secondtitle.text = "Sunday"
+        breakfast = get_meal("sunday", "breakfast")
+        lunch = get_meal("sunday", "lunch")
+        dinner = get_meal("sunday", "dinner")
+
+        
+        pass
+
+    def monday(self, instance):
+        self.secondtitle.text = "Monday"
+        breakfast = get_meal("monday", "breakfast")
+        lunch = get_meal("monday", "lunch")
+        dinner = get_meal("monday", "dinner")
+
+
+        pass
+
+    def tuesday(self, instance):
+        self.secondtitle.text = "Tuesday"
+        breakfast = get_meal("tuesday", "breakfast")
+        lunch = get_meal("tuesday", "lunch")
+        dinner = get_meal("tuesday", "dinner")
+
+
+        pass
+
+    def wednesday(self, instance):
+        self.secondtitle.text = "Wednesday"
+        breakfast = get_meal("wednesday", "breakfast")
+        lunch = get_meal("wednesday", "lunch")
+        dinner = get_meal("wednesday", "dinner")
+
+
+        pass
+
+    def thursday(self, instance):
+        self.secondtitle.text = "Thursday"
+        breakfast = get_meal("thursday", "breakfast")
+        lunch = get_meal("thursday", "lunch")
+        dinner = get_meal("thursday", "dinner")
+
+
+        pass
+
+    def friday(self, instance):
+        self.secondtitle.text = "Friday"
+        breakfast = get_meal("friday", "breakfast")
+        lunch = get_meal("friday", "lunch")
+        dinner = get_meal("friday", "dinner")
+
+
+        pass
+
+    def saturday(self, instance):
+        self.secondtitle.text = "Saturday"
+        breakfast = get_meal("saturday", "breakfast")
+        lunch = get_meal("saturday", "lunch")
+        dinner = get_meal("saturday", "dinner")
+
+
+        pass
+
 ################################
 
 class WeeklymenuWindow(Screen):
