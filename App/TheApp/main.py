@@ -1046,7 +1046,7 @@ class MenuWindow(Screen):
 
         self.sundayButton = Button(
             text = "Sunday",
-            font_size = 40,
+            font_size = 30,
             background_color = (1, 1, 1, 1),
             # background_normal = "",
             size_hint = (1/7, 0.1),
@@ -1057,7 +1057,7 @@ class MenuWindow(Screen):
 
         self.mondayButton = Button(
             text = "Monday",
-            font_size = 40,
+            font_size = 30,
             background_color = (1, 1, 1, 1),
             # background_normal = "",
             size_hint = (1/7, 0.1),
@@ -1068,7 +1068,7 @@ class MenuWindow(Screen):
 
         self.tuesdayButton = Button(
             text = "Tuesday",
-            font_size = 40,
+            font_size = 30,
             background_color = (1, 1, 1, 1),
             # background_normal = "",
             size_hint = (1/7, 0.1),
@@ -1079,7 +1079,7 @@ class MenuWindow(Screen):
 
         self.wednesdayButton = Button(
             text = "Wednesday",
-            font_size = 40,
+            font_size = 30,
             background_color = (1, 1, 1, 1),
             # background_normal = "",
             size_hint = (1/7, 0.1),
@@ -1090,7 +1090,7 @@ class MenuWindow(Screen):
 
         self.thursdayButton = Button(
             text = "Thursday",
-            font_size = 40,
+            font_size = 30,
             background_color = (1, 1, 1, 1),
             # background_normal = "",
             size_hint = (1/7, 0.1),
@@ -1101,7 +1101,7 @@ class MenuWindow(Screen):
 
         self.fridayButton = Button(
             text = "Friday",
-            font_size = 40,
+            font_size = 30,
             background_color = (1, 1, 1, 1),
             # background_normal = "",
             size_hint = (1/7, 0.1),
@@ -1112,7 +1112,7 @@ class MenuWindow(Screen):
 
         self.saturdayButton = Button(
             text = "Saturday",
-            font_size = 40,
+            font_size = 30,
             background_color = (1, 1, 1, 1),
             # background_normal = "",
             size_hint = (1/7, 0.1),
@@ -1147,7 +1147,7 @@ class MenuWindow(Screen):
             size_hint = (0.3315, 0.1),
             pos_hint = {"x": 0, "top": 0.6},
             color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(1, 1, 1, 1)
         )
         self.window.add_widget(self.breakfastLabel)
 
@@ -1167,7 +1167,7 @@ class MenuWindow(Screen):
             size_hint = (0.3315, 0.1),
             pos_hint = {"x": 0.33425, "top": 0.6},
             color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(1, 1, 1, 1)
         )
         self.window.add_widget(self.lunchLabel)
 
@@ -1187,7 +1187,7 @@ class MenuWindow(Screen):
             size_hint = (0.3315, 0.1),
             pos_hint = {"x": 0.6685, "top": 0.6},
             color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(1, 1, 1, 1)
         )
         self.window.add_widget(self.dinnerLabel)
 
