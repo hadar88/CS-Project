@@ -2395,14 +2395,14 @@ class MainApp(App):
     
     def end_of_week(self):
         current_time = datetime.fromisoformat(datetime.now().isoformat(timespec='minutes'))
-        last_visit_time = datetime.fromisoformat(data["last_visit_time"])
+        if data["last_visit_time"] != "":
+            last_visit_time = datetime.fromisoformat(data["last_visit_time"])
+            while last_visit_time <= current_time:
+                if last_visit_time.weekday() == 5 and last_visit_time.hour == 23 and last_visit_time.minute == 59:
+                    clean_self_menu()
+                    break
+                last_visit_time += timedelta(minutes=1)
 
-        while last_visit_time <= current_time:
-            if last_visit_time.weekday() == 5 and last_visit_time.hour == 23 and last_visit_time.minute == 59:
-                clean_self_menu()
-                break
-            last_visit_time += timedelta(minutes=1)
-            
     def reset_day(self):
         entry_time = datetime.now().isoformat(timespec='minutes')
         last_visit_time = data["last_visit_time"]
@@ -2415,9 +2415,6 @@ class MainApp(App):
             data["last_visit_time"] = entry_time
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
-
-
-
 
 if __name__ == "__main__":
     MainApp().run()
