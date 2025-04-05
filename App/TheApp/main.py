@@ -1,8 +1,6 @@
 import json
-import time
 import requests
-import datetime
-import threading
+from datetime import datetime, timedelta
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -276,22 +274,16 @@ def convert_to_dict(data):
 
     return structured_dict
 
-#######################################################################
+def clean_self_menu():
+    self_menu = data["self_menu"]
 
-# def check_time1():
-#     while True:
-#         now = datetime.datetime.now()
-#         if now.hour == 23 and now.minute == 59: # now.weekday() == 5
-#             data["calories today"] = 0
-#             data["carbohydrates today"] = 0
-#             data["sugar today"] = 0
-#             data["fat today"] = 0
-#             data["protein today"] = 0
-#             with open(DATA_PATH, "w") as file:
-#                 json.dump(data, file)
-                
-#             time.sleep(60)  # Wait a minute to avoid printing multiple times in the same minute
-#         time.sleep(1)  # Check every second
+    for day in self_menu:
+        for meal in self_menu[day]:
+            self_menu[day][meal] = {}
+
+    data["self_menu"] = self_menu
+    with open(DATA_PATH, "w") as file:
+        json.dump(data, file)
 
 #######################################################################
 
@@ -711,7 +703,7 @@ class PersonalDataWindow(Screen):
         instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
 
     def go_home(self, instance):
-        today = datetime.datetime.now().date().isoformat()
+        today = datetime.now().date().isoformat()
         bmi_temp = bmi(float(data["weight"]), float(data["height"]))
 
         if data["history_times"] and today in data["history_times"]:
@@ -957,7 +949,7 @@ class StatisticsWindow(Screen):
         self.fatLabel.text = fat_today + "/" + fat + " g Fat today"
         self.proteinLabel.text = protein_today + "/" + protein + " g Protein today"
 
-        history_times = [datetime.datetime.strptime(date, "%Y-%m-%d") for date in history_times]
+        history_times = [datetime.strptime(date, "%Y-%m-%d") for date in history_times]
 
         plt.figure() 
 
@@ -2337,7 +2329,7 @@ class LoadingWindow(Screen):
         data["fat"] = self.vector["fat"]
         data["protein"] = self.vector["protein"]
 
-        today = datetime.datetime.now().date().isoformat()
+        today = datetime.now().date().isoformat()
         bmi_temp = bmi(current_weight_temp, height_temp)
 
         if data["history_times"] and today in data["history_times"]:
@@ -2397,13 +2389,22 @@ class WindowManager(ScreenManager):
 
 class MainApp(App):
     def build(self):
-        self.reset_day()
         self.end_of_week()
-        # threading.Thread(target=check_time1, daemon=True).start()
+        self.reset_day()
         return WindowManager()
     
+    def end_of_week(self):
+        current_time = datetime.fromisoformat(datetime.now().isoformat(timespec='minutes'))
+        last_visit_time = datetime.fromisoformat(data["last_visit_time"])
+
+        while last_visit_time <= current_time:
+            if last_visit_time.weekday() == 5 and last_visit_time.hour == 23 and last_visit_time.minute == 59:
+                clean_self_menu()
+                break
+            last_visit_time += timedelta(minutes=1)
+            
     def reset_day(self):
-        entry_time = datetime.datetime.now().date().isoformat()
+        entry_time = datetime.now().isoformat(timespec='minutes')
         last_visit_time = data["last_visit_time"]
         if last_visit_time != entry_time:
             data["calories today"] = 0
@@ -2415,10 +2416,8 @@ class MainApp(App):
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
 
-    def end_of_week(self):
-        # check if the week has ended
-        # if so, clear the self menu
-        pass
+
+
 
 if __name__ == "__main__":
     MainApp().run()
