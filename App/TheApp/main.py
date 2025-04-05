@@ -712,7 +712,7 @@ class PersonalDataWindow(Screen):
 
     def go_home(self, instance):
         today = datetime.datetime.now().date().isoformat()
-        bmi_temp = bmi(int(data["weight"]), int(data["height"]))
+        bmi_temp = bmi(float(data["weight"]), float(data["height"]))
 
         if data["history_times"] and today in data["history_times"]:
             data["history_weight"] = data["history_weight"][:-1] + [float(data["weight"])]
@@ -740,7 +740,7 @@ class PersonalDataWindow(Screen):
         if self.weightupdateInput.disabled:
             self.weightupdateButton.background_normal = "vee.png"
             self.weightupdateInput.disabled = not self.weightupdateInput.disabled
-        elif(self.weightupdateInput.text == "" or int(self.weightupdateInput.text) < 40): 
+        elif(self.weightupdateInput.text == "" or float(self.weightupdateInput.text) < 40): 
             self.errorMessage.text = "Weight must be greater than 40 kg"
         else:
             data["weight"] = self.weightupdateInput.text
@@ -930,8 +930,8 @@ class StatisticsWindow(Screen):
     def on_enter(self): 
         Window.bind(on_keyboard=self.on_keyboard)
 
-        bmi_temp, bmi_color = check_bmi(int(data["weight"]), int(data["height"]))
-        self.bmiLabel.text = "BMI: " + str(bmi(int(data["weight"]), int(data["height"]))) + " " + str(bmi_temp)
+        bmi_temp, bmi_color = check_bmi(float(data["weight"]), float(data["height"]))
+        self.bmiLabel.text = "BMI: " + str(bmi(float(data["weight"]), float(data["height"]))) + " " + str(bmi_temp)
         self.bmiLabel.color = bmi_color
 
         calories = f"{int(data['calories'])}"
