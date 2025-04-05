@@ -285,6 +285,36 @@ def clean_self_menu():
     with open(DATA_PATH, "w") as file:
         json.dump(data, file)
 
+def add_dish(day, meal, food_name, amount):
+    self_menu = data["self_menu"]
+    self_menu[day][meal][food_name] = amount
+    
+
+    calories_today = data["calories today"]
+    carbohydrates_today = data["carbohydrates today"]
+    sugar_today = data["sugar today"]
+    fat_today = data["fat today"]
+    protein_today = data["protein today"]
+
+    food = foods_dict[food_name]
+    calories_today += food["Calories"] * amount / 100
+    carbohydrates_today += food["Carbohydrate"] * amount / 100
+    sugar_today += food["Sugars"] * amount / 100
+    fat_today += food["Fat"] * amount / 100
+    protein_today += food["Protein"] * amount / 100
+
+    data["calories today"] = round(calories_today, 2)
+    data["carbohydrates today"] = round(carbohydrates_today, 2)
+    data["sugar today"] = round(sugar_today, 2)
+    data["fat today"] = round(fat_today, 2)
+    data["protein today"] = round(protein_today, 2)
+    data["self_menu"] = self_menu
+
+    with open(DATA_PATH, "w") as file:
+        json.dump(data, file)
+
+
+
 #######################################################################
 
 class ColoredLabel(Label):
