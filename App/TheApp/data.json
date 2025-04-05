@@ -25,7 +25,7 @@
     "goal time": "",
     "calories": "",
     "calories today": 0,
-    "carbohydrates": "",
+    "carbohydrate": "",
     "carbohydrates today": 0,
     "sugar": "",
     "sugar today": 0,
@@ -34,6 +34,43 @@
     "protein": "",
     "protein today": 0,
     "menu": {
+        "sunday": {
+            "breakfast": {},
+            "lunch": {},
+            "dinner": {}
+        },
+        "monday": {
+            "breakfast": {},
+            "lunch": {},
+            "dinner": {}
+        },
+        "tuesday": {
+            "breakfast": {},
+            "lunch": {},
+            "dinner": {}
+        },
+        "wednesday": {
+            "breakfast": {},
+            "lunch": {},
+            "dinner": {}
+        },
+        "thursday": {
+            "breakfast": {},
+            "lunch": {},
+            "dinner": {}
+        },
+        "friday": {
+            "breakfast": {},
+            "lunch": {},
+            "dinner": {}
+        },
+        "saturday": {
+            "breakfast": {},
+            "lunch": {},
+            "dinner": {}
+        }
+    },
+    "self_menu": {
         "sunday": {
             "breakfast": {},
             "lunch": {},

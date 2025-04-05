@@ -935,7 +935,7 @@ class StatisticsWindow(Screen):
         self.bmiLabel.color = bmi_color
 
         calories = f"{int(data['calories'])}"
-        carbohydrates = f"{int(data['carbohydrates'])}"
+        carbohydrates = f"{int(data['carbohydrate'])}"
         sugar = f"{data['sugar']:.2f}"
         fat = f"{data['fat']:.2f}"
         protein = f"{data['protein']:.2f}"
@@ -2332,7 +2332,7 @@ class LoadingWindow(Screen):
                                             fish_allergy_temp, sesame_allergy_temp, soy_allergy_temp, gluten_allergy_temp)
 
         data["calories"] = self.vector["calories"]
-        data["carbohydrates"] = self.vector["carbohydrates"]
+        data["carbohydrate"] = self.vector["carbohydrates"]
         data["sugar"] = self.vector["sugar"]
         data["fat"] = self.vector["fat"]
         data["protein"] = self.vector["protein"]
@@ -2416,7 +2416,8 @@ class MainApp(App):
                 json.dump(data, file)
 
     def end_of_week(self):
-        # clear the self menu
+        # check if the week has ended
+        # if so, clear the self menu
         pass
 
 if __name__ == "__main__":
