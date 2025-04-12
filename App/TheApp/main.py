@@ -1203,7 +1203,7 @@ class MenuWindow(Screen):
         day = datetime.now().strftime("%A")
         self.dayInput.text = day
         hour = int(datetime.now().strftime("%H"))
-        if 3 <= hour < 11:
+        if hour < 11:
             self.mealInput.text = "Breakfast"
         elif 11 <= hour < 17:
             self.mealInput.text = "Lunch"
@@ -1447,7 +1447,7 @@ class WeeklymenuWindow(Screen):
         self.dayInput.text = day
         hour = int(datetime.now().strftime("%H"))
         
-        if 3 <= hour < 11:
+        if hour < 11:
             self.mealInput.text = "Breakfast"
         elif 11 <= hour < 17:
             self.mealInput.text = "Lunch"
@@ -1788,41 +1788,11 @@ class DictionaryWindow(Screen):
         self.window.add_widget(self.Fatdata)
         self.labels.append(self.Fatdata)
 
-        self.Sugars = ColoredLabel1(
-            text = "Sugars",
-            font_size = 30,
-            size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.1, "top": 0.58},
-            color=(0.93, 0.97, 0.99, 1),
-            text_color=(0, 0, 0, 1),
-            border_color=(0, 0, 0, 1),
-            border_width=1,
-            opacity=0,
-            disabled=True
-        )
-        self.window.add_widget(self.Sugars)
-        self.labels.append(self.Sugars)
-
-        self.Sugarsdata = ColoredLabel1(
-            text = "",
-            font_size = 30,
-            size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.1, "top": 0.54},
-            color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1),
-            border_color=(0, 0, 0, 1),
-            border_width=1,
-            opacity=0,
-            disabled=True
-        )
-        self.window.add_widget(self.Sugarsdata)
-        self.labels.append(self.Sugarsdata)
-
         self.Water = ColoredLabel1(
             text = "Water",
             font_size = 30,
             size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.3, "top": 0.58},
+            pos_hint = {"x": 0.1, "top": 0.58},
             color=(0.93, 0.97, 0.99, 1),
             text_color=(0, 0, 0, 1),
             border_color=(0, 0, 0, 1),
@@ -1837,7 +1807,7 @@ class DictionaryWindow(Screen):
             text = "",
             font_size = 30,
             size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.3, "top": 0.54},
+            pos_hint = {"x": 0.1, "top": 0.54},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1),
             border_color=(0, 0, 0, 1),
@@ -1852,7 +1822,7 @@ class DictionaryWindow(Screen):
             text = "Fiber",
             font_size = 30,
             size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.5, "top": 0.58},
+            pos_hint = {"x": 0.3, "top": 0.58},
             color=(0.93, 0.97, 0.99, 1),
             text_color=(0, 0, 0, 1),
             border_color=(0, 0, 0, 1),
@@ -1867,7 +1837,7 @@ class DictionaryWindow(Screen):
             text = "",
             font_size = 30,
             size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.5, "top": 0.54},
+            pos_hint = {"x": 0.3, "top": 0.54},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1),
             border_color=(0, 0, 0, 1),
@@ -1877,6 +1847,36 @@ class DictionaryWindow(Screen):
         )
         self.window.add_widget(self.Fiberdata)
         self.labels.append(self.Fiberdata)
+
+        self.Sugars = ColoredLabel1(
+            text = "Sugars",
+            font_size = 30,
+            size_hint = (0.2, 0.04),
+            pos_hint = {"x": 0.5, "top": 0.58},
+            color=(0.93, 0.97, 0.99, 1),
+            text_color=(0, 0, 0, 1),
+            border_color=(0, 0, 0, 1),
+            border_width=1,
+            opacity=0,
+            disabled=True
+        )
+        self.window.add_widget(self.Sugars)
+        self.labels.append(self.Sugars)
+
+        self.Sugarsdata = ColoredLabel1(
+            text = "",
+            font_size = 30,
+            size_hint = (0.2, 0.04),
+            pos_hint = {"x": 0.5, "top": 0.54},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1),
+            border_color=(0, 0, 0, 1),
+            border_width=1,
+            opacity=0,
+            disabled=True
+        )
+        self.window.add_widget(self.Sugarsdata)
+        self.labels.append(self.Sugarsdata)
 
         self.Saturatedfat = ColoredLabel1(
             text = "Saturated fat",
