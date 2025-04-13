@@ -500,6 +500,13 @@ class MainWindow(Screen):
 
         ###
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.personalDataButton = Button(
             text = "Personal Data",
             font_size = 100,
@@ -605,11 +612,18 @@ class PersonalDataWindow(Screen):
         )
         self.window.add_widget(self.home)
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.title = ColoredLabel(
             text = "Personal Data",
             font_size = 100,
-            size_hint = (0.8, 0.2),
-            pos_hint = {"x": 0.1, "top": 0.975},
+            size_hint = (0.8, 0.05),
+            pos_hint = {"x": 0.1, "top": 0.9},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -927,11 +941,18 @@ class StatisticsWindow(Screen):
         )
         self.window.add_widget(self.home)
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.title = ColoredLabel(
             text = "Statistics",
             font_size = 100,
-            size_hint = (0.8, 0.2),
-            pos_hint = {"x": 0.1, "top": 0.975},
+            size_hint = (0.8, 0.05),
+            pos_hint = {"x": 0.1, "top": 0.9},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -1116,11 +1137,18 @@ class MenuWindow(Screen):
         )
         self.window.add_widget(self.home)
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.title = ColoredLabel(
             text = "Menu",
             font_size = 100,
-            size_hint = (0.8, 0.2),
-            pos_hint = {"x": 0.1, "top": 0.975},
+            size_hint = (0.8, 0.05),
+            pos_hint = {"x": 0.1, "top": 0.9},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -1308,11 +1336,18 @@ class WeeklymenuWindow(Screen):
         )
         self.window.add_widget(self.home)
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.title = ColoredLabel(
             text = "Weekly Menu",
             font_size = 100,
-            size_hint = (0.8, 0.2),
-            pos_hint = {"x": 0.1, "top": 0.975},
+            size_hint = (0.8, 0.05),
+            pos_hint = {"x": 0.1, "top": 0.9},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -1617,11 +1652,18 @@ class DictionaryWindow(Screen):
         )
         self.window.add_widget(self.home)
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.title = ColoredLabel(
             text = "Dictionary",
             font_size = 100,
-            size_hint = (0.8, 0.2),
-            pos_hint = {"x": 0.1, "top": 0.975},
+            size_hint = (0.8, 0.05),
+            pos_hint = {"x": 0.1, "top": 0.9},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -2441,6 +2483,13 @@ class CreateAccountWindow(Screen):
 
         ###
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.title = ColoredLabel(
             text = "Create an account",
             font_size = 100,
@@ -2603,11 +2652,18 @@ class Registration1Window(Screen):
 
         ###
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.title = ColoredLabel(
             text = "Registration",
             font_size = 150,
             size_hint = (0.775, 0.2),
-            pos_hint = {"x": 0.1125, "top": 0.95},
+            pos_hint = {"x": 0.1125, "top": 0.9},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -2796,11 +2852,18 @@ class Registration2Window(Screen):
         )
         self.window.add_widget(self.back)
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.title = ColoredLabel(
             text = "Registration",
             font_size = 150,
             size_hint = (0.775, 0.2),
-            pos_hint = {"x": 0.1125, "top": 0.95},
+            pos_hint = {"x": 0.1125, "top": 0.9},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -2978,11 +3041,18 @@ class Registration3Window(Screen):
         )
         self.window.add_widget(self.back)
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.title = ColoredLabel(
             text = "Registration",
             font_size = 150,
             size_hint = (0.775, 0.2),
-            pos_hint = {"x": 0.1125, "top": 0.95},
+            pos_hint = {"x": 0.1125, "top": 0.9},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -3118,11 +3188,18 @@ class Registration4Window(Screen):
         )
         self.window.add_widget(self.back)
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.title = ColoredLabel(
             text = "Registration",
             font_size = 150,
             size_hint = (0.775, 0.2),
-            pos_hint = {"x": 0.1125, "top": 0.95},
+            pos_hint = {"x": 0.1125, "top": 0.9},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -3340,11 +3417,18 @@ class Registration5Window(Screen):
         )
         self.window.add_widget(self.back)
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.title = ColoredLabel(
             text = "Registration",
             font_size = 150,
             size_hint = (0.775, 0.2),
-            pos_hint = {"x": 0.1125, "top": 0.95},
+            pos_hint = {"x": 0.1125, "top": 0.9},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -3386,7 +3470,7 @@ class Registration5Window(Screen):
             hint_text = "Kg",
             size_hint=(0.44, 0.1),
             pos_hint={"x": 0.51, "top": 0.44},
-            input_filter="int",
+            input_filter="float",
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
         )
@@ -3484,11 +3568,18 @@ class Registration6Window(Screen):
         )
         self.window.add_widget(self.back)
 
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
+
         self.title = ColoredLabel(
             text = "Registration",
             font_size = 150,
             size_hint = (0.775, 0.2),
-            pos_hint = {"x": 0.1125, "top": 0.95},
+            pos_hint = {"x": 0.1125, "top": 0.9},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
@@ -3576,12 +3667,11 @@ class Registration6Window(Screen):
             self.errorMessage.text = ""
             data["goal time"] = self.timeInput.text
             data["stage"] = "loading"
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
-            self.manager.current = "loading"
             data["logincompleted"] = True
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
+            self.resetData()
+            self.manager.current = "loading"
 
     def previous(self, instance):
         self.manager.current = "registration5"
@@ -3605,6 +3695,57 @@ class Registration6Window(Screen):
     def _update_border(self, instance, value):
         self.border.rectangle = (instance.x, instance.y, instance.width, instance.height)
 
+    def resetData(self):
+        data["calories today"] = 0
+        data["carbohydrates today"] = 0
+        data["sugar today"] = 0
+        data["fat today"] = 0
+        data["protein today"] = 0
+        data["self_menu"] = {
+            "sunday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            },
+            "monday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            },
+            "tuesday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            },
+            "wednesday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            },
+            "thursday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            },
+            "friday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            },
+            "saturday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            }
+        }
+        data["history_weight"] = []
+        data["history_bmi"] = []
+        data["history_times"] = []
+        data["last_visit_time"] = ""
+
+        with open(DATA_PATH, "w") as file:
+            json.dump(data, file)
+
 ################################
 
 class LoadingWindow(Screen):
@@ -3621,6 +3762,13 @@ class LoadingWindow(Screen):
         ###
 
         self.vector = {}
+
+        self.logo = Image(
+            source = "logo.png",
+            size_hint = (0.1, 0.1),
+            pos_hint = {"x": 0.45, "top": 1}
+        )
+        self.window.add_widget(self.logo)
 
         self.loading = ColoredLabel(
             text = "Loading...",

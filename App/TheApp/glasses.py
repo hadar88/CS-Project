@@ -1,4 +1,4 @@
-from kivy.app import App    
+from kivymd.app import MDApp    
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.floatlayout import FloatLayout
 from kivy.graphics import Color, Rectangle
@@ -6,6 +6,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.clock import Clock
+from kivymd.toast import toast
 
 
 class ColoredLabel(Label):
@@ -83,9 +84,9 @@ class MainWindow(Screen):
             self.glass.source = f"glasses/{self.number}.png"
             self.glass.reload()
             self.label.text = f"{self.number}/8"
-            self.show_toast(f"Glass increased to {self.number}/8")
+            toast(f"Added glass {self.number}", background=(0, 0, 1, 1),  duration=2)
         else:
-            self.show_toast("Maximum glasses reached!")
+            toast("Maximum glasses reached")
 
     def minus(self, instance):
         if(self.number > 1):
@@ -93,38 +94,9 @@ class MainWindow(Screen):
             self.glass.source = f"glasses/{self.number}.png"
             self.glass.reload(),
             self.label.text = f"{self.number}/8"
-            self.show_toast(f"Glass decreased to {self.number}/8")
+            toast(f"Removed glass {self.number}")
         else:
-            self.show_toast("Minimum glasses reached!")
-
-    def show_toast(self, message):
-        """Display a toast-like notification."""
-        toast_label = Label(
-            text=message,
-            size_hint=(None, None),
-            size=(200, 50),
-            pos_hint={"center_x": 0.5, "top": 0.9},
-            color=(1, 1, 1, 1),
-            bold=True,
-            font_size=16,
-            halign="center",
-            valign="middle",
-        )
-        # Update the label's size and position dynamically
-        toast_label.bind(size=self._update_toast_rect, pos=self._update_toast_rect)
-
-        with toast_label.canvas.before:
-            Color(0, 0, 0, 0.7)  # Semi-transparent black background
-            toast_label.bg_rect = Rectangle(size=toast_label.size, pos=toast_label.pos)
-
-        self.add_widget(toast_label)
-
-        # Schedule the toast to disappear after 2 seconds
-        Clock.schedule_once(lambda dt: self.remove_widget(toast_label), 2)
-
-    def _update_toast_rect(self, instance, value):
-        instance.bg_rect.size = instance.size
-        instance.bg_rect.pos = instance.pos
+            toast("No more glasses to remove")
 
 class WindowManager(ScreenManager):
     def __init__(self, **kw):
@@ -132,7 +104,7 @@ class WindowManager(ScreenManager):
 
         self.add_widget(MainWindow(name='main'))
 
-class MainApp(App):
+class MainApp(MDApp):
     def build(self):
         return WindowManager()
     
