@@ -62,16 +62,6 @@ def fix_menu(property: str, menu_id: int, exhaustive: bool = False) -> dict | li
         except ValueError as e:
             print(f"ERROR: in menu {menu_id} {e}")
             continue
-        
-        # print("Current menu:")
-        # print_menu(current_menu)
-
-        # print()
-
-        # print("Fixed after one step:")
-
-        # for menu in fixed_one_step:
-        #     print_menu(menu)
 
         if not fixed_one_step:
             menu_str = json.dumps(current_menu, sort_keys=True)
@@ -81,7 +71,7 @@ def fix_menu(property: str, menu_id: int, exhaustive: bool = False) -> dict | li
                 fixed_menus.append(current_menu)
                 print_menu(current_menu)
 
-                if len(fixed_menus) > 50:
+                if len(fixed_menus) > 75:
                     return fixed_menus
         else:
             invalid_menus.extend(fixed_one_step)
@@ -110,14 +100,11 @@ def fix_menu_one_step(menu: dict, property, desired_value, exhaustive):
                         )
                                                         
                     if alternatives[0] == -1:
-                        # print(f"!!! removed food {food_id} from {day}'s {meal}")
                         new_menu = copy.deepcopy(menu)
                         new_meal = copy.deepcopy(meal_foods)
                         del new_meal[food_id]
                         new_menu[day][meal] = new_meal
                         fixed_menus.append(new_menu)
-                        # print_menu(fixed_menus[-1])
-                        # print()
                         return fixed_menus
 
                     amount = meal_foods[food_id]
@@ -131,9 +118,6 @@ def fix_menu_one_step(menu: dict, property, desired_value, exhaustive):
                             new_meal[str(alternative)] = amount
                             new_menu[day][meal] = new_meal
                             fixed_menus.append(new_menu)
-                            # print(f"!!! replaced food {food_id} from {day}'s {meal} with {alternative}")
-                            # print_menu(fixed_menus[-1])
-                            # print()
 
                         return fixed_menus
                     else:
@@ -145,9 +129,6 @@ def fix_menu_one_step(menu: dict, property, desired_value, exhaustive):
                         new_meal[str(alternative)] = amount
                         new_menu[day][meal] = new_meal
                         fixed_menus.append(new_menu)  
-                        # print(f"!!! replaced food {food_id} from {day}'s {meal} with {alternative}")
-                        # print_menu(fixed_menus[-1])
-                        # print()
                         return fixed_menus 
                     
     return fixed_menus
@@ -155,24 +136,18 @@ def fix_menu_one_step(menu: dict, property, desired_value, exhaustive):
 
 def print_menu(menu: dict):
     global current_menu_id
-    # print("{")
     w.write(f'"{current_menu_id}": ') 
     w.write("{\n")
     current_menu_id = current_menu_id + 1
     for day in menu:
-        # print(f'"{day}": ', end="")
         w.write("\t")
         w.write(f'"{day}": ')
-        # print(json.dumps(menu[day]), end="")
         w.write(json.dumps(menu[day]))
         if day != "saturday":
-            # print(",")
             w.write(",\n")
             
-    # print("\n},")
     w.write("\n},\n")
-    
-    # print()
+ 
 
 properties = ["Vegetarian", "Vegan", "Contains eggs", "Contains milk", "Contains peanuts or nuts", "Contains fish", "Contains sesame", "Contains soy", "Contains gluten"]
 
@@ -187,26 +162,11 @@ for i, name in enumerate(properties):
     print(f"{i}) {name}")
 
 property_to_fix = int(input("Enter the property to fix: "))
-print("\n")
 
 org = read_menu(menu_to_fix)
 
-
-
-for day in org:
-    print(f'"{day}": ', end="")
-    print(json.dumps(org[day]), end="")
-
-    if day != "saturday":
-        print(",")
-
-print("\n")
-
-# print("\n\n")
-# print("Fixed menus:")
-
 fix_menu(properties[property_to_fix], int(menu_to_fix), exhaustive=True)
 
-print(f"Done menu {menu_to_fix}!")
+print(f"\nDone menu {menu_to_fix}!")
 
 w.close()
