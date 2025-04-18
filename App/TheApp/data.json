@@ -1,5 +1,4 @@
 {
-    "stage": "",
     "logincompleted": false,
     "username": "",
     "password": "",
@@ -33,6 +32,7 @@
     "fat today": 0,
     "protein": 0,
     "protein today": 0,
+    "menu_request_window": "",
     "menu": {
         "sunday": {
             "breakfast": {},

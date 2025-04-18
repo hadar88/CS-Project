@@ -468,12 +468,9 @@ class LoginWindow(Screen):
         if(data["username"] == username and data["password"] == password and username != "" and password != ""):
             self.errorMassage.text = ""
             if(data["logincompleted"]):
-                data["stage"] = "main"
-                with open(DATA_PATH, "w") as file:
-                    json.dump(data, file)
                 self.manager.current = "main"
             else:
-                self.manager.current = data["stage"]
+                self.manager.current = "registration1"
         else:
             self.errorMassage.text = "Invalid username or password"
 
@@ -797,20 +794,6 @@ class PersonalDataWindow(Screen):
         instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
 
     def go_home(self, instance):
-        today = datetime.now().date().isoformat()
-        bmi_temp = bmi(float(data["weight"]), float(data["height"]))
-
-        if data["history_times"] and today in data["history_times"]:
-            data["history_weight"] = data["history_weight"][:-1] + [float(data["weight"])]
-            data["history_bmi"] = data["history_bmi"][:-1] + [bmi_temp] 
-        else:
-            data["history_weight"] = data["history_weight"] + [float(data["weight"])]
-            data["history_bmi"] = data["history_bmi"] + [bmi_temp]
-            data["history_times"] = data["history_times"] + [today] 
-
-        with open(DATA_PATH, "w") as file:
-            json.dump(data, file)
-
         self.weightupdateInput.disabled = True
         self.heightupdateInput.disabled = True
         self.targetweightupdateInput.disabled = True
@@ -1298,6 +1281,9 @@ class MenuWindow(Screen):
         return wrapped_text
 
     def newMenu(self, instance):
+        data["menu_request_window"] = "menu"
+        with open(DATA_PATH, "w") as file:
+            json.dump(data, file)
         self.manager.current = "loading"
 
     def _adjust_label_height(self, *args):
@@ -2590,8 +2576,6 @@ class CreateAccountWindow(Screen):
         self.rect.size = instance.size
 
     def log_in(self, instance):
-        self.userName.text = ""
-        self.password.text = ""
         self.manager.current = "login"
         self.errorMassage.text = ""
         self.showpasswordInput.active = False
@@ -2612,12 +2596,10 @@ class CreateAccountWindow(Screen):
             self.password.text = ""
             data["username"] = username
             data["password"] = password
-            data["stage"] = "registration1"
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.manager.current = "registration1"
             self.errorMassage.text = ""
-            data["logincompleted"] = False
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
 
@@ -2813,7 +2795,6 @@ class Registration1Window(Screen):
             data["height"] = height_input
             data["age"] = age_input
             data["gender"] = gender_input
-            data["stage"] = "registration2"
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.manager.current = "registration2"
@@ -2994,7 +2975,6 @@ class Registration2Window(Screen):
             data["cardio"] = "1" if cardio else "0"
             data["strength"] = "1" if strength else "0"
             data["muscle"] = "1" if muscle else "0"
-            data["stage"] = "registration3"
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.manager.current = "registration3"
@@ -3141,7 +3121,6 @@ class Registration3Window(Screen):
             else:
                 data["vegetarian"] = "0"
                 data["vegan"] = "0"
-            data["stage"] = "registration4"
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.manager.current = "registration4"
@@ -3370,7 +3349,6 @@ class Registration4Window(Screen):
         data["soy allergy"] = "1" if soy_allergy else "0"
         data["gluten allergy"] = "1" if gluten_allergy else "0"
 
-        data["stage"] = "registration5"
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
         self.manager.current = "registration5"
@@ -3515,7 +3493,6 @@ class Registration5Window(Screen):
         else:
             self.errorMessage.text = ""
             data["goal weight"] = self.goalweightInput.text
-            data["stage"] = "registration6"
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.manager.current = "registration6"
@@ -3666,8 +3643,8 @@ class Registration6Window(Screen):
         else:
             self.errorMessage.text = ""
             data["goal time"] = self.timeInput.text
-            data["stage"] = "loading"
             data["logincompleted"] = True
+            data["menu_request_window"] = "main"
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.resetData()
@@ -3680,7 +3657,7 @@ class Registration6Window(Screen):
     def on_enter(self):
         Window.bind(on_keyboard=self.on_keyboard)
         self.time = time_of_change(int(data["weight"]), int(data["goal weight"]))
-        self.suggestedTime.text = "Suggested time: " + str(self.time) + " weeks"
+        self.suggestedTime.text = "Suggested time: " + str(self.time) + " weeks(" + str(self.time / 4) + " months)"
 
     def on_leave(self):
         Window.unbind(on_keyboard=self.on_keyboard)
@@ -3789,10 +3766,7 @@ class LoadingWindow(Screen):
         self.rect.size = instance.size
 
     def next(self):
-        if(data["stage"] != "main"):
-            data["stage"] = "main"
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
+        if(data["menu_request_window"] == "main"):
             self.manager.current = "main"
         else:
             self.manager.current = "menu"
