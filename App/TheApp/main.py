@@ -2596,12 +2596,11 @@ class CreateAccountWindow(Screen):
             self.password.text = ""
             data["username"] = username
             data["password"] = password
+            data["logincompleted"] = False
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.manager.current = "registration1"
             self.errorMassage.text = ""
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
 
     def show_password(self, instance):
         self.password.password = not self.password.password
@@ -3718,7 +3717,7 @@ class Registration6Window(Screen):
         data["history_weight"] = []
         data["history_bmi"] = []
         data["history_times"] = []
-        data["last_visit_time"] = ""
+        data["last_visit_time"] = datetime.now().isoformat(timespec='minutes')
 
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
@@ -3832,6 +3831,8 @@ class LoadingWindow(Screen):
                 result = response.json()
                 result = convert_to_dict(result)
                 data["menu"] = result
+                with open(DATA_PATH, "w") as file:
+                    json.dump(data, file)
             else:
                 print("Error: " + str(response.status_code))
 
