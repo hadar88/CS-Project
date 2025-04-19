@@ -42,7 +42,7 @@ def main():
 
         other_criterions.append(nn.MSELoss())
 
-        train_transformer_model(dataloader, model, criterion_food_id, other_criterions, optimizer, 1000, device, True) 
+        train_transformer_model(dataloader, model, criterion_food_id, other_criterions, optimizer, 5000, device, True) 
 
         # other_criterions.append(XORLoss())
 
@@ -222,10 +222,10 @@ def train_transformer_model(dataloader, model, criterion_food_id, other_criterio
         loss_history.append(epoch_loss)
 
     if plot_loss:
-        loss_history = loss_history[100:]
+        loss_history = loss_history[200:]
         plt.plot(loss_history)
         plt.savefig("loss_plot.png")
-        plt.show()
+        # plt.show()
 
 def evaluate_transformer_on_random_sample(dataloader, model, device):
     model.eval()
