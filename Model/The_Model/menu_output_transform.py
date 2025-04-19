@@ -166,7 +166,7 @@ def transform2(menu: torch.Tensor, food_data, device, bound_fn=lambda x: x):
     output_final[5:9] = output[5:9] / 7.0
     
     # Make it require gradients at the end of all operations
-    return output_final.requires_grad_(True)
+    return output_final.requires_grad_(True).int()
 
 if __name__ == "__main__":
     # Example usage

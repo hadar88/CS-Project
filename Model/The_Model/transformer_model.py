@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 SPLIT = ["train", "val", "test"][0]
 
 MODEL_VERSION = 1.0
-BATCH_SIZE = 256
+BATCH_SIZE = 512
 
 def main():
     parser = argparse.ArgumentParser()
@@ -36,20 +36,21 @@ def main():
     model = MenuGenerator()
 
     if split == "train":                              
-        optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
+        optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
         criterion_food_id = nn.CrossEntropyLoss()
-        criterion_amount = nn.MSELoss()
         other_criterions = []
 
-        train_transformer_model(dataloader, model, criterion_food_id, criterion_amount, other_criterions, optimizer, 2, device, False)
+        other_criterions.append(nn.MSELoss())
 
-        other_criterions.append(XORLoss())
+        train_transformer_model(dataloader, model, criterion_food_id, other_criterions, optimizer, 1000, device, True) 
 
-        train_transformer_model(dataloader, model, criterion_food_id, criterion_amount, other_criterions, optimizer, 2, device, False)
+        # other_criterions.append(XORLoss())
 
-        other_criterions.append(NutritionLoss(device))
+        # train_transformer_model(dataloader, model, criterion_food_id, other_criterions, optimizer, 1000, device, True)
 
-        train_transformer_model(dataloader, model, criterion_food_id, criterion_amount, other_criterions, optimizer, 2, device, True)
+        # other_criterions.append(NutritionLoss(device))
+
+        # train_transformer_model(dataloader, model, criterion_food_id, other_criterions, optimizer, 300, device, True)
 
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
         print(f"Model saved as saved_models/model_v{MODEL_VERSION}.pth")
@@ -57,50 +58,56 @@ def main():
         evaluate_transformer_on_random_sample(dataloader, model, device)
 
 class MenuGenerator(nn.Module):
-    def __init__(self):
+    def __init__(self, food_vocab_size=223, hidden_dim=256):
         super(MenuGenerator, self).__init__()
 
-        self.emb_dim = 16
-
-        self.fc1 = nn.Linear(14, 128)
-        self.fc2 = nn.Linear(128, 256)
-
-        self.transformer = nn.TransformerEncoder(
-            nn.TransformerEncoderLayer(d_model=256, nhead=8, batch_first=True),
-            num_layers=2
+        self.input_encoder = nn.Sequential(
+            nn.Linear(14, 128),
+            nn.ReLU(),
+            nn.BatchNorm1d(128),
+            nn.Linear(128, hidden_dim),
+            nn.ReLU(),
         )
 
-        self.food_fc = nn.Linear(256, 7 * 3 * 10 * 223)
-        self.amount_fc = nn.Linear(256, 7 * 3 * 10)
+        self.slot_proj = nn.Linear(hidden_dim, 210 * hidden_dim)
 
-        self.activation = nn.ReLU()
+        self.slot_decoder = nn.Sequential(
+            nn.Linear(hidden_dim, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+        )
+
+        self.food_id_head = nn.Linear(64, food_vocab_size)
+        self.amount_head = nn.Sequential(
+            nn.Linear(64, 1),
+            nn.ReLU()
+        )
 
     def forward(self, x):
-        x = self.activation(self.fc1(x))
-        x = self.activation(self.fc2(x))
+        batch_size = x.size(0)
 
-        x = x.unsqueeze(0) 
-        x = self.transformer(x)
-        x = x.squeeze(0)
+        latent = self.input_encoder(x)  # (batch, hidden_dim)
 
-        food_logits = self.food_fc(x)
-        food_logits = food_logits.view(-1, 7, 3, 10, 223)
+        slot_input = self.slot_proj(latent).view(batch_size, 210, -1)  # (batch, 210, hidden_dim)
 
-        amount = self.amount_fc(x)
-        amount = amount.view(-1, 7, 3, 10, 1)
-        amount = self.activation(amount)
+        decoded = self.slot_decoder(slot_input)  # (batch, 210, 64)
 
-        return food_logits, amount
+        food_logits = self.food_id_head(decoded)  # (batch, 210, 223)
+        amounts = self.amount_head(decoded).squeeze(-1)  # (batch, 210)
+
+        food_logits = food_logits.view(batch_size, 7, 3, 10, 223)
+        amounts = amounts.view(batch_size, 7, 3, 10)
+
+        return food_logits, amounts
     
 class XORLoss(nn.Module):
     def __init__(self):
         super(XORLoss, self).__init__()
-        self.ZERO_NONZERO_PENALTY = 25
+        self.ZERO_NONZERO_PENALTY = 20
         self.l1loss = nn.L1Loss()
 
     def forward(self, pred_ids, pred_amounts, ids, amounts):
-        ### Penalize the model for giving rows with no id but with an amount or vice versa ###
-        
         zero_id = zero_mask(pred_ids)
         zero_amount = zero_mask(pred_amounts)
 
@@ -109,7 +116,7 @@ class XORLoss(nn.Module):
 class NutritionLoss(nn.Module):
     def __init__(self, device):
         super(NutritionLoss, self).__init__()
-        self.NUTRITION_PENALTY = 1
+        self.NUTRITION_PENALTY = 2
         self.DENOMINATOR = 1
         self.l1loss = nn.L1Loss()
         self.device = device
@@ -157,20 +164,19 @@ def bound(x):
     """approx. 0 for any id > 222 and the id itself for any id <= 222."""
     return x * torch.sigmoid(50 * (222.5 - x))
 
-
 def round_and_bound(x):
     return bound(round_ste(x))
 
 def zero_mask(x):
     return torch.exp(-4 * x)
 
-def train_transformer_model(dataloader, model, criterion_food_id, criterion_amount, other_criterions, optimizer, epochs, device, plot_loss=True):
+def train_transformer_model(dataloader, model, criterion_food_id, other_criterions, optimizer, epochs, device, plot_loss=True):
     model.to(device)
     model.train()
 
-    bar = tqdm(range(epochs))
-
     loss_history = []
+
+    bar = tqdm(range(epochs))
 
     for _ in bar:
         epoch_loss = 0.0
@@ -180,26 +186,32 @@ def train_transformer_model(dataloader, model, criterion_food_id, criterion_amou
 
             optimizer.zero_grad()
 
-            # forward
             food_logits, pred_amounts = model(x)
 
-            # reshape for loss computation
-            food_logits = food_logits.view(-1, 223)
+            # Flatten
+            pred_ids_flat = food_logits.view(-1, 223)
+            pred_amounts_flat = pred_amounts.view(-1)
+            ids_flat = ids.view(-1)
+            amounts_flat = amounts.view(-1)
 
-            pred_ids = torch.argmax(food_logits, dim=-1)
-            pred_amounts = pred_amounts.view(-1)
+            # ID loss with ignore_index for padding
+            loss_id = criterion_food_id(pred_ids_flat, ids_flat)
 
-            ids = ids.view(-1)
-            amounts = amounts.view(-1)
+            # Amount loss with mask
+            mask = (amounts_flat > 0).float()
+            loss_amount = ((pred_amounts_flat - amounts_flat) ** 2 * mask).sum() / (mask.sum() + 1e-8)
 
-            loss_id = criterion_food_id(food_logits, ids)
-            loss_amount = criterion_amount(pred_amounts, amounts)
-
-            # joint loss weighted importance
             loss = loss_id + loss_amount
 
+            pred_ids = torch.argmax(pred_ids_flat, dim=-1)
+
             for criterion in other_criterions:
-                loss += criterion(pred_ids, pred_amounts, ids, amounts)
+                if isinstance(criterion, nn.MSELoss):
+                    # Apply MSELoss only to the predicted amounts and ground truth amounts
+                    loss += criterion(pred_amounts_flat, amounts_flat)
+                else:
+                    # Apply custom loss functions with additional arguments
+                    loss += criterion(pred_ids, pred_amounts_flat, ids_flat, amounts_flat)
 
             loss.backward()
             optimizer.step()
@@ -210,6 +222,7 @@ def train_transformer_model(dataloader, model, criterion_food_id, criterion_amou
         loss_history.append(epoch_loss)
 
     if plot_loss:
+        loss_history = loss_history[100:]
         plt.plot(loss_history)
         plt.savefig("loss_plot.png")
         plt.show()
@@ -218,9 +231,9 @@ def evaluate_transformer_on_random_sample(dataloader, model, device):
     model.eval()
     model.to(device)
 
-    print("Here is a random prediction:")
+    # print("Here is a random prediction:")
 
-    print("Reading the foods data...\n")
+    #print("Reading the foods data...\n")
     FOODS_DATA_PATH = "../../Data/layouts/FoodsByID.json"
     foods = open(FOODS_DATA_PATH, "r")
     data = json.load(foods)
@@ -247,11 +260,11 @@ def evaluate_transformer_on_random_sample(dataloader, model, device):
     # print(merged_y)
     # print()
 
-    print("Here's a comparison between the ground truth and the model's prediction:")
-    print("Model's prediction:")
-    print(transform2(merged_pred, data, device))
+    print("Here's a comparison between the ground truth and the model's prediction:\n")
     print("Ground truth:")
     print(transform2(merged_y, data, device))
+    print("\nModel's prediction:")
+    print(transform2(merged_pred, data, device))
 
 if __name__ == "__main__":
     main()
