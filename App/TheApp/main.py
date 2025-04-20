@@ -15,7 +15,6 @@ from kivy.core.window import Window
 from kivy.uix.scrollview import ScrollView 
 from kivy.uix.stencilview import StencilView
 from kivy.clock import Clock
-from time import time
 
 #######################################################################
 
