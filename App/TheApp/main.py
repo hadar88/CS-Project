@@ -9,12 +9,24 @@ from kivy.graphics import Color, Rectangle, Line, RoundedRectangle
 from kivy.uix.textinput import TextInput
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
-from kivy.uix.spinner import Spinner
+from kivy.uix.spinner import Spinner, SpinnerOption
 from kivy.uix.checkbox import CheckBox
 from kivy.core.window import Window
 from kivy.uix.scrollview import ScrollView 
 from kivy.uix.stencilview import StencilView
 from kivy.clock import Clock
+
+#######################################################################
+
+BUTTON_BG = (0.29, 0.051, 0.051, 1)         # dark bordeaux
+BUTTON_TEXT = (0.973, 0.804, 0.816, 1)      # light bordeaux
+
+LABEL_BG = (0.031, 0.145, 0.404, 1)         # dark blue
+LABEL_TEXT = (0.733, 0.871, 0.984, 1)       # light blue
+
+SPINNER_BG = (0.106, 0.369, 0.125, 1)       # dark green
+SPINNER_DD_BG = (0.263, 0.635, 0.294, 1)    # dark green
+SPINNER_TEXT = (0.784, 0.902, 0.788, 1)     # light green
 
 #######################################################################
 
@@ -388,6 +400,12 @@ class RoundedStencilView(StencilView):
         self.bg_rect.size = self.size
         self.bg_rect.pos = self.pos
 
+class CustomSpinnerOption(SpinnerOption):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.background_color = SPINNER_DD_BG
+        self.color = SPINNER_TEXT
+
 #######################################################################
 
 class LoginWindow(Screen):
@@ -410,13 +428,15 @@ class LoginWindow(Screen):
 
         self.userName = TextInput(
             multiline = False,
-            font_size = 50,
+            font_size = 70,
             hint_text = "Username",
             size_hint=(0.8, 0.1),
             pos_hint={"x": 0.1, "top": 0.68},
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
+            halign="center",
         )
+        self.userName.bind(size=self._update_text_padding1)
         self.window.add_widget(self.userName)
         with self.userName.canvas.before:
             Color(0, 0, 0, 1)  # Black color for the border
@@ -425,14 +445,16 @@ class LoginWindow(Screen):
 
         self.password = TextInput(
             multiline = False,
-            font_size = 50,
+            font_size = 70,
             hint_text = "Password",
             size_hint=(0.8, 0.1),
             pos_hint={"x": 0.1, "top": 0.56},
             password=True,
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
+            halign="center"
         )
+        self.password.bind(size=self._update_text_padding2)
         self.window.add_widget(self.password)
         with self.password.canvas.before:
             Color(0, 0, 0, 1)  # Black color for the border
@@ -440,51 +462,55 @@ class LoginWindow(Screen):
         self.password.bind(size=self._update_border2, pos=self._update_border2)
 
         self.showpassword = ColoredLabel(
-            text = "Show password",
+            text = "[b]Show Password[/b]",
             font_size = 40,
             size_hint = (0.2, 0.05),
             pos_hint = {"x": 0.3, "top": 0.45},
             color=(1, 1, 1, 1),
-            text_color=(0, 1, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup=True
         )
         self.window.add_widget(self.showpassword)
 
         self.showpasswordInput = CheckBox(
             size_hint=(0.1, 0.1),
             pos_hint={"x": 0.55, "top": 0.475},
-            color=(1, 0, 0, 1),
+            color= LABEL_BG,
             on_press = self.show_password
         )
         self.window.add_widget(self.showpasswordInput)
 
         self.loginButton = Button(
-            text = "Login",
+            text = "[b]Login[/b]",
             font_size = 100,
-            background_color = (1, 1, 1, 1),
-            # background_normal = "",
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.39},
+            markup=True,
             on_press = self.login
         )
         self.window.add_widget(self.loginButton)
 
         self.errorMassage = ColoredLabel(
             text = "",
-            font_size = 50,
+            font_size = 30,
             size_hint = (0.8, 0.05),
             pos_hint = {"x": 0.1, "top": 0.27},
             color=(1, 1, 1, 1),
-            text_color=(1, 0, 0, 1)
+            text_color=(0.718, 0.11, 0.11, 1),
+            markup=True
         )
         self.window.add_widget(self.errorMassage)
 
         self.createAccountButton = Button(
-            text = "Create account",
+            text = "[b]Create Account[/b]",
             font_size = 100,
-            background_color = (1, 1, 1, 1),
-            # background_normal = "",
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.2},
+            markup=True,
             on_press = self.createAccount
         )
         self.window.add_widget(self.createAccountButton)
@@ -492,6 +518,12 @@ class LoginWindow(Screen):
         ###
 
         self.add_widget(self.window)
+
+    def _update_text_padding1(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
+
+    def _update_text_padding2(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
 
     def _update_border(self, instance, value):
         self.border.rectangle = (instance.x, instance.y, instance.width, instance.height)
@@ -513,7 +545,7 @@ class LoginWindow(Screen):
             else:
                 self.manager.current = "registration1"
         else:
-            self.errorMassage.text = "Invalid username or password"
+            self.errorMassage.text = "[b]Invalid username or password[/b]"
 
     def createAccount(self, instance):
         self.errorMassage.text = ""
@@ -2589,24 +2621,27 @@ class CreateAccountWindow(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "Create an account",
+            text = "[b]Create an Account[/b]",
             font_size = 100,
             size_hint = (0.8, 0.2),
             pos_hint = {"x": 0.1, "top": 0.9},
             color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup=True,
         )
         self.window.add_widget(self.title)
 
         self.userName = TextInput(
             multiline = False,
-            font_size = 50,
+            font_size = 70,
             hint_text = "Username",
             size_hint=(0.8, 0.1),
             pos_hint={"x": 0.1, "top": 0.68},
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
+            halign="center"
         )
+        self.userName.bind(size=self._update_text_padding1)
         self.window.add_widget(self.userName)
         with self.userName.canvas.before:
             Color(0, 0, 0, 1)  # Black color for the border
@@ -2615,73 +2650,73 @@ class CreateAccountWindow(Screen):
 
         self.password = TextInput(
             multiline = False,
-            font_size = 50,
+            font_size = 70,
             hint_text = "Password",
             size_hint=(0.8, 0.1),
             pos_hint={"x": 0.1, "top": 0.56},
             password=True,
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
+            halign="center"
         )
         self.window.add_widget(self.password)
+        self.password.bind(size=self._update_text_padding2)
         with self.password.canvas.before:
             Color(0, 0, 0, 1)  # Black color for the border
             self.border2 = Line(rectangle=(self.password.x, self.password.y, self.password.width, self.password.height), width=1.0)
         self.password.bind(size=self._update_border2, pos=self._update_border2)
 
         self.showpassword = ColoredLabel(
-            text = "Show password",
+            text = "[b]Show Password[/b]",
             font_size = 40,
             size_hint = (0.2, 0.05),
             pos_hint = {"x": 0.3, "top": 0.45},
             color=(1, 1, 1, 1),
-            text_color=(0, 1, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup=True,
         )
         self.window.add_widget(self.showpassword)
 
         self.showpasswordInput = CheckBox(
             size_hint=(0.1, 0.1),
             pos_hint={"x": 0.55, "top": 0.475},
-            color=(1, 0, 0, 1),
+            color= LABEL_BG,
             on_press = self.show_password
         )
         self.window.add_widget(self.showpasswordInput)
 
-        self.login = Button(
-            text = "Login",
-            font_size = 90,
-            background_color = (1, 1, 1, 1),
-            # background_normal = "",
-            size_hint = (0.4, 0.1),
-            pos_hint = {"x": 0.3, "top": 0.39},
-            on_press = self.log_in
-        )
-        self.window.add_widget(self.login)
-
         self.errorMassage = ColoredLabel(
             text = "",
-            font_size = 50,
+            font_size = 30,
             size_hint = (0.8, 0.05),
             pos_hint = {"x": 0.1, "top": 0.27},
             color=(1, 1, 1, 1),
-            text_color=(1, 0, 0, 1)
+            text_color=(0.718, 0.11, 0.11, 1),
+            markup=True,
         )
         self.window.add_widget(self.errorMassage)
 
         self.submit = Button(
-            text = "Submit",
+            text = "[b]Submit[/b]",
             font_size = 90,
-            background_color = (1, 1, 1, 1),
-            # background_normal = "",
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.2},
-            on_press = self.registration
+            on_press = self.registration,
+            markup=True,
         )
         self.window.add_widget(self.submit)
 
         ###
 
         self.add_widget(self.window)
+
+    def _update_text_padding1(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
+
+    def _update_text_padding2(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
 
     def _update_rect(self, instance, value):
         self.rect.pos = instance.pos
@@ -2702,7 +2737,7 @@ class CreateAccountWindow(Screen):
         username = self.userName.text
         password = self.password.text
         if(username == "" or password == ""):
-            self.errorMassage.text = "Cannot leave fields empty"
+            self.errorMassage.text = "[b]Cannot leave fields empty[/b]"
         else:
             self.userName.text = ""
             self.password.text = ""
@@ -2753,22 +2788,24 @@ class Registration1Window(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "Registration",
+            text = "[b]Registration[/b]",
             font_size = 150,
             size_hint = (0.775, 0.2),
             pos_hint = {"x": 0.1125, "top": 0.9},
             color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup=True,
         )
         self.window.add_widget(self.title)
 
         self.weightLabel = ColoredLabel(
-            text = "Weight:",
+            text = "[b]Weight:[/b]",
             font_size = 60,
             size_hint = (0.44, 0.1),
             pos_hint = {"x": 0.05, "top": 0.7},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color =LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.weightLabel)
 
@@ -2781,7 +2818,9 @@ class Registration1Window(Screen):
             input_filter="float",
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
+            halign="center"
         )
+        self.weightInput.bind(size=self._update_text_padding1)
         self.window.add_widget(self.weightInput)
         with self.weightInput.canvas.before:
             Color(0, 0, 0, 1)  # Black color for the border
@@ -2789,12 +2828,13 @@ class Registration1Window(Screen):
         self.weightInput.bind(size=self._update_border, pos=self._update_border)
 
         self.heightLabel = ColoredLabel(
-            text = "Height:",
+            text = "[b]Height:[/b]",
             font_size = 60,
             size_hint = (0.44, 0.1),
             pos_hint = {"x": 0.05, "top": 0.58},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color =LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.heightLabel)
 
@@ -2807,7 +2847,9 @@ class Registration1Window(Screen):
             input_filter="int",
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
+            halign="center"
         )
+        self.heightInput.bind(size=self._update_text_padding2)
         self.window.add_widget(self.heightInput)
         with self.heightInput.canvas.before:
             Color(0, 0, 0, 1)  # Black color for the border
@@ -2815,25 +2857,28 @@ class Registration1Window(Screen):
         self.heightInput.bind(size=self._update_border2, pos=self._update_border2)
 
         self.AgeLabel = ColoredLabel(
-            text = "Age:",
+            text = "[b]Age:[/b]",
             font_size = 60,
             size_hint = (0.44, 0.1),
             pos_hint = {"x": 0.05, "top": 0.46},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color =LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.AgeLabel)
 
         self.AgeInput = TextInput(
             multiline = False,
             font_size = 50,
-            hint_text = "years",
+            hint_text = "Years",
             size_hint=(0.44, 0.1),
             pos_hint={"x": 0.51, "top": 0.46},
             input_filter="int",
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
+            halign="center",
         )
+        self.AgeInput.bind(size=self._update_text_padding3)
         self.window.add_widget(self.AgeInput)
         with self.AgeInput.canvas.before:
             Color(0, 0, 0, 1)  # Black color for the border
@@ -2841,48 +2886,63 @@ class Registration1Window(Screen):
         self.AgeInput.bind(size=self._update_border3, pos=self._update_border3)
 
         self.genderLabel = ColoredLabel(
-            text = "Gender:",
+            text = "[b]Gender:[/b]",
             font_size = 60,
             size_hint = (0.44, 0.1),
             pos_hint = {"x": 0.05, "top": 0.34},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color =LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.genderLabel)
 
         self.genderInput = Spinner(
-            text="Select a gender",
+            text="Select a Gender",
             values=("Male", "Female"),
             size_hint=(0.44, 0.1),
             pos_hint={"x": 0.51, "top": 0.34},
-            font_size = 50
+            font_size=50,
+            background_color = SPINNER_BG,
+            color = SPINNER_TEXT,
+            option_cls=CustomSpinnerOption
         )
         self.window.add_widget(self.genderInput)
 
         self.errorMessage = ColoredLabel(
             text = "",
-            font_size = 50,
+            font_size = 30,
             size_hint = (0.8, 0.06),
             pos_hint = {"x": 0.1, "top": 0.22},
             color=(1, 1, 1, 1),
-            text_color=(1, 0, 0, 1)
+            text_color=(0.718, 0.11, 0.11, 1),
+            markup=True,
         )
         self.window.add_widget(self.errorMessage)
 
         self.nextPage = Button(
-            text = "Next page",
+            text = "[b]Next Page[/b]",
             font_size = 50,
-            background_color = (1, 1, 1, 1),
-            # background_normal = "",
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.4, 0.1),
             pos_hint = {"x": 0.3, "top": 0.14},
-            on_press = self.next
+            on_press = self.next,
+            markup=True,
         )
         self.window.add_widget(self.nextPage)
 
         ###
 
         self.add_widget(self.window)
+
+    def _update_text_padding1(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
+
+    def _update_text_padding2(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
+
+    def _update_text_padding3(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
 
     def _update_rect(self, instance, value):
         self.rect.pos = instance.pos
@@ -2893,14 +2953,14 @@ class Registration1Window(Screen):
         height_input = self.heightInput.text
         age_input = self.AgeInput.text
         gender_input = self.genderInput.text
-        if(weight_input == "" or height_input == "" or age_input == "" or gender_input == "Select a gender"):
-            self.errorMessage.text = "Please fill in all fields"
+        if(weight_input == "" or height_input == "" or age_input == "" or gender_input == "Select a Gender"):
+            self.errorMessage.text = "[b]Please fill in all fields[/b]"
         elif(int(weight_input) < 40):
-            self.errorMessage.text = "Weight must be greater than 40 kg"
+            self.errorMessage.text = "[b]Weight must be greater than 40 kg[/b]"
         elif(int(height_input) < 140 or int(height_input) > 250):
-            self.errorMessage.text = "Height must be between 140 and 250 cm"
+            self.errorMessage.text = "[b]Height must be between 140 and 250 cm[/b]"
         elif(int(age_input) < 18 or int(age_input) > 100):
-            self.errorMessage.text = "Age must be between 18 and 100 years"
+            self.errorMessage.text = "[b]Age must be between 18 and 100 years[/b]"
         else:
             data["weight"] = weight_input
             data["height"] = height_input
@@ -2952,45 +3012,51 @@ class Registration2Window(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "Registration",
+            text = "[b]Registration[/b]",
             font_size = 150,
             size_hint = (0.775, 0.2),
             pos_hint = {"x": 0.1125, "top": 0.9},
             color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup=True,
         )
         self.window.add_widget(self.title)
 
         self.activityLabel = ColoredLabel(
-            text = "Level of activity:",
+            text = "[b]Level of Activity:[/b]",
             font_size = 60,
             size_hint = (0.44, 0.1),
             pos_hint = {"x": 0.05, "top": 0.7},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color = LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.activityLabel)
 
         self.activityInput = Spinner(
-            text="Level of activity",
-            values=("sedentary",
-                    "lightly active",
-                    "moderately active",
-                    "active",
-                    "extremely active"),
+            text="Level of Activity",
+            values=("Sedentary",
+                    "Lightly active",
+                    "Moderately active",
+                    "Active",
+                    "Extremely active"),
             size_hint=(0.44, 0.1),
             pos_hint={"x": 0.51, "top": 0.7},
-            font_size = 40
+            font_size = 40,
+            background_color = SPINNER_BG,
+            color = SPINNER_TEXT,
+            option_cls=CustomSpinnerOption
         )
         self.window.add_widget(self.activityInput)
 
         self.activityTypeLabel = ColoredLabel(
-            text = "Types of activity:",
+            text = "[b]Types of Activity:[/b]",
             font_size = 60,
             size_hint = (0.6, 0.1),
             pos_hint = {"x": 0.2, "top": 0.58},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color = LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.activityTypeLabel)
 
@@ -3007,7 +3073,7 @@ class Registration2Window(Screen):
         self.cardioInput = CheckBox(
             size_hint=(0.1, 0.1),
             pos_hint={"x": 0.55, "top": 0.485},
-            color=(1, 0, 0, 1)
+            color= LABEL_BG
         )
         self.window.add_widget(self.cardioInput)
 
@@ -3024,7 +3090,7 @@ class Registration2Window(Screen):
         self.strengthInput = CheckBox(
             size_hint=(0.1, 0.1),
             pos_hint={"x": 0.55, "top": 0.415},
-            color=(1, 0, 0, 1)
+            color= LABEL_BG
         )
         self.window.add_widget(self.strengthInput)
 
@@ -3041,28 +3107,30 @@ class Registration2Window(Screen):
         self.muscleInput = CheckBox(
             size_hint=(0.1, 0.1),
             pos_hint={"x": 0.55, "top": 0.345},
-            color=(1, 0, 0, 1)
+            color= LABEL_BG
         )
         self.window.add_widget(self.muscleInput)
 
         self.errorMessage = ColoredLabel(
             text = "",
-            font_size = 50,
+            font_size = 30,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.255},
             color=(1, 1, 1, 1),
-            text_color=(1, 0, 0, 1)
+            text_color=(0.718, 0.11, 0.11, 1),
+            markup=True,
         )
         self.window.add_widget(self.errorMessage)
 
         self.nextPage = Button(
-            text = "Next page",
+            text = "[b]Next Page[/b]",
             font_size = 50,
-            background_color = (1, 1, 1, 1),
-            # background_normal = "",
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.4, 0.1),
             pos_hint = {"x": 0.3, "top": 0.14},
-            on_press = self.next
+            on_press = self.next,
+            markup=True,
         )
         self.window.add_widget(self.nextPage)
 
@@ -3079,8 +3147,8 @@ class Registration2Window(Screen):
         cardio = self.cardioInput.active
         strength = self.strengthInput.active
         muscle = self.muscleInput.active
-        if(activity == "Level of activity"):
-            self.errorMessage.text = "Please select a level of activity"
+        if(activity == "Level of Activity"):
+            self.errorMessage.text = "[b]Please select a level of activity[/b]"
         else:
             data["activity"] = activity
             data["cardio"] = "1" if cardio else "0"
@@ -3140,41 +3208,47 @@ class Registration3Window(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "Registration",
+            text = "[b]Registration[/b]",
             font_size = 150,
             size_hint = (0.775, 0.2),
             pos_hint = {"x": 0.1125, "top": 0.9},
             color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup=True,
         )
         self.window.add_widget(self.title)
 
         self.goalLabel = ColoredLabel(
-            text = "Goal:",
+            text = "[b]Goal:[/b]",
             font_size = 60,
             size_hint = (0.44, 0.1),
             pos_hint = {"x": 0.05, "top": 0.6},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color = LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.goalLabel)
 
         self.goalInput = Spinner(
             text="Goal",
-            values=("Lose weight", "Maintain weight", "Gain weight"),
+            values=("Lose Weight", "Maintain Weight", "Gain Weight"),
             size_hint=(0.44, 0.1),
             pos_hint={"x": 0.51, "top": 0.6},
-            font_size = 40
+            font_size = 40,
+            background_color = SPINNER_BG,
+            color = SPINNER_TEXT,
+            option_cls=CustomSpinnerOption
         )
         self.window.add_widget(self.goalInput)
 
         self.dietLabel = ColoredLabel(
-            text = "Diet:",
+            text = "[b]Diet:[/b]",
             font_size = 60,
             size_hint = (0.44, 0.1),
             pos_hint = {"x": 0.05, "top": 0.46},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color = LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.dietLabel)
 
@@ -3183,28 +3257,33 @@ class Registration3Window(Screen):
             values=("Vegetarian", "Vegan", "Regular"),
             size_hint=(0.44, 0.1),
             pos_hint={"x": 0.51, "top": 0.46},
-            font_size = 40
+            font_size = 40,
+            background_color = SPINNER_BG,
+            color = SPINNER_TEXT,
+            option_cls=CustomSpinnerOption
         )
         self.window.add_widget(self.dietInput)
 
         self.errorMessage = ColoredLabel(
             text = "",
-            font_size = 50,
+            font_size = 30,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.3},
             color=(1, 1, 1, 1),
-            text_color=(1, 0, 0, 1)
+            text_color=(0.718, 0.11, 0.11, 1),
+            markup=True,
         )
         self.window.add_widget(self.errorMessage)
 
         self.nextPage = Button(
-            text = "Next page",
+            text = "[b]Next Page[/b]",
             font_size = 50,
-            background_color = (1, 1, 1, 1),
-            # background_normal = "",
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.4, 0.1),
             pos_hint = {"x": 0.3, "top": 0.14},
-            on_press = self.next
+            on_press = self.next,
+            markup=True,
         )
         self.window.add_widget(self.nextPage)
 
@@ -3220,7 +3299,7 @@ class Registration3Window(Screen):
         goal_input = self.goalInput.text
         diet_input = self.dietInput.text
         if(goal_input == "Goal" or diet_input == "Diet"):
-            self.errorMessage.text = "Please select a goal and diet"
+            self.errorMessage.text = "[b]Please select a goal and diet[/b]"
         else:
             data["goal"] = goal_input
             if(diet_input == "Vegetarian"):
@@ -3286,22 +3365,24 @@ class Registration4Window(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "Registration",
+            text = "[b]Registration[/b]",
             font_size = 150,
             size_hint = (0.775, 0.2),
             pos_hint = {"x": 0.1125, "top": 0.9},
             color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup=True,
         )
         self.window.add_widget(self.title)
 
         self.allergiesLabel = ColoredLabel(
-            text = "Allergies:",
+            text = "[b]Allergies:[/b]",
             font_size = 60,
             size_hint = (0.6, 0.1),
             pos_hint = {"x": 0.2, "top": 0.7},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color = LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.allergiesLabel)
 
@@ -3318,7 +3399,7 @@ class Registration4Window(Screen):
         self.eggAllergyInput = CheckBox(
             size_hint=(0.1, 0.1),
             pos_hint={"x": 0.55, "top": 0.6},
-            color=(1, 0, 0, 1)
+            color= LABEL_BG
         )
         self.window.add_widget(self.eggAllergyInput)
 
@@ -3335,7 +3416,7 @@ class Registration4Window(Screen):
         self.milkAllergyInput = CheckBox(
             size_hint=(0.1, 0.1),
             pos_hint={"x": 0.55, "top": 0.54},
-            color=(1, 0, 0, 1)
+            color= LABEL_BG
         )
         self.window.add_widget(self.milkAllergyInput)
 
@@ -3352,7 +3433,7 @@ class Registration4Window(Screen):
         self.nutAllergyInput = CheckBox(
             size_hint=(0.1, 0.1),
             pos_hint={"x": 0.55, "top": 0.48},
-            color=(1, 0, 0, 1)
+            color= LABEL_BG
         )
         self.window.add_widget(self.nutAllergyInput)
 
@@ -3369,7 +3450,7 @@ class Registration4Window(Screen):
         self.fishAllergyInput = CheckBox(
             size_hint=(0.1, 0.1),
             pos_hint={"x": 0.55, "top": 0.42},
-            color=(1, 0, 0, 1)
+            color= LABEL_BG
         )
         self.window.add_widget(self.fishAllergyInput)
 
@@ -3386,7 +3467,7 @@ class Registration4Window(Screen):
         self.sesameAllergyInput = CheckBox(
             size_hint=(0.1, 0.1),
             pos_hint={"x": 0.55, "top": 0.36},
-            color=(1, 0, 0, 1)
+            color= LABEL_BG
         )
         self.window.add_widget(self.sesameAllergyInput)
 
@@ -3403,7 +3484,7 @@ class Registration4Window(Screen):
         self.soyAllergyInput = CheckBox(
             size_hint=(0.1, 0.1),
             pos_hint={"x": 0.55, "top": 0.3},
-            color=(1, 0, 0, 1)
+            color= LABEL_BG
         )
         self.window.add_widget(self.soyAllergyInput)
 
@@ -3420,18 +3501,19 @@ class Registration4Window(Screen):
         self.glutenAllergyInput = CheckBox(
             size_hint=(0.1, 0.1),
             pos_hint={"x": 0.55, "top": 0.24},
-            color=(1, 0, 0, 1)
+            color= LABEL_BG
         )
         self.window.add_widget(self.glutenAllergyInput)
 
         self.nextPage = Button(
-            text = "Next page",
+            text = "[b]Next page[/b]",
             font_size = 50,
-            background_color = (1, 1, 1, 1),
-            # background_normal = "",
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.4, 0.1),
             pos_hint = {"x": 0.3, "top": 0.14},
-            on_press = self.next
+            on_press = self.next,
+            markup=True,
         )
         self.window.add_widget(self.nextPage)
 
@@ -3514,22 +3596,24 @@ class Registration5Window(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "Registration",
+            text = "[b]Registration[/b]",
             font_size = 150,
             size_hint = (0.775, 0.2),
             pos_hint = {"x": 0.1125, "top": 0.9},
             color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup=True,
         )
         self.window.add_widget(self.title)
 
         self.title2 = ColoredLabel(
-            text = "Target weight",
+            text = "[b]Target weight[/b]",
             font_size = 80,
             size_hint = (0.6, 0.1),
             pos_hint = {"x": 0.2, "top": 0.7},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color = LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.title2)
 
@@ -3544,12 +3628,13 @@ class Registration5Window(Screen):
         self.window.add_widget(self.suggestedWeight)
 
         self.goalweightLabel = ColoredLabel(
-            text = "Weight:",
+            text = "[b]Weight:[/b]",
             font_size = 60,
             size_hint = (0.44, 0.1),
             pos_hint = {"x": 0.05, "top": 0.44},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color = LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.goalweightLabel)
 
@@ -3571,22 +3656,24 @@ class Registration5Window(Screen):
 
         self.errorMessage = ColoredLabel(
             text = "",
-            font_size = 50,
+            font_size = 30,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.29},
             color=(1, 1, 1, 1),
-            text_color=(1, 0, 0, 1)
+            text_color=(0.718, 0.11, 0.11, 1),
+            markup=True,
         )
         self.window.add_widget(self.errorMessage)
 
         self.nextPage = Button(
-            text = "Next page",
+            text = "[b]Next Page[/b]",
             font_size = 50,
-            background_color = (1, 1, 1, 1),
-            # background_normal = "",
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.4, 0.1),
             pos_hint = {"x": 0.3, "top": 0.14},
-            on_press = self.next
+            on_press = self.next,
+            markup=True,
         )
         self.window.add_widget(self.nextPage)
 
@@ -3600,7 +3687,7 @@ class Registration5Window(Screen):
 
     def next(self, instance):
         if(self.goalweightInput.text == ""):
-            self.errorMessage.text = "Please fill in the field"
+            self.errorMessage.text = "[b]Please fill in the field[/b]"
         else:
             self.errorMessage.text = ""
             data["goal weight"] = self.goalweightInput.text
