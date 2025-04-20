@@ -144,15 +144,15 @@ def bmr(weight, height, age, gender):
 
 def amr(weight, height, age, gender, activity_level):
     bmr_value = bmr(weight, height, age, gender)
-    if activity_level == "sedentary":
+    if activity_level == "Sedentary":
         return bmr_value * 1.2
-    elif activity_level == "lightly active":
+    elif activity_level == "Lightly active":
         return bmr_value * 1.375
-    elif activity_level == "moderately active":
+    elif activity_level == "Moderately active":
         return bmr_value * 1.55
-    elif activity_level == "active":
+    elif activity_level == "Active":
         return bmr_value * 1.725
-    elif activity_level == "extremely active":
+    elif activity_level == "xtremely active":
         return bmr_value * 1.9
     else:
         return 1
@@ -358,9 +358,9 @@ def remove_food(day, meal, food_name):
 class ColoredLabel(Label):
     def __init__(self, color=(0, 0, 0, 1), text_color=(0, 0, 0, 1), **kw):
         super(ColoredLabel, self).__init__(**kw)
-        self.color = text_color  # Set the text color
+        self.color = text_color 
         with self.canvas.before:
-            self.bg_color = Color(*color)  # Use the provided background color
+            self.bg_color = Color(*color)
             self.bg_rect = Rectangle(size=self.size, pos=self.pos)
         self.bind(size=self._update_bg, pos=self._update_bg)
 
@@ -371,14 +371,14 @@ class ColoredLabel(Label):
 class ColoredLabel1(Label):
     def __init__(self, color=(0, 0, 0, 1), text_color=(0, 0, 0, 1), border_color=(0, 0, 0, 1), border_width=2, **kw):
         super(ColoredLabel1, self).__init__(**kw)
-        self.color = text_color  # Set the text color
+        self.color = text_color 
         self.border_color = border_color
         self.border_width = border_width
 
         with self.canvas.before:
-            self.bg_color = Color(*color)  # Use the provided background color
+            self.bg_color = Color(*color) 
             self.bg_rect = Rectangle(size=self.size, pos=self.pos)
-            self.border_color_instruction = Color(*self.border_color)  # Border color
+            self.border_color_instruction = Color(*self.border_color) 
             self.border_line = Line(rectangle=(self.x, self.y, self.width, self.height), width=self.border_width)
 
         self.bind(size=self._update_bg, pos=self._update_bg)
@@ -392,7 +392,7 @@ class RoundedStencilView(StencilView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         with self.canvas.before:
-            Color(0, 0, 0, 0.7)  # Background color
+            Color(0, 0, 0, 0.7) 
             self.bg_rect = RoundedRectangle(size=self.size, pos=self.pos, radius=[(20, 20), (20, 20), (20, 20), (20, 20)])
         self.bind(size=self._update_bg, pos=self._update_bg)
 
@@ -439,7 +439,7 @@ class LoginWindow(Screen):
         self.userName.bind(size=self._update_text_padding1)
         self.window.add_widget(self.userName)
         with self.userName.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1) 
             self.border = Line(rectangle=(self.userName.x, self.userName.y, self.userName.width, self.userName.height), width=1.0)
         self.userName.bind(size=self._update_border, pos=self._update_border)
 
@@ -457,7 +457,7 @@ class LoginWindow(Screen):
         self.password.bind(size=self._update_text_padding2)
         self.window.add_widget(self.password)
         with self.password.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1)  
             self.border2 = Line(rectangle=(self.password.x, self.password.y, self.password.width, self.password.height), width=1.0)
         self.password.bind(size=self._update_border2, pos=self._update_border2)
 
@@ -581,7 +581,6 @@ class MainWindow(Screen):
             text = "Personal Data",
             font_size = 100,
             background_color = (1, 1, 1, 1),
-            # background_normal = "",
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.9},
             on_press = self.personalData
@@ -592,7 +591,6 @@ class MainWindow(Screen):
             text = "Statistics",
             font_size = 100,
             background_color = (1, 1, 1, 1),
-            # background_normal = "",
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.725},
             on_press = self.statistics
@@ -603,7 +601,6 @@ class MainWindow(Screen):
             text = "Menu",
             font_size = 100,
             background_color = (1, 1, 1, 1),
-            # background_normal = "",
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.55},
             on_press = self.menu
@@ -614,7 +611,6 @@ class MainWindow(Screen):
             text = "WeeklyMenu",
             font_size = 100,
             background_color = (1, 1, 1, 1),
-            # background_normal = "",
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.375},
             on_press = self.weeklyMenu
@@ -625,7 +621,6 @@ class MainWindow(Screen):
             text = "Dictionary",
             font_size = 100,
             background_color = (1, 1, 1, 1),
-            # background_normal = "",
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.2},
             on_press = self.dictionary
@@ -724,7 +719,7 @@ class PersonalDataWindow(Screen):
         self.weightupdateInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.weightupdateInput)
         with self.weightupdateInput.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1)
             self.border = Line(rectangle=(self.weightupdateInput.x, self.weightupdateInput.y, self.weightupdateInput.width, self.weightupdateInput.height), width=1.0)
         self.weightupdateInput.bind(size=self._update_border, pos=self._update_border)
 
@@ -761,7 +756,7 @@ class PersonalDataWindow(Screen):
         self.heightupdateInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.heightupdateInput)
         with self.heightupdateInput.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1) 
             self.border2 = Line(rectangle=(self.heightupdateInput.x, self.heightupdateInput.y, self.heightupdateInput.width, self.heightupdateInput.height), width=1.0)
         self.heightupdateInput.bind(size=self._update_border2, pos=self._update_border2)
 
@@ -798,7 +793,7 @@ class PersonalDataWindow(Screen):
         self.targetweightupdateInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.targetweightupdateInput)
         with self.targetweightupdateInput.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1)  
             self.border3 = Line(rectangle=(self.targetweightupdateInput.x, self.targetweightupdateInput.y, self.targetweightupdateInput.width, self.targetweightupdateInput.height), width=1.0)
         self.targetweightupdateInput.bind(size=self._update_border3, pos=self._update_border3)
 
@@ -1264,7 +1259,6 @@ class MenuWindow(Screen):
             text = "New Menu",
             font_size = 40,
             background_color = (1, 1, 1, 1),
-            # background_normal = "",
             size_hint = (0.3, 0.05),
             pos_hint = {"x": 0.35, "top": 0.15},
             on_press = self.newMenu
@@ -1449,7 +1443,7 @@ class WeeklymenuWindow(Screen):
         )
         self.window.add_widget(self.input)
         with self.input.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1)  
             self.border = Line(rectangle=(self.input.x, self.input.y, self.input.width, self.input.height), width=1.0)
         self.input.bind(size=self._update_border, pos=self._update_border)
 
@@ -1475,7 +1469,7 @@ class WeeklymenuWindow(Screen):
         )
         self.window.add_widget(self.amount_input)
         with self.amount_input.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1) 
             self.border2 = Line(rectangle=(self.amount_input.x, self.amount_input.y, self.amount_input.width, self.amount_input.height), width=1.0)
         self.amount_input.bind(size=self._update_border2, pos=self._update_border2)
 
@@ -1660,7 +1654,6 @@ class WeeklymenuWindow(Screen):
 
     def remove(self, instance):
         index = self.remove_buttons.index(instance)
-        # use _update_meal
         day = self.dayInput.text.lower()
         meal = self.mealInput.text.lower()
 
@@ -1810,7 +1803,7 @@ class DictionaryWindow(Screen):
         )
         self.window.add_widget(self.input)
         with self.input.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1) 
             self.border = Line(rectangle=(self.input.x, self.input.y, self.input.width, self.input.height), width=1.0)
         self.input.bind(size=self._update_border, pos=self._update_border)
 
@@ -2644,7 +2637,7 @@ class CreateAccountWindow(Screen):
         self.userName.bind(size=self._update_text_padding1)
         self.window.add_widget(self.userName)
         with self.userName.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1)
             self.border = Line(rectangle=(self.userName.x, self.userName.y, self.userName.width, self.userName.height), width=1.0)
         self.userName.bind(size=self._update_border, pos=self._update_border)
 
@@ -2662,7 +2655,7 @@ class CreateAccountWindow(Screen):
         self.window.add_widget(self.password)
         self.password.bind(size=self._update_text_padding2)
         with self.password.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1) 
             self.border2 = Line(rectangle=(self.password.x, self.password.y, self.password.width, self.password.height), width=1.0)
         self.password.bind(size=self._update_border2, pos=self._update_border2)
 
@@ -2823,7 +2816,7 @@ class Registration1Window(Screen):
         self.weightInput.bind(size=self._update_text_padding1)
         self.window.add_widget(self.weightInput)
         with self.weightInput.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1) 
             self.border = Line(rectangle=(self.weightInput.x, self.weightInput.y, self.weightInput.width, self.weightInput.height), width=1.0)
         self.weightInput.bind(size=self._update_border, pos=self._update_border)
 
@@ -2852,7 +2845,7 @@ class Registration1Window(Screen):
         self.heightInput.bind(size=self._update_text_padding2)
         self.window.add_widget(self.heightInput)
         with self.heightInput.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1) 
             self.border2 = Line(rectangle=(self.heightInput.x, self.heightInput.y, self.heightInput.width, self.heightInput.height), width=1.0)
         self.heightInput.bind(size=self._update_border2, pos=self._update_border2)
 
@@ -2881,7 +2874,7 @@ class Registration1Window(Screen):
         self.AgeInput.bind(size=self._update_text_padding3)
         self.window.add_widget(self.AgeInput)
         with self.AgeInput.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1) 
             self.border3 = Line(rectangle=(self.AgeInput.x, self.AgeInput.y, self.AgeInput.width, self.AgeInput.height), width=1.0)
         self.AgeInput.bind(size=self._update_border3, pos=self._update_border3)
 
@@ -3652,7 +3645,7 @@ class Registration5Window(Screen):
         self.goalweightInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.goalweightInput)
         with self.goalweightInput.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1)  
             self.border = Line(rectangle=(self.goalweightInput.x, self.goalweightInput.y, self.goalweightInput.width, self.goalweightInput.height), width=1.0)
         self.goalweightInput.bind(size=self._update_border, pos=self._update_border)
 
@@ -3812,7 +3805,7 @@ class Registration6Window(Screen):
         self.timeInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.timeInput)
         with self.timeInput.canvas.before:
-            Color(0, 0, 0, 1)  # Black color for the border
+            Color(0, 0, 0, 1)
             self.border = Line(rectangle=(self.timeInput.x, self.timeInput.y, self.timeInput.width, self.timeInput.height), width=1.0)
         self.timeInput.bind(size=self._update_border, pos=self._update_border)
 
