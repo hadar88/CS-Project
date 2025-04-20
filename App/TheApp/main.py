@@ -5,7 +5,7 @@ from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.label import Label
-from kivy.graphics import Color, Rectangle, Line
+from kivy.graphics import Color, Rectangle, Line, RoundedRectangle
 from kivy.uix.textinput import TextInput
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
@@ -13,7 +13,9 @@ from kivy.uix.spinner import Spinner
 from kivy.uix.checkbox import CheckBox
 from kivy.core.window import Window
 from kivy.uix.scrollview import ScrollView 
+from kivy.uix.stencilview import StencilView
 from kivy.clock import Clock
+from time import time
 
 #######################################################################
 
@@ -312,6 +314,34 @@ def add_food(day, meal, food_name, amount):
     with open(DATA_PATH, "w") as file:
         json.dump(data, file)
 
+def remove_food(day, meal, food_name):
+    self_menu = data["self_menu"]
+    food = foods_dict[food_name]
+
+    calories_today = data["calories today"]
+    carbohydrates_today = data["carbohydrates today"]
+    sugar_today = data["sugar today"]
+    fat_today = data["fat today"]
+    protein_today = data["protein today"]
+
+    calories_today -= food["Calories"] * self_menu[day][meal][food_name] / 100
+    carbohydrates_today -= food["Carbohydrate"] * self_menu[day][meal][food_name] / 100
+    sugar_today -= food["Sugars"] * self_menu[day][meal][food_name] / 100
+    fat_today -= food["Fat"] * self_menu[day][meal][food_name] / 100
+    protein_today -= food["Protein"] * self_menu[day][meal][food_name] / 100
+
+    del self_menu[day][meal][food_name]
+
+    data["calories today"] = round(calories_today, 2)
+    data["carbohydrates today"] = round(carbohydrates_today, 2)
+    data["sugar today"] = round(sugar_today, 2)
+    data["fat today"] = round(fat_today, 2)
+    data["protein today"] = round(protein_today, 2)
+    data["self_menu"] = self_menu
+
+    with open(DATA_PATH, "w") as file:
+        json.dump(data, file)
+
 #######################################################################
 
 class ColoredLabel(Label):
@@ -346,6 +376,18 @@ class ColoredLabel1(Label):
         self.bg_rect.size = self.size
         self.bg_rect.pos = self.pos
         self.border_line.rectangle = (self.x, self.y, self.width, self.height)
+
+class RoundedStencilView(StencilView):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        with self.canvas.before:
+            Color(0, 0, 0, 0.7)  # Background color
+            self.bg_rect = RoundedRectangle(size=self.size, pos=self.pos, radius=[(20, 20), (20, 20), (20, 20), (20, 20)])
+        self.bind(size=self._update_bg, pos=self._update_bg)
+
+    def _update_bg(self, instance, value):
+        self.bg_rect.size = self.size
+        self.bg_rect.pos = self.pos
 
 #######################################################################
 
@@ -1432,6 +1474,21 @@ class WeeklymenuWindow(Screen):
             self.labels.append(label)
             self.window.add_widget(label)
 
+        self.remove_buttons = []
+        for i in range(10):
+            button = Button(
+                background_normal = "remove.png",
+                font_size = 40,
+                background_color = (1, 1, 1, 1),
+                size_hint=(0.1, 0.06),
+                pos_hint={"x": 0.9, "top": 0.665 - i * (0.06 + 5/900)},
+                opacity=0,
+                disabled=True,
+                on_press = self.remove
+            )
+            self.remove_buttons.append(button)
+            self.window.add_widget(button)
+
         self.result_buttons = []
         for i in range(10):
             button = Button(
@@ -1451,6 +1508,26 @@ class WeeklymenuWindow(Screen):
             self.result_buttons.append(button)
             self.window.add_widget(button)
 
+        self.toastLabel = RoundedStencilView(
+            size_hint=(0.4, 0.06),
+            pos_hint={"x": 0.3, "top": 0.2},
+            opacity=0,
+            disabled=True
+        )
+        self.window.add_widget(self.toastLabel)
+        self.toast = ColoredLabel(
+            text="tgrtgbrt",
+            font_size=40,
+            size_hint=(0.4, 0.06),
+            pos_hint={"x": 0.3, "top": 0.2},
+            color=(1, 1, 1, 0),
+            text_color=(1, 1, 1, 1),
+            halign="center",
+            opacity=0,
+            disabled=True
+        )
+        self.window.add_widget(self.toast)
+        
         ###
 
         self.add_widget(self.window)
@@ -1502,13 +1579,17 @@ class WeeklymenuWindow(Screen):
         day = self.dayInput.text.lower()
         meal = self.mealInput.text.lower()
 
-        for label in self.labels:
+        for label, button in zip(self.labels, self.remove_buttons):
+            button.opacity = 0
+            button.disabled = True
             label.text = ""
 
         if day != "" and meal != "":
             foods = data["self_menu"][day][meal]
             for food, amount in foods.items():
-                for label in self.labels:
+                for label, button in zip(self.labels, self.remove_buttons):
+                    button.opacity = 1
+                    button.disabled = False
                     if label.text == "":
                         label.text = f"[b]{food}[/b] ({amount}g)"
                         break
@@ -1530,9 +1611,13 @@ class WeeklymenuWindow(Screen):
 
         foods = data["self_menu"][day][meal]
         if len(foods) >= 10:
+            self.show_toast("You can only add 10 foods per meal")
+            Clock.schedule_once(lambda dt: self.hide_toast(), 2)
             return
         
         if food in foods:
+            self.show_toast("Food already exists in the meal")
+            Clock.schedule_once(lambda dt: self.hide_toast(), 2)
             return
 
         add_food(day, meal, food, amount)
@@ -1541,6 +1626,34 @@ class WeeklymenuWindow(Screen):
         self.input.text = ""
         self.amount_input.text = ""
         self.temp_food = ""
+
+    def remove(self, instance):
+        index = self.remove_buttons.index(instance)
+        # use _update_meal
+        day = self.dayInput.text.lower()
+        meal = self.mealInput.text.lower()
+
+        foods = data["self_menu"][day][meal]
+        food = list(foods.keys())[index]
+        
+        self.labels[index].text = ""
+
+        remove_food(day, meal, food)
+
+        self._update_meal(self.dayInput, self.dayInput.text)
+        
+    def hide_toast(self):
+        self.toastLabel.opacity = 0
+        self.toastLabel.disabled = True
+        self.toast.opacity = 0
+        self.toast.disabled = True
+
+    def show_toast(self, message):
+        self.toastLabel.opacity = 1
+        self.toastLabel.disabled = False
+        self.toast.opacity = 1
+        self.toast.disabled = False
+        self.toast.text = message
 
     def word_clicked(self, instance):
         for button in self.result_buttons:
@@ -3656,7 +3769,7 @@ class Registration6Window(Screen):
     def on_enter(self):
         Window.bind(on_keyboard=self.on_keyboard)
         self.time = time_of_change(int(data["weight"]), int(data["goal weight"]))
-        self.suggestedTime.text = "Suggested time: " + str(self.time) + " weeks(" + str(self.time / 4) + " months)"
+        self.suggestedTime.text = "Suggested time: " + str(self.time) + " weeks (" + f'{(self.time * 7 /30):.1f}' + " months)"
 
     def on_leave(self):
         Window.unbind(on_keyboard=self.on_keyboard)
