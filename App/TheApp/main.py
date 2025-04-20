@@ -61,10 +61,10 @@ f.close()
 def calculate_nutritional_data(goal, activity_type, activity_level, daily_calories):
     x1, x2, x3, x4 = 0.55, 0.05, 0.3, 0.225
 
-    if goal == "Lose weight":
+    if goal == "Lose Weight":
         x3 = 0.25
         x4 = 0.25
-    elif goal == "Gain weight":
+    elif goal == "Gain Weight":
         x3 = 0.35
         x4 = 0.3
 
@@ -75,19 +75,19 @@ def calculate_nutritional_data(goal, activity_type, activity_level, daily_calori
         x1 = max(x1 - 0.05, 0.45)
         x4 = min(x4 + 0.1, 0.35)
 
-    if activity_level == "sedentary":
+    if activity_level == "Sedentary":
         x1 = max(x1 - 0.05, 0.45)
         x3 = max(x3 - 0.05, 0.25)
-    elif activity_level == "lightly active":
+    elif activity_level == "Lightly active":
         x1 = min(x1 + 0.02, 0.55)
         x3 = min(x3 + 0.02, 0.275)
-    elif activity_level == "moderately active":
+    elif activity_level == "Moderately active":
         x1 = min(x1 + 0.05, 0.6)
         x3 = min(x3 + 0.05, 0.3)
-    elif activity_level == "active":
+    elif activity_level == "Active":
         x1 = min(x1 + 0.07, 0.62)
         x3 = min(x3 + 0.07, 0.325)
-    elif activity_level == "extremely active":
+    elif activity_level == "Extremely active":
         x1 = min(x1 + 0.1, 0.65)
         x3 = min(x3 + 0.1, 0.35)
 
@@ -3640,14 +3640,16 @@ class Registration5Window(Screen):
 
         self.goalweightInput = TextInput(
             multiline = False,
-            font_size = 50,
+            font_size = 70,
             hint_text = "Kg",
             size_hint=(0.44, 0.1),
             pos_hint={"x": 0.51, "top": 0.44},
             input_filter="float",
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
+            halign="center"
         )
+        self.goalweightInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.goalweightInput)
         with self.goalweightInput.canvas.before:
             Color(0, 0, 0, 1)  # Black color for the border
@@ -3661,7 +3663,7 @@ class Registration5Window(Screen):
             pos_hint = {"x": 0.1, "top": 0.29},
             color=(1, 1, 1, 1),
             text_color=(0.718, 0.11, 0.11, 1),
-            markup=True,
+            markup=True
         )
         self.window.add_widget(self.errorMessage)
 
@@ -3680,6 +3682,9 @@ class Registration5Window(Screen):
         ###
 
         self.add_widget(self.window)
+
+    def _update_text_padding(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
 
     def _update_rect(self, instance, value):
         self.rect.pos = instance.pos
@@ -3751,22 +3756,24 @@ class Registration6Window(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "Registration",
+            text = "[b]Registration[/b]",
             font_size = 150,
             size_hint = (0.775, 0.2),
             pos_hint = {"x": 0.1125, "top": 0.9},
             color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup=True,
         )
         self.window.add_widget(self.title)
 
         self.title2 = ColoredLabel(
-            text = "Time of the process",
+            text = "[b]Time of the process[/b]",
             font_size = 80,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.7},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color = LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.title2)
 
@@ -3785,21 +3792,24 @@ class Registration6Window(Screen):
             font_size = 60,
             size_hint = (0.44, 0.1),
             pos_hint = {"x": 0.05, "top": 0.44},
-            color=(0, 0, 1, 1),
-            text_color=(0, 0, 0, 1)
+            color = LABEL_BG,
+            text_color = LABEL_TEXT,
+            markup=True
         )
         self.window.add_widget(self.timeLabel)
 
         self.timeInput = TextInput(
             multiline = False,
-            font_size = 50,
+            font_size = 70,
             hint_text = "Weeks",
             size_hint=(0.44, 0.1),
             pos_hint={"x": 0.51, "top": 0.44},
             input_filter="int",
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
+            halign="center",
         )
+        self.timeInput.bind(size=self._update_text_padding)
         self.window.add_widget(self.timeInput)
         with self.timeInput.canvas.before:
             Color(0, 0, 0, 1)  # Black color for the border
@@ -3812,18 +3822,20 @@ class Registration6Window(Screen):
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.29},
             color=(1, 1, 1, 1),
-            text_color=(1, 0, 0, 1)
+            text_color=(0.718, 0.11, 0.11, 1),
+            markup=True
         )
         self.window.add_widget(self.errorMessage)
 
         self.nextPage = Button(
             text = "Next page",
             font_size = 50,
-            background_color = (1, 1, 1, 1),
-            # background_normal = "",
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.4, 0.1),
             pos_hint = {"x": 0.3, "top": 0.14},
-            on_press = self.next
+            on_press = self.next,
+            markup=True,
         )
         self.window.add_widget(self.nextPage)
 
@@ -3831,13 +3843,16 @@ class Registration6Window(Screen):
 
         self.add_widget(self.window)
 
+    def _update_text_padding(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
+
     def _update_rect(self, instance, value):
         self.rect.pos = instance.pos
         self.rect.size = instance.size
 
     def next(self, instance):
         if(self.timeInput.text == ""):
-            self.errorMessage.text = "Please fill in the field"
+            self.errorMessage.text = "[b]Please fill in the field[/b]"
         else:
             self.errorMessage.text = ""
             data["goal time"] = self.timeInput.text
