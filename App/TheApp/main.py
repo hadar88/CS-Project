@@ -341,6 +341,17 @@ def remove_food(day, meal, food_name):
     fat_today -= food["Fat"] * self_menu[day][meal][food_name] / 100
     protein_today -= food["Protein"] * self_menu[day][meal][food_name] / 100
 
+    if calories_today < 0:
+        calories_today = 0
+    if carbohydrates_today < 0:
+        carbohydrates_today = 0
+    if sugar_today < 0:
+        sugar_today = 0
+    if fat_today < 0:
+        fat_today = 0
+    if protein_today < 0:
+        protein_today = 0
+
     del self_menu[day][meal][food_name]
 
     data["calories today"] = round(calories_today, 2)
@@ -578,52 +589,62 @@ class MainWindow(Screen):
         self.window.add_widget(self.logo)
 
         self.personalDataButton = Button(
-            text = "Personal Data",
+            text = "[b]Personal Data[/b]",
             font_size = 100,
-            background_color = (1, 1, 1, 1),
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.9},
-            on_press = self.personalData
+            on_press = self.personalData,
+            markup=True
         )
         self.window.add_widget(self.personalDataButton)
 
         self.StatisticsButton = Button(
-            text = "Statistics",
+            text = "[b]Statistics[/b]",
             font_size = 100,
-            background_color = (1, 1, 1, 1),
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.725},
-            on_press = self.statistics
+            on_press = self.statistics,
+            markup=True
         )
         self.window.add_widget(self.StatisticsButton)
 
         self.MenuButton = Button(
-            text = "Menu",
+            text = "[b]Menu[/b]",
             font_size = 100,
-            background_color = (1, 1, 1, 1),
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.55},
-            on_press = self.menu
+            on_press = self.menu,
+            markup=True
         )
         self.window.add_widget(self.MenuButton)
 
         self.weeklyMenuButton = Button(
-            text = "WeeklyMenu",
+            text = "[b]WeeklyMenu[/b]",
             font_size = 100,
-            background_color = (1, 1, 1, 1),
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.375},
-            on_press = self.weeklyMenu
+            on_press = self.weeklyMenu,
+            markup=True
         )
         self.window.add_widget(self.weeklyMenuButton)
 
         self.dictionaryButton = Button(
-            text = "Dictionary",
+            text = "[b]Dictionary[/b]",
             font_size = 100,
-            background_color = (1, 1, 1, 1),
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.2},
-            on_press = self.dictionary
+            on_press = self.dictionary,
+            markup=True
         )
         self.window.add_widget(self.dictionaryButton)
 
@@ -685,12 +706,13 @@ class PersonalDataWindow(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "Personal Data",
+            text = "[b]Personal Data[/b]",
             font_size = 100,
             size_hint = (0.8, 0.05),
             pos_hint = {"x": 0.1, "top": 0.9},
             color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup=True
         )
         self.window.add_widget(self.title)
 
@@ -818,17 +840,19 @@ class PersonalDataWindow(Screen):
         self.activityupdateInput = Spinner(
             font_size=40,
             text=data["activity"],
-            values=("sedentary",
-            "lightly active",
-            "moderately active",
-            "active",
-            "extremely active"),
+            values=("Sedentary",
+            "Lightly active",
+            "Moderately active",
+            "Active",
+            "Extremely active"),
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 0.8 - 3/12},
             disabled=True,
             background_disabled_normal="",
-            background_color=(0.68, 0.68, 0.68, 1), 
-            disabled_color=(0.376, 0.376, 0.376, 1)  
+            disabled_color = SPINNER_TEXT,
+            background_color = SPINNER_BG,
+            color = SPINNER_TEXT,
+            option_cls = CustomSpinnerOption
         )
         self.window.add_widget(self.activityupdateInput)
 
@@ -842,11 +866,12 @@ class PersonalDataWindow(Screen):
 
         self.errorMessage = ColoredLabel(
             text = "",
-            font_size = 50,
+            font_size = 30,
             size_hint = (0.8, 0.06),
             pos_hint = {"x": 0.1, "top": 0.8 - 4/12},
             color=(1, 1, 1, 1),
-            text_color=(1, 0, 0, 1)
+            text_color=(0.718, 0.11, 0.11, 1),
+            markup=True
         )
         self.window.add_widget(self.errorMessage)
 
@@ -878,7 +903,7 @@ class PersonalDataWindow(Screen):
             self.weightupdateButton.background_normal = "vee.png"
             self.weightupdateInput.disabled = not self.weightupdateInput.disabled
         elif(self.weightupdateInput.text == "" or float(self.weightupdateInput.text) < 40): 
-            self.errorMessage.text = "Weight must be greater than 40 kg"
+            self.errorMessage.text = "[b]Weight must be greater than 40 kg[/b]"
         else:
             data["weight"] = self.weightupdateInput.text
             day = datetime.now().date().isoformat()
@@ -901,7 +926,7 @@ class PersonalDataWindow(Screen):
             self.heightupdateButton.background_normal = "vee.png"
             self.heightupdateInput.disabled = not self.heightupdateInput.disabled
         elif(self.heightupdateInput.text == "" or int(self.heightupdateInput.text) < 140 or int(self.heightupdateInput.text) > 250):
-            self.errorMessage.text = "Height must be between 140 and 250 cm"
+            self.errorMessage.text = "[b]Height must be between 140 and 250 cm[/b]"
         else:
             data["height"] = self.heightupdateInput.text
             day = datetime.now().date().isoformat()
@@ -923,7 +948,7 @@ class PersonalDataWindow(Screen):
             self.targetweightupdateButton.background_normal = "vee.png"
             self.targetweightupdateInput.disabled = not self.targetweightupdateInput.disabled
         elif(self.targetweightupdateInput.text == "" or int(self.targetweightupdateInput.text) < 40):
-            self.errorMessage.text = "Weight must be greater than 40 kg"
+            self.errorMessage.text = "[b]Weight must be greater than 40 kg[/b]"
         else:
             data["goal weight"] = self.targetweightupdateInput.text
             with open(DATA_PATH, "w") as file:
@@ -1000,12 +1025,13 @@ class StatisticsWindow(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "Statistics",
+            text = "[b]Statistics[/b]",
             font_size = 100,
             size_hint = (0.8, 0.05),
             pos_hint = {"x": 0.1, "top": 0.9},
             color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup=True
         )
         self.window.add_widget(self.title)
 
@@ -1196,12 +1222,13 @@ class MenuWindow(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "Menu",
+            text = "[b]Menu[/b]",
             font_size = 100,
             size_hint = (0.8, 0.05),
             pos_hint = {"x": 0.1, "top": 0.9},
             color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup=True
         )
         self.window.add_widget(self.title)
 
@@ -1211,9 +1238,9 @@ class MenuWindow(Screen):
             values=("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"),
             size_hint=(0.375, 0.05),
             pos_hint={"x": 0.1, "top": 0.8},
-            background_normal="",
-            background_color=(0.68, 0.68, 0.68, 1), 
-            color=(1, 1, 1, 1),
+            background_color = SPINNER_BG,
+            color = SPINNER_TEXT,
+            option_cls=CustomSpinnerOption
         )
         self.dayInput.bind(text=self._update_meal)
         self.window.add_widget(self.dayInput)
@@ -1224,9 +1251,9 @@ class MenuWindow(Screen):
             values=("Breakfast", "Lunch", "Dinner"),
             size_hint=(0.375, 0.05),
             pos_hint={"x": 0.525, "top": 0.8},
-            background_normal="",
-            background_color=(0.68, 0.68, 0.68, 1), 
-            color=(1, 1, 1, 1),
+            background_color = SPINNER_BG,
+            color = SPINNER_TEXT,
+            option_cls=CustomSpinnerOption
         )
         self.mealInput.bind(text=self._update_meal)
         self.window.add_widget(self.mealInput)
@@ -1258,7 +1285,8 @@ class MenuWindow(Screen):
         self.newMenuButton = Button(
             text = "New Menu",
             font_size = 40,
-            background_color = (1, 1, 1, 1),
+            background_color = BUTTON_BG,
+            color = BUTTON_TEXT,
             size_hint = (0.3, 0.05),
             pos_hint = {"x": 0.35, "top": 0.15},
             on_press = self.newMenu
@@ -1397,12 +1425,13 @@ class WeeklymenuWindow(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "Weekly Menu",
+            text = "[b]Weekly Menu[/b]",
             font_size = 100,
             size_hint = (0.8, 0.05),
             pos_hint = {"x": 0.1, "top": 0.9},
             color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup = True
         )
         self.window.add_widget(self.title)
 
@@ -1412,9 +1441,9 @@ class WeeklymenuWindow(Screen):
             values=("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"),
             size_hint=(0.375, 0.05),
             pos_hint={"x": 0.1, "top": 0.8},
-            background_normal="",
-            background_color=(0.68, 0.68, 0.68, 1), 
-            color=(1, 1, 1, 1),
+            background_color = SPINNER_BG,
+            color = SPINNER_TEXT,
+            option_cls=CustomSpinnerOption
         )
         self.dayInput.bind(text=self._update_meal)
         self.window.add_widget(self.dayInput)
@@ -1425,9 +1454,9 @@ class WeeklymenuWindow(Screen):
             values=("Breakfast", "Lunch", "Dinner"),
             size_hint=(0.375, 0.05),
             pos_hint={"x": 0.525, "top": 0.8},
-            background_normal="",
-            background_color=(0.68, 0.68, 0.68, 1), 
-            color=(1, 1, 1, 1),
+            background_color = SPINNER_BG,
+            color = SPINNER_TEXT,
+            option_cls=CustomSpinnerOption
         )
         self.mealInput.bind(text=self._update_meal)
         self.window.add_widget(self.mealInput)
@@ -1534,8 +1563,8 @@ class WeeklymenuWindow(Screen):
             self.window.add_widget(button)
 
         self.toastLabel = RoundedStencilView(
-            size_hint=(0.4, 0.06),
-            pos_hint={"x": 0.3, "top": 0.2},
+            size_hint=(0.6, 0.06),
+            pos_hint={"x": 0.2, "top": 0.2},
             opacity=0,
             disabled=True
         )
@@ -1543,8 +1572,8 @@ class WeeklymenuWindow(Screen):
         self.toast = ColoredLabel(
             text="tgrtgbrt",
             font_size=40,
-            size_hint=(0.4, 0.06),
-            pos_hint={"x": 0.3, "top": 0.2},
+            size_hint=(0.6, 0.06),
+            pos_hint={"x": 0.2, "top": 0.2},
             color=(1, 1, 1, 0),
             text_color=(1, 1, 1, 1),
             halign="center",
@@ -1783,12 +1812,13 @@ class DictionaryWindow(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "Dictionary",
+            text = "[b]Dictionary[/b]",
             font_size = 100,
             size_hint = (0.8, 0.05),
             pos_hint = {"x": 0.1, "top": 0.9},
             color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
+            text_color=(0, 0, 0, 1),
+            markup = True
         )
         self.window.add_widget(self.title)
 
