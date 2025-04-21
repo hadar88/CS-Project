@@ -30,6 +30,36 @@ SPINNER_TEXT = (0.784, 0.902, 0.788, 1)     # light green
 
 #######################################################################
 
+class Info(object):
+    def __init__(self, **kwargs):
+        super(Info, self).__init__(**kwargs)
+        self.username = ""
+        self.password = ""
+        self.weight = ""
+        self.height = ""
+        self.age = ""
+        self.gender = ""
+        self.activity = ""
+        self.cardio = ""
+        self.strength = ""
+        self.muscle = ""
+        self.goal = ""
+        self.vegetarian = ""
+        self.vegan = ""
+        self.egg_allergy = ""
+        self.milk_allergy = ""
+        self.nut_allergy = ""
+        self.fish_allergy = ""
+        self.sesame_allergy = ""
+        self.soy_allergy = ""
+        self.gluten_allergy = ""
+        self.goal_weight = ""
+        self.goal_time = ""
+        
+info = Info()
+
+#######################################################################
+
 DATA_PATH = "data.json"
 f = open(DATA_PATH, "r")
 data = json.load(f)
@@ -2784,11 +2814,9 @@ class CreateAccountWindow(Screen):
         else:
             self.userName.text = ""
             self.password.text = ""
-            data["username"] = username
-            data["password"] = password
-            data["logincompleted"] = False
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
+            info.username = username
+            info.password = password
+
             self.manager.current = "registration1"
             self.errorMassage.text = ""
 
@@ -3005,12 +3033,11 @@ class Registration1Window(Screen):
         elif(int(age_input) < 18 or int(age_input) > 100):
             self.errorMessage.text = "[b]Age must be between 18 and 100 years[/b]"
         else:
-            data["weight"] = weight_input
-            data["height"] = height_input
-            data["age"] = age_input
-            data["gender"] = gender_input
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
+            info.weight = weight_input
+            info.height = height_input
+            info.age = age_input
+            info.gender = gender_input
+
             self.manager.current = "registration2"
             self.errorMessage.text = ""
 
@@ -3193,12 +3220,11 @@ class Registration2Window(Screen):
         if(activity == "Level of Activity"):
             self.errorMessage.text = "[b]Please select a level of activity[/b]"
         else:
-            data["activity"] = activity
-            data["cardio"] = "1" if cardio else "0"
-            data["strength"] = "1" if strength else "0"
-            data["muscle"] = "1" if muscle else "0"
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
+            info.activity = activity
+            info.cardio = "1" if cardio else "0"
+            info.strength = "1" if strength else "0"
+            info.muscle = "1" if muscle else "0"
+
             self.manager.current = "registration3"
             self.errorMessage.text = ""
 
@@ -3344,18 +3370,17 @@ class Registration3Window(Screen):
         if(goal_input == "Goal" or diet_input == "Diet"):
             self.errorMessage.text = "[b]Please select a goal and diet[/b]"
         else:
-            data["goal"] = goal_input
+            info.goal = goal_input
             if(diet_input == "Vegetarian"):
-                data["vegetarian"] = "1"
-                data["vegan"] = "0"
+                info.vegetarian = "1"
+                info.vegan = "0"
             elif(diet_input == "Vegan"):
-                data["vegetarian"] = "1"
-                data["vegan"] = "1"
+                info.vegetarian = "1"
+                info.vegan = "1"
             else:
-                data["vegetarian"] = "0"
-                data["vegan"] = "0"
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
+                info.vegetarian = "0"
+                info.vegan = "0"
+
             self.manager.current = "registration4"
             self.errorMessage.text = ""
 
@@ -3577,16 +3602,14 @@ class Registration4Window(Screen):
         soy_allergy = self.soyAllergyInput.active
         gluten_allergy = self.glutenAllergyInput.active
 
-        data["eggs allergy"] = "1" if egg_allergy else "0"
-        data["milk allergy"] = "1" if milk_allergy else "0"
-        data["nuts allergy"] = "1" if nut_allergy else "0"
-        data["fish allergy"] = "1" if fish_allergy else "0"
-        data["sesame allergy"] = "1" if sesame_allergy else "0"
-        data["soy allergy"] = "1" if soy_allergy else "0"
-        data["gluten allergy"] = "1" if gluten_allergy else "0"
+        info.egg_allergy = "1" if egg_allergy else "0"
+        info.milk_allergy = "1" if milk_allergy else "0"
+        info.nut_allergy = "1" if nut_allergy else "0"
+        info.fish_allergy = "1" if fish_allergy else "0"
+        info.sesame_allergy = "1" if sesame_allergy else "0"
+        info.soy_allergy = "1" if soy_allergy else "0"
+        info.gluten_allergy = "1" if gluten_allergy else "0"
 
-        with open(DATA_PATH, "w") as file:
-            json.dump(data, file)
         self.manager.current = "registration5"
 
     def previous(self, instance):
@@ -3738,9 +3761,8 @@ class Registration5Window(Screen):
             self.errorMessage.text = "[b]Please fill in the field[/b]"
         else:
             self.errorMessage.text = ""
-            data["goal weight"] = self.goalweightInput.text
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
+            info.goal_weight = self.goalweightInput.text
+
             self.manager.current = "registration6"
 
     def previous(self, instance):
@@ -3749,7 +3771,7 @@ class Registration5Window(Screen):
 
     def on_enter(self):
         Window.bind(on_keyboard=self.on_keyboard)
-        idealBodyWeight = ideal_body_weight(int(data["height"]), data["gender"])
+        idealBodyWeight = ideal_body_weight(int(info.height), info.gender)
         self.suggestedWeight.text = "Suggested weight: " + str(idealBodyWeight) + " kg"
 
     def on_leave(self):
@@ -3898,9 +3920,33 @@ class Registration6Window(Screen):
             self.errorMessage.text = "[b]Please fill in the field[/b]"
         else:
             self.errorMessage.text = ""
-            data["goal time"] = self.timeInput.text
+            info.goal_time = self.timeInput.text
+
+            data["username"] = info.username
+            data["password"] = info.password
+            data["weight"] = info.weight
+            data["height"] = info.height
+            data["age"] = info.age
+            data["gender"] = info.gender
+            data["activity"] = info.activity
+            data["cardio"] = info.cardio
+            data["strength"] = info.strength
+            data["muscle"] = info.muscle
+            data["goal"] = info.goal
+            data["vegetarian"] = info.vegetarian
+            data["vegan"] = info.vegan
+            data["eggs allergy"] = info.egg_allergy
+            data["milk allergy"] = info.milk_allergy
+            data["nuts allergy"] = info.nut_allergy
+            data["fish allergy"] = info.fish_allergy
+            data["sesame allergy"] = info.sesame_allergy
+            data["soy allergy"] = info.soy_allergy
+            data["gluten allergy"] = info.gluten_allergy
+            data["goal weight"] = info.goal_weight
+            data["goal time"] = info.goal_time
             data["logincompleted"] = True
             data["menu_request_window"] = "main"
+            
             with open(DATA_PATH, "w") as file:
                 json.dump(data, file)
             self.resetData()
@@ -3912,7 +3958,7 @@ class Registration6Window(Screen):
 
     def on_enter(self):
         Window.bind(on_keyboard=self.on_keyboard)
-        self.time = time_of_change(int(data["weight"]), int(data["goal weight"]))
+        self.time = time_of_change(int(info.weight), int(info.goal_weight))
         self.suggestedTime.text = "Suggested time: " + str(self.time) + " weeks (" + f'{(self.time * 7 /30):.1f}' + " months)"
 
     def on_leave(self):
@@ -4103,7 +4149,6 @@ class LoadingWindow(Screen):
 class WindowManager(ScreenManager):
     def __init__(self, **kw):
         super(WindowManager, self).__init__(**kw)
-
         self.add_widget(LoginWindow(name = "login"))
         self.add_widget(LoadingWindow(name = "loading"))
         self.add_widget(MainWindow(name = "main"))
@@ -4154,4 +4199,5 @@ class MainApp(App):
                 json.dump(data, file)
 
 if __name__ == "__main__":
+    
     MainApp().run()
