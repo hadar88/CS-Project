@@ -1183,6 +1183,9 @@ class StatisticsWindow(Screen):
         self.fatLabel.text = fat_today + "/" + fat + " g Fat today"
         self.proteinLabel.text = protein_today + "/" + protein + " g Protein today"
 
+        self.get_image(history_weight, history_bmi, history_times)
+        
+    def get_image(self, history_weight, history_bmi, history_times):
         try:
             server_url = "https://cs-project-m5hy.onrender.com/"
 
@@ -1199,16 +1202,16 @@ class StatisticsWindow(Screen):
             if response.status_code == 200:
                 with open("weight_history.png", "wb") as file:
                     file.write(response.content)
+                self.graphWeight.source = "weight_history.png"
+                self.graphWeight.reload()
                     
             else:
                 print("Error:", response.json())
 
         except Exception as e:
-            print("Error: " + str(e))
+            print("Error: no internet connection")
+            self.get_image(history_weight, history_bmi, history_times)
 
-        self.graphWeight.source = "weight_history.png"
-        self.graphWeight.reload()
-        
     def on_leave(self):
         Window.unbind(on_keyboard=self.on_keyboard)
 
@@ -1799,14 +1802,15 @@ class WeeklymenuWindow(Screen):
 
             self.search_button.background_normal = "search.png"
 
-            for i, button in enumerate(self.result_buttons):
-                if i < len(words):
-                    button.text = words[i]
-                    button.opacity = 1
-                    button.disabled = False
-                else:
-                    button.opacity = 0
-                    button.disabled = True
+            if words: 
+                for i, button in enumerate(self.result_buttons):
+                    if i < len(words):
+                        button.text = words[i]
+                        button.opacity = 1
+                        button.disabled = False
+                    else:
+                        button.opacity = 0
+                        button.disabled = True
 
         Clock.schedule_once(cont, 0)
 
@@ -1828,7 +1832,7 @@ class WeeklymenuWindow(Screen):
                 print("Error:", response.json())
 
         except Exception as e:
-            print("Error: " + str(e))
+            print("Error: no internet connection")
 
 ################################
 
@@ -2593,14 +2597,15 @@ class DictionaryWindow(Screen):
 
             self.search_button.background_normal = "search.png"
 
-            for i, button in enumerate(self.result_buttons):
-                if i < len(words):
-                    button.text = words[i]
-                    button.opacity = 1
-                    button.disabled = False
-                else:
-                    button.opacity = 0
-                    button.disabled = True
+            if words:
+                for i, button in enumerate(self.result_buttons):
+                    if i < len(words):
+                        button.text = words[i]
+                        button.opacity = 1
+                        button.disabled = False
+                    else:
+                        button.opacity = 0
+                        button.disabled = True
 
         Clock.schedule_once(cont, 0)
 
@@ -2656,7 +2661,7 @@ class DictionaryWindow(Screen):
                 print("Error:", response.json())
 
         except Exception as e:
-            print("Error: " + str(e))
+            print("Error: no internet connection")
 
     def on_touch_down(self, touch):
         if (self.input.collide_point(*touch.pos) or 
@@ -4136,13 +4141,13 @@ class LoadingWindow(Screen):
                 data["menu"] = result
                 with open(DATA_PATH, "w") as file:
                     json.dump(data, file)
+                self.next()
             else:
                 print("Error: " + str(response.status_code))
 
         except Exception as e:
-            print("Error: " + str(e))
-
-        self.next()
+            print("Error: no internet connection")
+            self.build_menu()
 
 ################################
 
@@ -4199,5 +4204,4 @@ class MainApp(App):
                 json.dump(data, file)
 
 if __name__ == "__main__":
-    
     MainApp().run()
