@@ -533,16 +533,16 @@ class LoginWindow(Screen):
         )
         self.window.add_widget(self.loginButton)
 
-        self.errorMassage = ColoredLabel(
+        self.errorMessage = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 50,
             size_hint = (0.8, 0.05),
             pos_hint = {"x": 0.1, "top": 0.27},
             color=(1, 1, 1, 1),
             text_color=(0.718, 0.11, 0.11, 1),
             markup=True
         )
-        self.window.add_widget(self.errorMassage)
+        self.window.add_widget(self.errorMessage)
 
         self.createAccountButton = Button(
             text = "[b]Create Account[/b]",
@@ -580,16 +580,16 @@ class LoginWindow(Screen):
         username = self.userName.text
         password = self.password.text
         if(data["username"] == username and data["password"] == password and username != "" and password != ""):
-            self.errorMassage.text = ""
+            self.errorMessage.text = ""
             if(data["logincompleted"]):
                 self.manager.current = "main"
             else:
                 self.manager.current = "registration1"
         else:
-            self.errorMassage.text = "[b]Invalid username or password[/b]"
+            self.errorMessage.text = "[b]Invalid username or password[/b]"
 
     def createAccount(self, instance):
-        self.errorMassage.text = ""
+        self.errorMessage.text = ""
         self.manager.current = "createAccount"
         self.showpasswordInput.active = False
 
@@ -655,7 +655,7 @@ class MainWindow(Screen):
         self.window.add_widget(self.MenuButton)
 
         self.weeklyMenuButton = Button(
-            text = "[b]WeeklyMenu[/b]",
+            text = "[b]Weekly Menu[/b]",
             font_size = 100,
             background_color = BUTTON_BG,
             color = BUTTON_TEXT,
@@ -749,10 +749,10 @@ class PersonalDataWindow(Screen):
         self.weightLabel = ColoredLabel(
             text = "Weight: ",
             font_size = 50,
-            size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0.8},
-            color=(1, 1, 1, 1),
-            text_color=(0, 1, 0, 1)
+            size_hint = (0.32, 0.05),
+            pos_hint = {"x": 0.04, "top": 0.8},
+            color = LABEL_BG,
+            text_color = LABEL_TEXT
         )
         self.window.add_widget(self.weightLabel)
 
@@ -786,10 +786,10 @@ class PersonalDataWindow(Screen):
         self.heightLabel = ColoredLabel(
             text = "Height: ",
             font_size = 50,
-            size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0.8 - 1/12},
-            color=(1, 1, 1, 1),
-            text_color=(0, 1, 0, 1)
+            size_hint = (0.32, 0.05),
+            pos_hint = {"x": 0.04, "top": 0.8 - 1/12},
+            color = LABEL_BG,
+            text_color = LABEL_TEXT
         )
         self.window.add_widget(self.heightLabel)
 
@@ -823,10 +823,10 @@ class PersonalDataWindow(Screen):
         self.targetweightLabel = ColoredLabel(
             text = "Target weight: ",
             font_size = 50,
-            size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0.8 - 2/12},
-            color=(1, 1, 1, 1),
-            text_color=(0, 1, 0, 1)
+            size_hint = (0.32, 0.05),
+            pos_hint = {"x": 0.04, "top": 0.8 - 2/12},
+            color = LABEL_BG,
+            text_color = LABEL_TEXT
         )
         self.window.add_widget(self.targetweightLabel)
 
@@ -860,10 +860,10 @@ class PersonalDataWindow(Screen):
         self.activityLabel = ColoredLabel(
             text = "Activity: ",
             font_size = 50,
-            size_hint = (0.2, 0.05),
-            pos_hint = {"x": 0.15, "top": 0.8 - 3/12},
-            color=(1, 1, 1, 1),
-            text_color=(0, 1, 0, 1)
+            size_hint = (0.32, 0.05),
+            pos_hint = {"x": 0.04, "top": 0.8 - 3/12},
+            color = LABEL_BG,
+            text_color = LABEL_TEXT
         )
         self.window.add_widget(self.activityLabel)
 
@@ -896,7 +896,7 @@ class PersonalDataWindow(Screen):
 
         self.errorMessage = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 50,
             size_hint = (0.8, 0.06),
             pos_hint = {"x": 0.1, "top": 0.8 - 4/12},
             color=(1, 1, 1, 1),
@@ -1137,8 +1137,8 @@ class StatisticsWindow(Screen):
 
         self.graphWeight = Image(
             source = "",
-            size_hint = (0.6, 0.45),
-            pos_hint = {"x": 0.2, "top": 0.4},
+            size_hint = (0.6, 0.3),
+            pos_hint = {"x": 0.2, "top": 0.3},
         )
         self.window.add_widget(self.graphWeight)
 
@@ -1183,9 +1183,6 @@ class StatisticsWindow(Screen):
         self.fatLabel.text = fat_today + "/" + fat + " g Fat today"
         self.proteinLabel.text = protein_today + "/" + protein + " g Protein today"
 
-        self.get_image(history_weight, history_bmi, history_times)
-        
-    def get_image(self, history_weight, history_bmi, history_times):
         try:
             server_url = "https://cs-project-m5hy.onrender.com/"
 
@@ -1204,13 +1201,12 @@ class StatisticsWindow(Screen):
                     file.write(response.content)
                 self.graphWeight.source = "weight_history.png"
                 self.graphWeight.reload()
-                    
             else:
                 print("Error:", response.json())
 
         except Exception as e:
             print("Error: no internet connection")
-            self.get_image(history_weight, history_bmi, history_times)
+            Clock.schedule_once(lambda dt: self.on_enter(), 0.1)
 
     def on_leave(self):
         Window.unbind(on_keyboard=self.on_keyboard)
@@ -1501,8 +1497,10 @@ class WeeklymenuWindow(Screen):
             size_hint=(0.3, 0.06),
             pos_hint={"x": 0.1, "top": 0.725},
             background_normal="",
-            background_color=(0.95, 0.95, 0.95, 1)
+            background_color=(0.95, 0.95, 0.95, 1),
+            halign="center",
         )
+        self.input.bind(size=self._update_text_padding1)
         self.window.add_widget(self.input)
         with self.input.canvas.before:
             Color(0, 0, 0, 1)  
@@ -1528,7 +1526,9 @@ class WeeklymenuWindow(Screen):
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
             input_filter="float",
+            halign="center",
         )
+        self.amount_input.bind(size=self._update_text_padding2)
         self.window.add_widget(self.amount_input)
         with self.amount_input.canvas.before:
             Color(0, 0, 0, 1) 
@@ -1618,6 +1618,12 @@ class WeeklymenuWindow(Screen):
         ###
 
         self.add_widget(self.window)
+
+    def _update_text_padding1(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
+
+    def _update_text_padding2(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
 
     def _update_rect(self, instance, value):
         self.rect.pos = instance.pos
@@ -1884,7 +1890,9 @@ class DictionaryWindow(Screen):
             pos_hint={"x": 0.1, "top": 0.775},
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
+            halign="center"
         )
+        self.input.bind(size=self._update_text_padding1)
         self.window.add_widget(self.input)
         with self.input.canvas.before:
             Color(0, 0, 0, 1) 
@@ -2540,6 +2548,9 @@ class DictionaryWindow(Screen):
 
         self.add_widget(self.window)
 
+    def _update_text_padding1(self, instance, value):
+        instance.padding_y = [(instance.height - instance.line_height) / 2, 0]
+
     def _update_border(self, instance, value):
         self.border.rectangle = (instance.x, instance.y, instance.width, instance.height)
 
@@ -2763,16 +2774,16 @@ class CreateAccountWindow(Screen):
         )
         self.window.add_widget(self.showpasswordInput)
 
-        self.errorMassage = ColoredLabel(
+        self.errorMessage = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 50,
             size_hint = (0.8, 0.05),
             pos_hint = {"x": 0.1, "top": 0.27},
             color=(1, 1, 1, 1),
             text_color=(0.718, 0.11, 0.11, 1),
             markup=True,
         )
-        self.window.add_widget(self.errorMassage)
+        self.window.add_widget(self.errorMessage)
 
         self.submit = Button(
             text = "[b]Submit[/b]",
@@ -2802,7 +2813,7 @@ class CreateAccountWindow(Screen):
 
     def log_in(self, instance):
         self.manager.current = "login"
-        self.errorMassage.text = ""
+        self.errorMessage.text = ""
         self.showpasswordInput.active = False
 
     def on_enter(self):
@@ -2815,7 +2826,7 @@ class CreateAccountWindow(Screen):
         username = self.userName.text
         password = self.password.text
         if(username == "" or password == ""):
-            self.errorMassage.text = "[b]Cannot leave fields empty[/b]"
+            self.errorMessage.text = "[b]Cannot leave fields empty[/b]"
         else:
             self.userName.text = ""
             self.password.text = ""
@@ -2823,7 +2834,7 @@ class CreateAccountWindow(Screen):
             info.password = password
 
             self.manager.current = "registration1"
-            self.errorMassage.text = ""
+            self.errorMessage.text = ""
 
     def show_password(self, instance):
         self.password.password = not self.password.password
@@ -2986,7 +2997,7 @@ class Registration1Window(Screen):
 
         self.errorMessage = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 50,
             size_hint = (0.8, 0.06),
             pos_hint = {"x": 0.1, "top": 0.22},
             color=(1, 1, 1, 1),
@@ -3188,7 +3199,7 @@ class Registration2Window(Screen):
 
         self.errorMessage = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 50,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.255},
             color=(1, 1, 1, 1),
@@ -3340,7 +3351,7 @@ class Registration3Window(Screen):
 
         self.errorMessage = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 50,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.3},
             color=(1, 1, 1, 1),
@@ -3729,7 +3740,7 @@ class Registration5Window(Screen):
 
         self.errorMessage = ColoredLabel(
             text = "",
-            font_size = 30,
+            font_size = 50,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.29},
             color=(1, 1, 1, 1),
@@ -3949,7 +3960,6 @@ class Registration6Window(Screen):
             data["gluten allergy"] = info.gluten_allergy
             data["goal weight"] = info.goal_weight
             data["goal time"] = info.goal_time
-            data["logincompleted"] = True
             data["menu_request_window"] = "main"
             
             with open(DATA_PATH, "w") as file:
@@ -4073,6 +4083,10 @@ class LoadingWindow(Screen):
         self.rect.size = instance.size
 
     def next(self):
+        data["logincompleted"] = True
+        with open(DATA_PATH, "w") as file:
+            json.dump(data, file)
+
         if(data["menu_request_window"] == "main"):
             self.manager.current = "main"
         else:
@@ -4147,7 +4161,7 @@ class LoadingWindow(Screen):
 
         except Exception as e:
             print("Error: no internet connection")
-            self.build_menu()
+            Clock.schedule_once(lambda dt: self.build_menu(), 0.1)
 
 ################################
 
