@@ -1561,19 +1561,19 @@ class WeeklymenuWindow(Screen):
             button.bind(size=lambda instance, vlaue: setattr(instance, 'text_size', (instance.width - 15, None)))
             self.result_buttons.append(button)
             self.window.add_widget(button)
-
+        
         self.toastLabel = RoundedStencilView(
             size_hint=(0.6, 0.06),
-            pos_hint={"x": 0.2, "top": 0.2},
+            pos_hint={"x": 0.2, "top": 1},
             opacity=0,
             disabled=True
         )
         self.window.add_widget(self.toastLabel)
         self.toast = ColoredLabel(
-            text="tgrtgbrt",
+            text="",
             font_size=40,
             size_hint=(0.6, 0.06),
-            pos_hint={"x": 0.2, "top": 0.2},
+            pos_hint={"x": 0.2, "top": 1},
             color=(1, 1, 1, 0),
             text_color=(1, 1, 1, 1),
             halign="center",
@@ -1581,7 +1581,7 @@ class WeeklymenuWindow(Screen):
             disabled=True
         )
         self.window.add_widget(self.toast)
-        
+
         ###
 
         self.add_widget(self.window)
@@ -1652,12 +1652,22 @@ class WeeklymenuWindow(Screen):
         amount = self.amount_input.text
         food = self.temp_food
 
-        if (amount == ""):
+        if (amount == "" or food == ""):
+            self.input.text = ""
+            self.amount_input.text = ""
+            self.temp_food = ""
+            self.show_toast("Please fill in all fields")
+            Clock.schedule_once(lambda dt: self.hide_toast(), 2)
             return
         
         amount = float(amount)
 
-        if(amount <= 0 or food == ""):
+        if(amount <= 0):
+            self.input.text = ""
+            self.amount_input.text = ""
+            self.temp_food = ""
+            self.show_toast("Please enter a valid amount")
+            Clock.schedule_once(lambda dt: self.hide_toast(), 2)
             return
 
         day = self.dayInput.text.lower()
@@ -1665,11 +1675,17 @@ class WeeklymenuWindow(Screen):
 
         foods = data["self_menu"][day][meal]
         if len(foods) >= 10:
+            self.input.text = ""
+            self.amount_input.text = ""
+            self.temp_food = ""
             self.show_toast("You can only add 10 foods per meal")
             Clock.schedule_once(lambda dt: self.hide_toast(), 2)
             return
         
         if food in foods:
+            self.input.text = ""
+            self.amount_input.text = ""
+            self.temp_food = ""
             self.show_toast("Food already exists in the meal")
             Clock.schedule_once(lambda dt: self.hide_toast(), 2)
             return
@@ -1696,12 +1712,16 @@ class WeeklymenuWindow(Screen):
         self._update_meal(self.dayInput, self.dayInput.text)
         
     def hide_toast(self):
+        self.toastLabel.pos_hint = {"x": 0.2, "top": 1}
+        self.toast.pos_hint = {"x": 0.2, "top": 1}
         self.toastLabel.opacity = 0
         self.toastLabel.disabled = True
         self.toast.opacity = 0
         self.toast.disabled = True
 
     def show_toast(self, message):
+        self.toastLabel.pos_hint = {"x": 0.2, "top": 0.2}
+        self.toast.pos_hint = {"x": 0.2, "top": 0.2}
         self.toastLabel.opacity = 1
         self.toastLabel.disabled = False
         self.toast.opacity = 1
