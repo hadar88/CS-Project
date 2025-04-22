@@ -1839,6 +1839,8 @@ class WeeklymenuWindow(Screen):
 
         except Exception as e:
             print("Error: no internet connection")
+            self.show_toast("No internet connection. Retrying...")
+            Clock.schedule_once(lambda _: self.hide_toast(), 12)
 
 ################################
 
@@ -4074,9 +4076,46 @@ class LoadingWindow(Screen):
         )
         self.window.add_widget(self.loading)
 
+        self.toastLabel = RoundedStencilView(
+            size_hint=(0.6, 0.06),
+            pos_hint={"x": 0.2, "top": 1},
+            opacity=0,
+            disabled=True
+        )
+        self.window.add_widget(self.toastLabel)
+        self.toast = ColoredLabel(
+            text="",
+            font_size=40,
+            size_hint=(0.6, 0.06),
+            pos_hint={"x": 0.2, "top": 1},
+            color=(1, 1, 1, 0),
+            text_color=(1, 1, 1, 1),
+            halign="center",
+            opacity=0,
+            disabled=True
+        )
+        self.window.add_widget(self.toast)
+
         ###
 
         self.add_widget(self.window)
+
+    def hide_toast(self):
+        self.toastLabel.pos_hint = {"x": 0.2, "top": 1}
+        self.toast.pos_hint = {"x": 0.2, "top": 1}
+        self.toastLabel.opacity = 0
+        self.toastLabel.disabled = True
+        self.toast.opacity = 0
+        self.toast.disabled = True
+
+    def show_toast(self, message):
+        self.toastLabel.pos_hint = {"x": 0.2, "top": 0.2}
+        self.toast.pos_hint = {"x": 0.2, "top": 0.2}
+        self.toastLabel.opacity = 1
+        self.toastLabel.disabled = False
+        self.toast.opacity = 1
+        self.toast.disabled = False
+        self.toast.text = message
 
     def _update_rect(self, instance, value):
         self.rect.pos = instance.pos
@@ -4160,8 +4199,10 @@ class LoadingWindow(Screen):
                 print("Error: " + str(response.status_code))
 
         except Exception as e:
-            print("Error: no internet connection")
-            Clock.schedule_once(lambda dt: self.build_menu(), 0.1)
+            self.show_toast("No internet connection. Retrying...")
+            Clock.schedule_once(lambda _: self.hide_toast(), 3)
+            Clock.schedule_once(lambda dt: self.build_menu(), 4)
+
 
 ################################
 
