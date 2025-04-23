@@ -5,14 +5,14 @@ import json
 from torch.utils.data import DataLoader, Subset
 from tqdm import tqdm
 from make_dataset import MenusDataset, read_foods_tensor, FoodProperties as FP
-from menu_output_transform import transform2
+from menu_output_transform import transform2, check_menu
 import argparse
 
 import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 
-SPLIT = ["train", "val", "test"][2]
+SPLIT = ["train", "val", "test"][1]
 
 MODEL_VERSION = 1.0
 BATCH_SIZE = 512
@@ -57,7 +57,7 @@ def main():
 
     model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth"))
 
-    evaluate_transformer_on_random_sample(dataloader, model, device)
+    evaluate_on_random_sample(dataloader, model, device)
 
 class MenuGenerator(nn.Module):
     def __init__(self, food_vocab_size=223, hidden_dim=256):
@@ -229,7 +229,7 @@ def train_transformer_model(dataloader, model, criterion_food_id, other_criterio
         plt.savefig("loss_plot.png")
         # plt.show()
 
-def evaluate_transformer_on_random_sample(dataloader, model, device):
+def evaluate_on_random_sample(dataloader, model, device):
     model.eval()
     model.to(device)
 
@@ -252,21 +252,25 @@ def evaluate_transformer_on_random_sample(dataloader, model, device):
 
     pred_amount = pred_amount.squeeze(-1)
 
-    print("The model predicted:")
+    print("\nThe model predicted:")
     merged_pred = MenusDataset.merge_ids_and_amounts(pred_id, pred_amount)
     print(merged_pred)
-    print()
+    check_menu(merged_pred)
+    print("\nThe menu is in 'check_menu.json'")
 
-    # print("The ground truth was:")
     merged_y = MenusDataset.merge_ids_and_amounts(y_id, y_amount)
-    # print(merged_y)
-    # print()
 
-    print("Here's a comparison between the ground truth and the model's prediction:\n")
-    print("Ground truth:")
-    print(transform2(merged_y, data, device))
-    print("\nModel's prediction:")
-    print(transform2(merged_pred, data, device))
+    values = ["Calories", "Calories1", "Calories2", "Calories3", "Calories MSE", "Carbohydrate", 
+                "Sugars", "Fat", "Protein", "Fruit", "Vegetable", "Cheese", "Meat", "Cereal", 
+                "Vegetarian", "Vegan", "Contains eggs", "Contains milk", "Contains peanuts or nuts", 
+                "Contains fish", "Contains sesame", "Contains soy", "Contains gluten"]
+    print("\nComparison between the ground truth and the model's prediction:")
+    menu1 = transform2(merged_y, data, device)
+    menu2 = transform2(merged_pred, data, device)
+    print("\nGround truth vs Model's prediction")    
+    print("" + "-" * 30)
+    for i, (m1, m2) in enumerate(zip(menu1, menu2)):
+        print(f"{values[i]}: {m1.item():.0f} vs {m2.item():.0f}")
 
 if __name__ == "__main__":
     main()

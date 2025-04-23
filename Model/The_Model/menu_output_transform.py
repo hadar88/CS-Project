@@ -168,24 +168,37 @@ def transform2(menu: torch.Tensor, food_data, device, bound_fn=lambda x: x):
     # Make it require gradients at the end of all operations
     return output_final.requires_grad_(True).int()
 
-if __name__ == "__main__":
-    # Example usage
-
-    # menu_dict = {
-    #     "sunday": {"breakfast": {"1": 180, "2": 28, "3": 150, "4": 34, "5": 28}, "lunch": {"6": 113, "7": 94, "8": 38, "9": 16, "10": 14, "11": 15}, "dinner": {"12": 113, "13": 130}},
-    #     "monday": {"breakfast": {"14": 30, "1": 180, "15": 28, "16": 182, "17": 32}, "lunch": {"18": 113, "19": 14, "20": 30, "52": 30, "15": 28}, "dinner": {"6": 170, "21": 156}},
-    #     "tuesday": {"breakfast": {"22": 170, "23": 40, "5": 28, "24": 120, "25": 150}, "lunch": {"26": 170, "27": 28, "28": 45, "29": 155, "30": 130}, "dinner": {"31": 170, "32": 28, "33": 30, "7": 20, "34": 15, "35": 20}},
-    #     "wednesday": {"breakfast": {"22": 70, "36": 60, "37": 120, "38": 28, "39": 150, "30": 130}, "lunch": {"6": 170, "7": 94, "40": 40, "41": 40, "42": 40, "43": 15, "10": 14, "44": 2, "52": 30}, "dinner": {"26": 170, "45": 320}},
-    #     "thursday": {"breakfast": {"52": 30, "61": 100, "17": 16, "53": 240, "46": 30}, "lunch": {"47": 113, "27": 28, "48": 32, "35": 20, "33": 30, "3": 150, "15": 28}, "dinner": {"6": 113, "49": 100, "50": 14}},
-    #     "friday": {"breakfast": {"51": 30, "3": 56, "52": 30, "53": 60, "29": 155, "30": 130}, "lunch": {"6": 85, "28": 45, "22": 170, "55": 150}, "dinner": {"56": 170, "57": 120}},
-    #     "saturday": {"breakfast": {"58": 136, "59": 18, "60": 30, "42": 40, "2": 28, "3": 160, "53": 240, "4": 38, "61": 50}, "lunch": {"56": 170, "57": 120, "37": 120}, "dinner": {"6": 113, "63": 100, "62": 15}}
-    # }
-
+def check_menu(ten):
     foods = open(FOODS_DATA_PATH, "r")
     data = json.load(foods)
 
-    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    menu = menu_tensor_to_dict(ten)        
+    temp_menu = {}
+    for day in menu:
+        thisday = {}
+        for meal in menu[day]:
+            thismeal = {}
+            for food in menu[day][meal]:
+                amount = menu[day][meal][food]
+                food_id = food[:-2]
+                food_name = data[food_id]["Name"]
+                thismeal[food_name] = amount
+            thisday[meal] = thismeal
+        temp_menu[day] = thisday
 
+    with open("check_menu.json", "w") as f:
+        json.dump(temp_menu, f, indent=4)
+
+    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    # data = transform2(ten, data, device)
+    # values = ["Calories", "Calories1", "Calories2", "Calories3", "Calories MSE", "Carbohydrate", 
+    #             "Sugars", "Fat", "Protein", "Fruit", "Vegetable", "Cheese", "Meat", "Cereal", 
+    #             "Vegetarian", "Vegan", "Contains eggs", "Contains milk", "Contains peanuts or nuts", 
+    #             "Contains fish", "Contains sesame", "Contains soy", "Contains gluten"]
+    # for i, v in enumerate(data):
+    #     print(f"{values[i]}: {v.item():.0f}")
+
+if __name__ == "__main__":
     ten = torch.tensor([[[[195.0000,  72.8652],
           [ 70.0000,  82.1609],
           [ 20.0000,  67.9633],
@@ -422,34 +435,5 @@ if __name__ == "__main__":
           [  0.0000,   0.0000],
           [  0.0000,   0.0000],
           [  0.0000,   0.0000]]]])
-
-    menu = menu_tensor_to_dict(ten)        
-    temp_menu = {}
-
-    for day in menu:
-        thisday = {}
-
-        for meal in menu[day]:
-            thismeal = {}
-
-            for food in menu[day][meal]:
-                amount = menu[day][meal][food]
-                food_id = food[:-2]
-                food_name = data[food_id]["Name"]
-                thismeal[food_name] = amount
-
-            thisday[meal] = thismeal
-        
-        temp_menu[day] = thisday
-
-    with open("check_menu.json", "w") as f:
-        json.dump(temp_menu, f, indent=4)
-
-
-    # data = transform_batch2(ten, data, device)
-    # printing = ["Calories", "Calories1", "Calories2", "Calories3", "Calories MSE", "Carbohydrate", 
-    #             "Sugars", "Fat", "Protein", "Fruit", "Vegetable", "Cheese", "Meat", "Cereal", 
-    #             "Vegetarian", "Vegan", "Contains eggs", "Contains milk", "Contains peanuts or nuts", 
-    #             "Contains fish", "Contains sesame", "Contains soy", "Contains gluten"]
-    # for i, v in enumerate(data[0]):
-    #     print(f"{printing[i]}: {v.item():.0f}")
+    
+    check_menu(ten)
