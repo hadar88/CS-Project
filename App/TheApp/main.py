@@ -4152,20 +4152,6 @@ class LoadingWindow(Screen):
                                             vegetarian_temp, vegan_temp, egg_allergy_temp, milk_allergy_temp, nuts_allergy_temp,
                                             fish_allergy_temp, sesame_allergy_temp, soy_allergy_temp, gluten_allergy_temp)
 
-        today = datetime.now().date().isoformat()
-        bmi_temp = bmi(current_weight_temp, height_temp)
-
-        if data["history_times"] and today in data["history_times"]:
-            data["history_weight"] = data["history_weight"][:-1] + [float(current_weight_temp)]
-            data["history_bmi"] = data["history_bmi"][:-1] + [bmi_temp] 
-        else:
-            data["history_weight"] = data["history_weight"] + [float(current_weight_temp)]
-            data["history_bmi"] = data["history_bmi"] + [bmi_temp]
-            data["history_times"] = data["history_times"] + [today] 
-
-        with open(DATA_PATH, "w") as file:
-            json.dump(data, file)
-
         self.build_menu()
 
     def build_menu(self):
@@ -4266,6 +4252,17 @@ class LoadingWindow(Screen):
         data["history_bmi"] = []
         data["history_times"] = []
         data["last_visit_time"] = datetime.now().isoformat(timespec='minutes')
+
+        today = datetime.now().date().isoformat()
+        bmi_temp = bmi(int(info.weight), int(info.height))
+
+        if data["history_times"] and today in data["history_times"]:
+            data["history_weight"] = data["history_weight"][:-1] + [float(int(info.weight))]
+            data["history_bmi"] = data["history_bmi"][:-1] + [bmi_temp] 
+        else:
+            data["history_weight"] = data["history_weight"] + [float(int(info.weight))]
+            data["history_bmi"] = data["history_bmi"] + [bmi_temp]
+            data["history_times"] = data["history_times"] + [today] 
 
         with open(DATA_PATH, "w") as file:
             json.dump(data, file)
