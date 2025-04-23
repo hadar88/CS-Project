@@ -4014,34 +4014,7 @@ class Registration6Window(Screen):
         else:
             self.errorMessage.text = ""
             info.goal_time = self.timeInput.text
-
-            data["username"] = info.username
-            data["password"] = info.password
-            data["weight"] = info.weight
-            data["height"] = info.height
-            data["age"] = info.age
-            data["gender"] = info.gender
-            data["activity"] = info.activity
-            data["cardio"] = info.cardio
-            data["strength"] = info.strength
-            data["muscle"] = info.muscle
-            data["goal"] = info.goal
-            data["vegetarian"] = info.vegetarian
-            data["vegan"] = info.vegan
-            data["eggs allergy"] = info.egg_allergy
-            data["milk allergy"] = info.milk_allergy
-            data["nuts allergy"] = info.nut_allergy
-            data["fish allergy"] = info.fish_allergy
-            data["sesame allergy"] = info.sesame_allergy
-            data["soy allergy"] = info.soy_allergy
-            data["gluten allergy"] = info.gluten_allergy
-            data["goal weight"] = info.goal_weight
-            data["goal time"] = info.goal_time
             data["menu_request_window"] = "main"
-            
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
-            self.resetData()
             self.manager.current = "loading"
 
     def previous(self, instance):
@@ -4065,57 +4038,6 @@ class Registration6Window(Screen):
 
     def _update_border(self, instance, value):
         self.border.rectangle = (instance.x, instance.y, instance.width, instance.height)
-
-    def resetData(self):
-        data["calories today"] = 0
-        data["carbohydrates today"] = 0
-        data["sugar today"] = 0
-        data["fat today"] = 0
-        data["protein today"] = 0
-        data["self_menu"] = {
-            "sunday": {
-                "breakfast": {},
-                "lunch": {},
-                "dinner": {}
-            },
-            "monday": {
-                "breakfast": {},
-                "lunch": {},
-                "dinner": {}
-            },
-            "tuesday": {
-                "breakfast": {},
-                "lunch": {},
-                "dinner": {}
-            },
-            "wednesday": {
-                "breakfast": {},
-                "lunch": {},
-                "dinner": {}
-            },
-            "thursday": {
-                "breakfast": {},
-                "lunch": {},
-                "dinner": {}
-            },
-            "friday": {
-                "breakfast": {},
-                "lunch": {},
-                "dinner": {}
-            },
-            "saturday": {
-                "breakfast": {},
-                "lunch": {},
-                "dinner": {}
-            }
-        }
-        data["history_weight"] = []
-        data["history_bmi"] = []
-        data["history_times"] = []
-        data["last_visit_time"] = datetime.now().isoformat(timespec='minutes')
-
-        with open(DATA_PATH, "w") as file:
-            json.dump(data, file)
 
 ################################
 
@@ -4202,6 +4124,7 @@ class LoadingWindow(Screen):
             json.dump(data, file)
 
         if(data["menu_request_window"] == "main"):
+            self.resetData()
             self.manager.current = "main"
         else:
             self.manager.current = "menu"
@@ -4277,6 +4200,79 @@ class LoadingWindow(Screen):
             self.show_toast("No internet connection. Retrying...")
             Clock.schedule_once(lambda _: self.hide_toast(), 3)
             Clock.schedule_once(lambda dt: self.build_menu(), 4)
+
+    def resetData(self):
+        data["username"] = info.username
+        data["password"] = info.password
+        data["weight"] = info.weight
+        data["height"] = info.height
+        data["age"] = info.age
+        data["gender"] = info.gender
+        data["activity"] = info.activity
+        data["cardio"] = info.cardio
+        data["strength"] = info.strength
+        data["muscle"] = info.muscle
+        data["goal"] = info.goal
+        data["vegetarian"] = info.vegetarian
+        data["vegan"] = info.vegan
+        data["eggs allergy"] = info.egg_allergy
+        data["milk allergy"] = info.milk_allergy
+        data["nuts allergy"] = info.nut_allergy
+        data["fish allergy"] = info.fish_allergy
+        data["sesame allergy"] = info.sesame_allergy
+        data["soy allergy"] = info.soy_allergy
+        data["gluten allergy"] = info.gluten_allergy
+        data["goal weight"] = info.goal_weight
+        data["goal time"] = info.goal_time
+        data["calories today"] = 0
+        data["carbohydrates today"] = 0
+        data["sugar today"] = 0
+        data["fat today"] = 0
+        data["protein today"] = 0
+        data["self_menu"] = {
+            "sunday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            },
+            "monday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            },
+            "tuesday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            },
+            "wednesday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            },
+            "thursday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            },
+            "friday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            },
+            "saturday": {
+                "breakfast": {},
+                "lunch": {},
+                "dinner": {}
+            }
+        }
+        data["history_weight"] = []
+        data["history_bmi"] = []
+        data["history_times"] = []
+        data["last_visit_time"] = datetime.now().isoformat(timespec='minutes')
+
+        with open(DATA_PATH, "w") as file:
+            json.dump(data, file)
 
 ################################
 

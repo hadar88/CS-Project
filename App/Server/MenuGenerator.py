@@ -1,37 +1,45 @@
 import torch.nn as nn
 
 class MenuGenerator(nn.Module):
-    def __init__(self):
+    def __init__(self, food_vocab_size=223, hidden_dim=256):
         super(MenuGenerator, self).__init__()
 
-        self.emb_dim = 16
-
-        self.fc1 = nn.Linear(14, 128)
-        self.fc2 = nn.Linear(128, 256)
-
-        self.transformer = nn.TransformerEncoder(
-            nn.TransformerEncoderLayer(d_model=256, nhead=8, batch_first=True),
-            num_layers=2
+        self.input_encoder = nn.Sequential(
+            nn.Linear(14, 128),
+            nn.ReLU(),
+            nn.BatchNorm1d(128),
+            nn.Linear(128, hidden_dim),
+            nn.ReLU(),
         )
 
-        self.food_fc = nn.Linear(256, 7 * 3 * 10 * 223)
-        self.amount_fc = nn.Linear(256, 7 * 3 * 10)
+        self.slot_proj = nn.Linear(hidden_dim, 210 * hidden_dim)
 
-        self.activation = nn.ReLU()
+        self.slot_decoder = nn.Sequential(
+            nn.Linear(hidden_dim, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+        )
+
+        self.food_id_head = nn.Linear(64, food_vocab_size)
+        self.amount_head = nn.Sequential(
+            nn.Linear(64, 1),
+            nn.ReLU()
+        )
 
     def forward(self, x):
-        x = self.activation(self.fc1(x))
-        x = self.activation(self.fc2(x))
+        batch_size = x.size(0)
 
-        x = x.unsqueeze(0) 
-        x = self.transformer(x)
-        x = x.squeeze(0)
+        latent = self.input_encoder(x)  # (batch, hidden_dim)
 
-        food_logits = self.food_fc(x)
-        food_logits = food_logits.view(-1, 7, 3, 10, 223)
+        slot_input = self.slot_proj(latent).view(batch_size, 210, -1)  # (batch, 210, hidden_dim)
 
-        amount = self.amount_fc(x)
-        amount = amount.view(-1, 7, 3, 10, 1)
-        amount = self.activation(amount)
+        decoded = self.slot_decoder(slot_input)  # (batch, 210, 64)
 
-        return food_logits, amount
+        food_logits = self.food_id_head(decoded)  # (batch, 210, 223)
+        amounts = self.amount_head(decoded).squeeze(-1)  # (batch, 210)
+
+        food_logits = food_logits.view(batch_size, 7, 3, 10, 223)
+        amounts = amounts.view(batch_size, 7, 3, 10)
+
+        return food_logits, amounts
