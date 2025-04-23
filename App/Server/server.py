@@ -171,7 +171,7 @@ class Server:
         elif bmi_val < 18.5:
             return ("Underweight", (0, 1, 0.9, 1))  # cyan
         elif bmi_val < 25:
-            return ("Healthy", (0, 1, 0, 1))  # green
+            return ("Healthy", (0, 0.5, 0, 1))  # green
         elif bmi_val < 30:
             return ("Overweight", (1, 0.9, 0, 1))  # yellow
         elif bmi_val < 40:
