@@ -4119,10 +4119,6 @@ class LoadingWindow(Screen):
         self.rect.size = instance.size
 
     def next(self):
-        data["logincompleted"] = True
-        with open(DATA_PATH, "w") as file:
-            json.dump(data, file)
-
         if(data["menu_request_window"] == "main"):
             self.resetData()
             self.manager.current = "main"
@@ -4130,37 +4126,31 @@ class LoadingWindow(Screen):
             self.manager.current = "menu"
 
     def on_enter(self):
-        current_weight_temp = int(data["weight"])
-        goal_weight_temp = int(data["goal weight"])
-        goal_time_temp = int(data["goal time"])
-        height_temp = int(data["height"])
-        age_temp = int(data["age"])
-        gender_temp = data["gender"]
-        goal_temp = data["goal"]
-        cardio_temp = data["cardio"]
-        strength_temp = data["strength"]
-        muscle_temp = data["muscle"]
-        activity_temp = data["activity"]
-        vegetarian_temp = data["vegetarian"]
-        vegan_temp = data["vegan"]
-        egg_allergy_temp = data["eggs allergy"]
-        milk_allergy_temp = data["milk allergy"]
-        nuts_allergy_temp = data["nuts allergy"]
-        fish_allergy_temp = data["fish allergy"]
-        sesame_allergy_temp = data["sesame allergy"]
-        soy_allergy_temp = data["soy allergy"]
-        gluten_allergy_temp = data["gluten allergy"]
+        current_weight_temp = int(info.weight)
+        goal_weight_temp = int(info.goal_weight)
+        goal_time_temp = int(info.goal_time)
+        height_temp = int(info.height)
+        age_temp = int(info.age)
+        gender_temp = info.gender
+        goal_temp = info.goal
+        cardio_temp = info.cardio
+        strength_temp = info.strength
+        muscle_temp = info.muscle
+        activity_temp = info.activity
+        vegetarian_temp = info.vegetarian
+        vegan_temp = info.vegan
+        egg_allergy_temp = info.egg_allergy
+        milk_allergy_temp = info.milk_allergy
+        nuts_allergy_temp = info.nut_allergy
+        fish_allergy_temp = info.fish_allergy
+        sesame_allergy_temp = info.sesame_allergy
+        soy_allergy_temp = info.soy_allergy
+        gluten_allergy_temp = info.gluten_allergy
 
         self.vector = get_vector(current_weight_temp, goal_weight_temp, goal_time_temp, height_temp, age_temp,
                                             gender_temp, goal_temp, cardio_temp, strength_temp, muscle_temp, activity_temp,
                                             vegetarian_temp, vegan_temp, egg_allergy_temp, milk_allergy_temp, nuts_allergy_temp,
                                             fish_allergy_temp, sesame_allergy_temp, soy_allergy_temp, gluten_allergy_temp)
-
-        data["calories"] = self.vector["calories"]
-        data["carbohydrate"] = self.vector["carbohydrates"]
-        data["sugar"] = self.vector["sugar"]
-        data["fat"] = self.vector["fat"]
-        data["protein"] = self.vector["protein"]
 
         today = datetime.now().date().isoformat()
         bmi_temp = bmi(current_weight_temp, height_temp)
@@ -4202,6 +4192,7 @@ class LoadingWindow(Screen):
             Clock.schedule_once(lambda dt: self.build_menu(), 4)
 
     def resetData(self):
+        data["logincompleted"] = True
         data["username"] = info.username
         data["password"] = info.password
         data["weight"] = info.weight
@@ -4224,6 +4215,11 @@ class LoadingWindow(Screen):
         data["gluten allergy"] = info.gluten_allergy
         data["goal weight"] = info.goal_weight
         data["goal time"] = info.goal_time
+        data["calories"] = self.vector["calories"]
+        data["carbohydrate"] = self.vector["carbohydrates"]
+        data["sugar"] = self.vector["sugar"]
+        data["fat"] = self.vector["fat"]
+        data["protein"] = self.vector["protein"]
         data["calories today"] = 0
         data["carbohydrates today"] = 0
         data["sugar today"] = 0
