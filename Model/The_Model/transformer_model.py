@@ -12,7 +12,7 @@ import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 
-SPLIT = ["train", "val", "test"][0]
+SPLIT = ["train", "val", "test"][2]
 
 MODEL_VERSION = 1.0
 BATCH_SIZE = 512
@@ -55,7 +55,9 @@ def main():
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
         print(f"Model saved as saved_models/model_v{MODEL_VERSION}.pth")
 
-        evaluate_transformer_on_random_sample(dataloader, model, device)
+    model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth"))
+
+    evaluate_transformer_on_random_sample(dataloader, model, device)
 
 class MenuGenerator(nn.Module):
     def __init__(self, food_vocab_size=223, hidden_dim=256):
