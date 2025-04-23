@@ -149,7 +149,6 @@ def get_binary_value(x, data, category: FP):
         dim=0,
     )
 
-
 # ---- Model Training --------- #
 
 def train_model(dataloader, model, foods_criterions: list, amounts_criterions: list, other_criterions: list, optimizer, epochs, device, plot_loss=True):
