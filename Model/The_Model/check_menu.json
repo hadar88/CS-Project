@@ -1,180 +1,180 @@
 {
     "sunday": {
         "breakfast": {
-            "Blueberries, raw": 73.93572235107422,
-            "Yogurt, coconut milk": 242.1307373046875,
-            "Vegan cheese": 30.379045486450195
+            "Blueberries, raw": 74.92652130126953,
+            "Yogurt, coconut milk": 243.1427764892578,
+            "Vegan cheese": 28.675395965576172
         },
         "lunch": {
-            "Pepper, sweet, red, raw": 120.66480255126953,
-            "Peach, raw": 145.75714111328125,
-            "Walnut": 49.58414840698242,
-            "Tofu": 84.32493591308594,
-            "Vegan mayonnaise": 14.511157035827637,
-            "Tortilla, corn": 60.01233673095703
+            "Egg substitute, omelet, scrambled, or fried, fat added": 119.89788818359375,
+            "Peach, raw": 148.20004272460938,
+            "Walnut": 48.12676239013672,
+            "Tofu": 83.22898864746094,
+            "Vegan mayonnaise": 16.034093856811523,
+            "Tortilla, corn": 58.41743469238281
         },
         "dinner": {
-            "Asparagus, raw": 93.94049072265625,
-            "Olive oil": 15.083803176879883,
-            "Vegan pesto sauce": 15.722246170043945,
-            "Ice cream, lactose free": 172.9461669921875,
-            "Pasta, gluten free": 196.0135498046875,
-            "Vegan burger patty, no bun": 88.72222900390625
+            "Asparagus, raw": 87.63571166992188,
+            "Olive oil": 15.368850708007812,
+            "Vegan pesto sauce": 16.60032844543457,
+            "Ice cream, lactose free": 172.41268920898438,
+            "Pasta, gluten free": 199.0283966064453,
+            "Vegan burger patty, no bun": 87.20006561279297
         }
     },
     "monday": {
         "breakfast": {
-            "Avocado, raw": 92.8801040649414,
-            "Cherries, raw": 88.99666595458984,
-            "Almonds, NFS": 35.148658752441406,
-            "Egg substitute, omelet, scrambled, or fried, fat added": 48.440860748291016,
-            "Bread, gluten free, toasted": 40.431880950927734
+            "Avocado, raw": 102.07811737060547,
+            "Cherries, raw": 88.96092987060547,
+            "Almonds, NFS": 35.687660217285156,
+            "Egg substitute, omelet, scrambled, or fried, fat added": 50.394500732421875,
+            "Bread, gluten free, toasted": 37.85347366333008
         },
         "lunch": {
-            "Black beans, NFS": 121.14998626708984,
-            "Corn, canned, cooked, no added fat": 48.13855743408203,
-            "Salsa, NFS": 60.63508987426758,
-            "Guacamole, NFS": 59.185401916503906,
-            "Carrots, raw": 70.9502182006836,
-            "Hummus, plain": 62.07141876220703,
-            "Vegan cheese": 31.21942901611328,
-            "Tortilla, corn": 54.62519836425781
+            "Black beans, NFS": 122.24659729003906,
+            "Corn, canned, cooked, no added fat": 49.79219055175781,
+            "Salsa, NFS": 58.347110748291016,
+            "Guacamole, NFS": 57.003902435302734,
+            "Carrots, raw": 75.6024398803711,
+            "Hummus, plain": 57.41004943847656,
+            "Vegan cheese": 27.243383407592773,
+            "Tortilla, corn": 58.787811279296875
         },
         "dinner": {
-            "Zucchini, pickled": 116.39402770996094,
-            "Potato, french fries, NFS": 114.18511962890625,
-            "Olive oil": 16.845823287963867,
-            "Ketchup": 12.13950252532959,
-            "Chocolate chips": 54.494773864746094,
-            "Seitan": 155.5155029296875
+            "Zucchini, pickled": 120.45555114746094,
+            "Potato, french fries, NFS": 110.2275161743164,
+            "Olive oil": 14.019204139709473,
+            "Ketchup": 14.923598289489746,
+            "Chocolate chips": 48.4680290222168,
+            "Tofu": 158.3956298828125
         }
     },
     "tuesday": {
         "breakfast": {
-            "Sugar, cinnamon": 233.45516967773438,
-            "Peanut butter": 18.512805938720703,
-            "Blueberries, raw": 69.56697082519531,
-            "Bread, gluten free, toasted": 60.71571350097656,
-            "Almonds, NFS": 35.76689529418945
+            "Sugar, cinnamon": 239.9641571044922,
+            "Peanut butter": 13.50855541229248,
+            "Blueberries, raw": 72.98467254638672,
+            "Mango, dried": 60.17240905761719,
+            "Almonds, NFS": 35.3886833190918
         },
         "lunch": {
-            "Avocado, raw": 50.040306091308594,
-            "Tomatoes, raw": 49.86541748046875,
-            "Hummus, plain": 60.52731704711914,
-            "Tofu": 110.93173217773438,
-            "Vegan cheese": 27.97246551513672,
-            "Bread, gluten free, toasted": 58.92143249511719
+            "Avocado, raw": 50.18116760253906,
+            "Tomatoes, raw": 48.039405822753906,
+            "Hummus, plain": 60.002140045166016,
+            "Tofu": 114.72606658935547,
+            "Vegan cheese": 27.442134857177734,
+            "Bread, gluten free, toasted": 61.97297668457031
         },
         "dinner": {
-            "Salsa, NFS": 62.101051330566406,
-            "Date": 39.27924728393555,
-            "Almond butter": 13.610834121704102,
-            "Vegan cheese": 27.505075454711914,
-            "Tortilla, corn": 58.4805793762207,
-            "Tofu": 82.46896362304688
+            "Salsa, NFS": 61.38750457763672,
+            "Date": 37.78765106201172,
+            "Almond butter": 15.173608779907227,
+            "Vegan cheese": 26.484786987304688,
+            "Tortilla, corn": 59.54568099975586,
+            "Tofu": 84.49217987060547
         }
     },
     "wednesday": {
         "breakfast": {
-            "Peanut butter": 29.01753807067871,
-            "Banana, raw": 116.19834899902344,
-            "Raspberries, raw": 78.5673828125,
-            "Yogurt, Greek, whole milk, plain": 241.15016174316406,
-            "Bread, gluten free, toasted": 40.5262336730957
+            "Peanut butter": 30.099365234375,
+            "Banana, raw": 120.0771484375,
+            "Raspberries, raw": 77.79940795898438,
+            "Yogurt, coconut milk": 244.84991455078125,
+            "Bread, gluten free, toasted": 39.596744537353516
         },
         "lunch": {
-            "Chickpea": 119.92191314697266,
-            "Olives, NFS": 56.97486114501953,
-            "Tomatoes, raw": 49.6077880859375,
-            "Cucumber, raw": 49.29517364501953,
-            "Vinaigrette": 29.831268310546875,
-            "Banana chips": 49.62063980102539,
-            "Guacamole, NFS": 60.438377380371094,
-            "Vegan cheese": 28.49093246459961,
-            "Bread, gluten free, toasted": 45.12879180908203
+            "Chickpea": 121.2215347290039,
+            "Olives, NFS": 59.12840270996094,
+            "Tomatoes, raw": 50.323829650878906,
+            "Cucumber, raw": 49.723388671875,
+            "Vinaigrette": 30.104162216186523,
+            "Banana chips": 48.75157928466797,
+            "Guacamole, NFS": 59.92738342285156,
+            "Vegan cheese": 27.999988555908203,
+            "Bread, gluten free, toasted": 48.72956848144531
         },
         "dinner": {
-            "Sweet potato, baked, NS as to fat": 148.57911682128906,
-            "Broccoli, raw": 73.36566162109375,
-            "Olive oil": 14.667478561401367,
-            "Dark chocolate": 28.930274963378906,
-            "Popcorn, NFS": 31.591115951538086,
-            "Vegan burger patty, no bun": 110.33692169189453
+            "Sweet potato, baked, NS as to fat": 151.16383361816406,
+            "Broccoli, raw": 76.36595153808594,
+            "Olive oil": 15.098730087280273,
+            "Dark chocolate": 29.4175968170166,
+            "Popcorn, NFS": 29.665002822875977,
+            "Vegan burger patty, no bun": 109.65333557128906
         }
     },
     "thursday": {
         "breakfast": {
-            "Apple, raw": 179.60336303710938,
-            "Peanut butter": 19.14917755126953,
-            "Vegan cream cheese": 43.406375885009766,
-            "Bread, gluten free, toasted": 76.70780944824219,
-            "Vegan burger patty, no bun": 28.011659622192383
+            "Apple, raw": 178.5939483642578,
+            "Peanut butter": 14.701842308044434,
+            "Vegan cream cheese": 44.92848205566406,
+            "Bread, gluten free": 75.58032989501953,
+            "Vegan burger patty, no bun": 28.57666015625
         },
         "lunch": {
-            "Yogurt, Greek, whole milk, plain": 96.35372161865234,
-            "Mango, dried": 60.81501007080078,
-            "Almonds, NFS": 34.73537063598633,
-            "Egg substitute, omelet, scrambled, or fried, fat added": 101.47787475585938,
-            "Bread, gluten free, toasted": 75.63467407226562
+            "Avocado, raw": 98.73583984375,
+            "Mango, dried": 59.51901626586914,
+            "Almonds, NFS": 34.31727981567383,
+            "Egg substitute, omelet, scrambled, or fried, fat added": 98.93839263916016,
+            "Bread, gluten free, toasted": 78.01898193359375
         },
         "dinner": {
-            "Zucchini, pickled": 117.1341323852539,
-            "Olive oil": 20.152118682861328,
-            "Vegan cheese": 32.23411560058594,
-            "Ice cream, lactose free": 241.0044708251953,
-            "Pasta, gluten free": 468.66522216796875
+            "Zucchini, pickled": 119.57774353027344,
+            "Olive oil": 13.9088716506958,
+            "Vegan cheese": 28.671825408935547,
+            "Ice cream, lactose free": 244.3753204345703,
+            "Pasta, gluten free": 492.4259033203125
         }
     },
     "friday": {
         "breakfast": {
-            "Cereal, granola": 28.56255340576172,
-            "Blueberries, raw": 73.20178985595703,
-            "Hummus, plain": 59.21436309814453,
-            "Yogurt, coconut milk": 241.76736450195312,
-            "Bread, gluten free, toasted": 51.49205017089844
+            "Cereal, granola": 27.748653411865234,
+            "Blueberries, raw": 75.87809753417969,
+            "Hummus, plain": 58.7238655090332,
+            "Yogurt, coconut milk": 243.83245849609375,
+            "Bread, gluten free": 50.29612350463867
         },
         "lunch": {
-            "Mustard": 15.826616287231445,
-            "Tomatoes, raw": 44.02626037597656,
-            "Carrots, raw": 79.067626953125,
-            "Nectarine, raw": 150.98709106445312,
-            "Walnut": 49.174171447753906,
-            "Bread, gluten free, toasted": 81.70329284667969,
-            "Tofu": 112.0455322265625
+            "Mustard": 16.972517013549805,
+            "Tomatoes, raw": 49.851531982421875,
+            "Carrots, raw": 73.32115173339844,
+            "Nectarine, raw": 151.3964080810547,
+            "Walnut": 49.544166564941406,
+            "Bread, gluten free": 79.28683471679688,
+            "Tofu": 115.49068450927734
         },
         "dinner": {
-            "Rice noodles, cooked": 196.82887268066406,
-            "Tofu": 85.2968521118164,
-            "Snowpeas, raw": 74.4845962524414,
-            "Peanut sauce": 28.607318878173828,
-            "Almond milk, unsweetened": 240.93148803710938,
-            "Cookie, gluten free": 52.55242156982422
+            "Rice noodles, cooked": 200.9812469482422,
+            "Tofu": 85.91876983642578,
+            "Snowpeas, raw": 75.54806518554688,
+            "Peanut sauce": 31.042865753173828,
+            "Almond milk, unsweetened": 239.0293426513672,
+            "Cookie, gluten free": 50.1823844909668
         }
     },
     "saturday": {
         "breakfast": {
-            "Avocado, raw": 92.46778106689453,
-            "Cucumber, raw": 42.31655502319336,
-            "Egg substitute, omelet, scrambled, or fried, fat added": 48.34434509277344,
-            "Bread, gluten free": 37.4559326171875
+            "Avocado, raw": 97.59089660644531,
+            "Cucumber, raw": 39.11214828491211,
+            "Egg substitute, omelet, scrambled, or fried, fat added": 49.82707977294922,
+            "Bread, gluten free": 39.73737716674805
         },
         "lunch": {
-            "Hummus, plain": 59.77430725097656,
-            "Lettuce, raw": 32.47725296020508,
-            "Tomatoes, raw": 31.585573196411133,
-            "Cucumber, raw": 31.207473754882812,
-            "Olives, NFS": 62.47189712524414,
-            "Popcorn, NFS": 59.16373825073242,
-            "Vegan cheese": 27.501628875732422,
-            "Tortilla, corn": 56.376686096191406
+            "Hummus, plain": 58.0658073425293,
+            "Lettuce, raw": 33.42315673828125,
+            "Tomatoes, raw": 32.74159622192383,
+            "Cucumber, raw": 32.70584487915039,
+            "Olives, NFS": 60.84295654296875,
+            "Popcorn, NFS": 59.05714416503906,
+            "Vegan cheese": 28.456581115722656,
+            "Tortilla, corn": 56.69953155517578
         },
         "dinner": {
-            "Rice, brown, cooked, NS as to fat": 199.1089324951172,
-            "Black beans, NFS": 78.13822174072266,
-            "Guacamole, NFS": 58.51163864135742,
-            "Salsa, NFS": 59.49087905883789,
-            "Chocolate chips": 61.3491325378418,
-            "Tofu": 83.52813720703125
+            "Rice, brown, cooked, NS as to fat": 200.68031311035156,
+            "Black beans, NFS": 80.84982299804688,
+            "Guacamole, NFS": 56.02176284790039,
+            "Salsa, NFS": 60.49116516113281,
+            "Chocolate chips": 57.91563034057617,
+            "Tofu": 82.26441192626953
         }
     }
 }

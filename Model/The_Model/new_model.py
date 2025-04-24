@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 3
+MODEL_VERSION = 1.0
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -40,19 +40,19 @@ def main():
     if split == "train":
         # Initialize the model parameters
         optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
-        foods_criterions = [nn.CrossEntropyLoss()]
+        foods_criterions = [nn.CrossEntropyLoss(), AllergensLoss(device)]
         amounts_criterions = [nn.MSELoss(), AmountsPerMealLoss()]
         other_criterions = []
 
         # Train the model
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 5000, device, True)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 1000, device, True)
         
         # Save the model
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
         print(f"Model saved as saved_models/model_v{MODEL_VERSION}.pth")
     elif split == "val" or split == "test":
         # Load the model and evaluate
-        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}_best.pth"))
+        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth"))
         evaluate_on_random_sample(dataloader, model, device)
 
 # ------ Model --------- #
