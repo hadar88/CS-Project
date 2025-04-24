@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 2.0
+MODEL_VERSION = 3
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -40,19 +40,19 @@ def main():
     if split == "train":
         # Initialize the model parameters
         optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
-        foods_criterions = [nn.CrossEntropyLoss(), AllergensLoss(device)]
-        amounts_criterions = [nn.MSELoss()]
+        foods_criterions = [nn.CrossEntropyLoss()]
+        amounts_criterions = [nn.MSELoss(), AmountsPerMealLoss()]
         other_criterions = []
 
         # Train the model
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 1000, device, True)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 5000, device, True)
         
         # Save the model
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
         print(f"Model saved as saved_models/model_v{MODEL_VERSION}.pth")
     elif split == "val" or split == "test":
         # Load the model and evaluate
-        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth"))
+        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}_best.pth"))
         evaluate_on_random_sample(dataloader, model, device)
 
 # ------ Model --------- #
@@ -149,6 +149,20 @@ def get_binary_value(x, data, category: FP):
         dim=0,
     )
 
+class AmountsPerMealLoss(nn.Module):
+    def __init__(self):
+        super(AmountsPerMealLoss, self).__init__()
+
+    def forward(self, pred_amounts, gold_amounts):
+        # Both pred_amounts and gold_amounts are of shape (batch_size, 7, 3, 10)
+
+        pred_sums = pred_amounts.sum(dim=-1) # Shape: (batch_size, 7, 3)
+        gold_sums = gold_amounts.sum(dim=-1) # Shape: (batch_size, 7, 3)
+
+        loss = torch.mean((pred_sums - gold_sums) ** 2) 
+
+        return loss
+
 # ---- Model Training --------- #
 
 def train_model(dataloader, model, foods_criterions: list, amounts_criterions: list, other_criterions: list, optimizer, epochs, device, plot_loss=True):
@@ -158,8 +172,11 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
     loss_history = []
 
     bar = tqdm(range(epochs))
+    min_loss = float("inf")
+    best_model = None
+    best_epoch = -1
 
-    for _ in bar:
+    for e in bar:
         epoch_loss = 0.0
 
         for x, ids, amounts in dataloader:
@@ -199,7 +216,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
             loss_amount = ((pred_amounts_flat - gold_amounts_flat) ** 2 * mask).sum() / (mask.sum() + 1e-8)
 
             for criterion in amounts_criterions:
-                loss_amount += criterion(pred_amounts_flat, gold_amounts_flat)
+                loss_amount += criterion(pred_amounts, gold_amounts)
 
             # Comvine the losses
             loss = loss_id + loss_amount
@@ -211,6 +228,14 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
 
         bar.set_postfix_str(f"Loss = {epoch_loss:.4f}")
         loss_history.append(epoch_loss)
+
+        if epoch_loss < min_loss and (min_loss - epoch_loss) > 10:
+            min_loss = epoch_loss
+            best_model = model.state_dict()
+            best_epoch = e
+
+    print(f"Best model at epoch {best_epoch} with loss {min_loss:.4f}")
+    torch.save(best_model, f"saved_models/model_v{MODEL_VERSION}_best.pth")
 
     if plot_loss:
         loss_history = loss_history[50:]
