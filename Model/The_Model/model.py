@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 4.0
+MODEL_VERSION = 5.0
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -45,7 +45,7 @@ def main():
         other_criterions = []
 
         # Train the model
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 5000, device, True)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10000, device, True)
         
         # Save the model
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
@@ -238,9 +238,9 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
     torch.save(best_model, f"saved_models/model_v{MODEL_VERSION}_best.pth")
 
     if plot_loss:
-        loss_history = loss_history[50:]
+        loss_history = loss_history[100:]
         plt.plot(loss_history)
-        plt.savefig(f'loss_plot_{int(MODEL_VERSION)}.png')
+        plt.savefig(f'models_plots/loss_plot_{int(MODEL_VERSION)}.png')
 
 # ----- Model Evaluation --------- #
 

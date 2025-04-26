@@ -10,3 +10,17 @@ This script contains the function `menu_dict_to_tensor` that convert the menu di
 It also contains the function `menu_tensor_to_dict` that convert the menu tensor to a dictionary.
 It also contains the function `transform` that transform the menu to the menu data.
 [View Script](./menu_output_transform.py)
+
+# `model.py`
+
+This strip builds the model.
+To train the model use -> python3 model.py --split train
+To test the model use -> python3 model.py --split test
+To validate the model use -> python3 model.py --split val
+[View Script](./model.py)
+
+
+ 
+
+
+ 
