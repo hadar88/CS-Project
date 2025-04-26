@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 1.0
+MODEL_VERSION = 4.0
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -40,7 +40,7 @@ def main():
     if split == "train":
         # Initialize the model parameters
         optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
-        foods_criterions = [nn.CrossEntropyLoss(), AllergensLoss(device)]
+        foods_criterions = [nn.CrossEntropyLoss()]
         amounts_criterions = [nn.MSELoss(), AmountsPerMealLoss()]
         other_criterions = []
 
