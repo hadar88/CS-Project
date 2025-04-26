@@ -50,9 +50,12 @@ def main():
         # Save the model
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
         print(f"Model saved as saved_models/model_v{MODEL_VERSION}.pth")
+
+        # model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}_best.pth"))
+        # evaluate_on_random_sample(dataloader, model, device)
     elif split == "val" or split == "test":
         # Load the model and evaluate
-        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth"))
+        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}_best.pth"))
         evaluate_on_random_sample(dataloader, model, device)
 
 # ------ Model --------- #
