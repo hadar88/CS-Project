@@ -1,0 +1,134 @@
+{
+    "sunday": {
+        "breakfast": {
+            "Avocado, raw": 49.44862747192383,
+            "Bread, whole grain white, toasted": 51.17923355102539,
+            "Egg substitute, omelet, scrambled, or fried, fat added": 50.91954040527344
+        },
+        "lunch": {
+            "Tortilla, whole wheat": 50.785762786865234,
+            "Tomatoes, raw": 49.55936813354492,
+            "Corn schnitzel": 100.67597198486328
+        },
+        "dinner": {
+            "Lentils": 99.31172943115234,
+            "Spinach, raw": 100.85045623779297,
+            "Dark chocolate": 20.229450225830078,
+            "Almonds, NFS": 20.755367279052734,
+            "Corn schnitzel": 149.87181091308594
+        }
+    },
+    "monday": {
+        "breakfast": {
+            "Oatmeal, NFS": 201.20782470703125
+        },
+        "lunch": {
+            "Tomatoes, raw": 25.134511947631836,
+            "Cucumber, raw": 25.508817672729492,
+            "Corn schnitzel": 201.50340270996094
+        },
+        "dinner": {
+            "Lentils": 100.26644134521484,
+            "Spinach, raw": 101.00894165039062,
+            "Yogurt, Greek, whole milk, plain": 151.7683868408203,
+            "Corn schnitzel": 150.70120239257812
+        }
+    },
+    "tuesday": {
+        "breakfast": {
+            "Egg substitute, omelet, scrambled, or fried, fat added": 99.55701446533203,
+            "Bread, whole grain white, toasted": 49.5090217590332,
+            "Avocado, raw": 50.21262741088867
+        },
+        "lunch": {
+            "Quinoa, NS as to fat": 100.35773468017578,
+            "Tomatoes, raw": 50.120574951171875,
+            "Cucumber, raw": 50.34665298461914,
+            "Corn schnitzel": 151.556640625
+        },
+        "dinner": {
+            "Broccoli, raw": 103.05741882324219,
+            "Sweet potato, baked, NS as to fat": 101.01069641113281,
+            "Yogurt, Greek, whole milk, plain": 152.1333465576172,
+            "Berries, NFS": 50.64458084106445,
+            "Corn schnitzel": 152.9016571044922
+        }
+    },
+    "wednesday": {
+        "breakfast": {
+            "Oatmeal, NFS": 100.57740783691406,
+            "Banana, raw": 50.896751403808594,
+            "Almonds, NFS": 20.24473762512207
+        },
+        "lunch": {
+            "Bread, whole grain white, toasted": 50.631038665771484,
+            "Tomatoes, raw": 50.14643478393555,
+            "Cucumber, raw": 50.07450866699219,
+            "Seitan": 100.40775299072266
+        },
+        "dinner": {
+            "Rice, brown, cooked, NS as to fat": 99.29743194580078,
+            "Asparagus, raw": 99.94538116455078,
+            "Hummus, plain": 50.555328369140625,
+            "Carrots, raw": 50.58940505981445,
+            "Seitan": 151.5970458984375
+        }
+    },
+    "thursday": {
+        "breakfast": {
+            "Banana, raw": 50.338069915771484,
+            "Nutritional powder mix, protein, NFS": 30.104381561279297,
+            "Almond milk, unsweetened": 201.68463134765625
+        },
+        "lunch": {
+            "Quinoa, NS as to fat": 100.26859283447266,
+            "Tomatoes, raw": 49.354862213134766,
+            "Cucumber, raw": 50.59366989135742,
+            "Cheese, Feta": 49.70387649536133
+        },
+        "dinner": {
+            "Tomatoes, raw": 50.71297836303711,
+            "Cucumber, raw": 50.594398498535156,
+            "Noodles, cooked": 49.50095748901367,
+            "Peanuts, NFS": 30.229211807250977,
+            "Corn schnitzel": 152.31748962402344
+        }
+    },
+    "friday": {
+        "breakfast": {
+            "Cereal, bran flakes, plain": 49.32080078125,
+            "Milk, low fat (1%)": 200.1556854248047,
+            "Berries, NFS": 49.68589782714844
+        },
+        "lunch": {
+            "Couscous, plain, cooked": 99.22106170654297,
+            "Tofu": 148.9881591796875
+        },
+        "dinner": {
+            "Potato, mashed, NFS": 101.2951889038086,
+            "Green beans, raw": 100.4815673828125,
+            "Apple, raw": 99.76459503173828,
+            "Peanut butter": 20.055940628051758,
+            "Corn schnitzel": 152.31732177734375
+        }
+    },
+    "saturday": {
+        "breakfast": {
+            "Egg substitute, omelet, scrambled, or fried, fat added": 149.59539794921875,
+            "Spinach, raw": 98.87985229492188,
+            "Mushrooms, raw": 50.55611038208008
+        },
+        "lunch": {
+            "Lettuce, raw": 49.966278076171875,
+            "Tomatoes, raw": 50.51048278808594,
+            "Cucumber, raw": 50.31715774536133,
+            "Tofu": 150.4036865234375
+        },
+        "dinner": {
+            "Quinoa, NS as to fat": 97.52515411376953,
+            "Cheese, cottage, NFS": 100.08000183105469,
+            "Pineapple, canned, NFS": 51.486968994140625,
+            "Corn schnitzel": 148.6400909423828
+        }
+    }
+}
