@@ -311,7 +311,7 @@ def convert_to_dict(data):
             structured_dict[group_key][sub_group_key] = {}
 
             for k, pair in enumerate(sub_group):
-                structured_dict[group_key][sub_group_key][int(pair[0])] = round(pair[1], 2)
+                structured_dict[group_key][sub_group_key][int(pair[0])] = round(pair[1])
 
     return structured_dict
 
