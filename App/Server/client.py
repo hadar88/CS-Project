@@ -22,7 +22,7 @@ def convert_to_dict(data):
 
 SERVER_URL = "http://127.0.0.1:5000"
 
-data = {'calories': 1194, 'carbohydrates': 84, 'sugar': 18, 'fat': 51, 'protein': 96, 'vegetarian': 0, 'vegan': 0, 'eggs': 1, 'milk': 0, 'nuts': 1, 'fish': 1, 'sesame': 0, 'soy': 1, 'gluten': 1}  # Example input data
+data = {'calories': 2826.6875, 'carbohydrates': 326.16, 'sugar': 27.18, 'fat': 72.48, 'protein': 190.26, 'vegetarian': 0, 'vegan': 0, 'eggs': 1, 'milk': 1, 'nuts': 1, 'fish': 1, 'sesame': 1, 'soy': 1, 'gluten': 1}  # Example input data
 
 response = requests.post(f"{SERVER_URL}/predict", json=data)
 
