@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 5.0
+MODEL_VERSION = 6.0
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -39,20 +39,20 @@ def main():
 
     if split == "train":
         # Initialize the model parameters
-        optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
-        foods_criterions = [nn.CrossEntropyLoss()]
-        amounts_criterions = [nn.MSELoss()]
-        other_criterions = []
+        # optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
+        # foods_criterions = [nn.CrossEntropyLoss()]
+        # amounts_criterions = [nn.MSELoss()]
+        # other_criterions = []
 
-        # Train the model
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10000, device, True)
+        # # Train the model
+        # train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10000, device, True)
         
-        # Save the model
-        torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
-        print(f"Model saved as saved_models/model_v{MODEL_VERSION}.pth")
+        # # Save the model
+        # torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
+        # print(f"Model saved as saved_models/model_v{MODEL_VERSION}.pth")
 
-        # model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}_best.pth"))
-        # evaluate_on_random_sample(dataloader, model, device)
+        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}_best.pth"))
+        evaluate_on_random_sample(dataloader, model, device)
     elif split == "val" or split == "test":
         # Load the model and evaluate
         model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}_best.pth"))
@@ -248,7 +248,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
 # ----- Model Evaluation --------- #
 
 def evaluate_on_random_sample(dataloader, model, device):
-    model.eval()
+    # model.eval()
     model.to(device)
 
     # print("Here is a random prediction:")
@@ -262,7 +262,11 @@ def evaluate_on_random_sample(dataloader, model, device):
     x, y_id, y_amount = dataloader.dataset[random_index]
     x, y_id, y_amount = x.to(device), y_id.to(device), y_amount.to(device)
 
-    pred_id, pred_amount = model(x.unsqueeze(0).to(device))
+    my_sample = [2826.6875, 326.16, 27.18, 72.48, 190.26, 0, 0, 1, 1, 1, 1, 1, 1, 1]
+    my_sample = torch.tensor([my_sample], dtype=torch.float32)
+    pred_id, pred_amount = model(my_sample.to(device))
+
+    # pred_id, pred_amount = model(x.unsqueeze(0).to(device))
 
     pred_id, pred_amount = pred_id[0], pred_amount[0]
 

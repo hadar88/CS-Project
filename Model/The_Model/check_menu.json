@@ -1,0 +1,157 @@
+{
+    "sunday": {
+        "breakfast": {
+            "Egg, whole, fried with oil": 91.54264068603516,
+            "Bread, gluten free": 209.5866241455078,
+            "Asparagus, raw": 117.60242462158203,
+            "Apple, raw": 151.2039031982422,
+            "Seitan": 48.802284240722656
+        },
+        "lunch": {
+            "Brussels sprouts, raw": 123.63856506347656,
+            "Romaine lettuce, raw": 21.11569595336914,
+            "Mayonnaise, regular": 74.14227294921875
+        },
+        "dinner": {
+            "Peanut butter": 93.79703521728516,
+            "Potato, mashed, NFS": 99.1381607055664,
+            "Berries, NFS": 121.10076141357422,
+            "Olive oil": 78.31112670898438,
+            "Salsa, NFS": 81.40715789794922
+        }
+    },
+    "monday": {
+        "breakfast": {
+            "Yogurt, Greek, nonfat milk, plain": 346.52386474609375,
+            "Cereal, granola": 62.48232650756836,
+            "Apple, raw": 112.07311248779297
+        },
+        "lunch": {
+            "Pepper, sweet, red, raw": 411.9464416503906,
+            "Potato chips, NFS": 67.90606689453125,
+            "Coconut cream, canned, sweetened": 90.66289520263672,
+            "Yogurt, Greek, whole milk, plain": 44.71977233886719,
+            "Rice, brown, cooked, NS as to fat": 54.491485595703125
+        },
+        "dinner": {
+            "Potato chips, NFS": 175.4869842529297,
+            "Yogurt, coconut milk": 198.3891143798828,
+            "Sesame seeds": 13.500205039978027,
+            "Olive oil": 62.8470458984375,
+            "Vegan pesto sauce": 99.40684509277344
+        }
+    },
+    "tuesday": {
+        "breakfast": {
+            "Tofu": 192.86798095703125,
+            "Peanut butter": 72.3820571899414,
+            "Corn schnitzel": 85.09168243408203
+        },
+        "lunch": {
+            "Beef, steak, NFS": 110.1230697631836,
+            "Mayonnaise, regular": 49.02631378173828,
+            "Vegan cheese": 28.137311935424805,
+            "Olive oil": 154.7218017578125,
+            "Yogurt, Greek, whole milk, plain": 15.583453178405762
+        },
+        "dinner": {
+            "Hummus, plain": 61.126670837402344,
+            "Potato, french fries, NFS": 235.16407775878906,
+            "Broccoli, raw": 131.21102905273438
+        }
+    },
+    "wednesday": {
+        "breakfast": {
+            "Bread, pita": 145.50247192382812,
+            "Tomatoes, raw": 88.88056182861328,
+            "Bread, gluten free, toasted": 192.92999267578125,
+            "Hummus, plain": 209.20521545410156,
+            "Turkey, light and dark meat, roasted, skin not eaten": 176.726806640625
+        },
+        "lunch": {
+            "Corn, canned, cooked, no added fat": 119.18313598632812,
+            "Tahini": 25.58385467529297,
+            "Vegan burger patty, no bun": 74.2462158203125,
+            "Avocado, raw": 82.2500991821289,
+            "Tofu": 33.536956787109375,
+            "Apple, raw": 44.744163513183594,
+            "Cereal, granola": 29.68329620361328,
+            "Lettuce, raw": 49.29407501220703,
+            "Blueberries, raw": 61.72227478027344
+        },
+        "dinner": {
+            "Vegan cheese": 101.7203369140625,
+            "Vegan cream cheese": 50.61201477050781,
+            "Pineapple, canned, NFS": 84.27345275878906,
+            "Olive oil": 41.8492431640625,
+            "Cream cheese, regular, plain": 56.97057342529297
+        }
+    },
+    "thursday": {
+        "breakfast": {
+            "Blueberries, raw": 62.69425964355469,
+            "Bread, gluten free, toasted": 128.18206787109375
+        },
+        "lunch": {
+            "Yogurt, coconut milk": 78.02465057373047,
+            "Chicken breast, grilled without sauce, skin not eaten": 121.01116943359375,
+            "Pancake syrup": 36.525203704833984,
+            "Spinach, raw": 15.522347450256348,
+            "Blueberries, raw": 131.4171905517578,
+            "Crackers, matzo": 197.08416748046875,
+            "Cucumber, raw": 107.22908782958984
+        },
+        "dinner": {
+            "Potato, french fries, NFS": 218.1281280517578,
+            "Salsa, NFS": 134.5906524658203,
+            "Olive oil": 59.863616943359375,
+            "Berries, NFS": 38.8604850769043,
+            "Yogurt, coconut milk": 74.10807800292969
+        }
+    },
+    "friday": {
+        "breakfast": {
+            "Avocado, raw": 48.849037170410156,
+            "Celery, raw": 70.3356704711914,
+            "Blueberries, raw": 165.3417510986328
+        },
+        "lunch": {
+            "Tahini": 64.0604476928711,
+            "Corn, canned, cooked, no added fat": 78.93824005126953,
+            "Potato chips, NFS": 0.13039708137512207,
+            "Avocado, raw": 84.58548736572266,
+            "Nutritional powder mix, protein, NFS": 103.81438446044922,
+            "Carrots, raw": 74.37548065185547
+        },
+        "dinner": {
+            "Bread, gluten free": 137.0990447998047,
+            "Guacamole, NFS": 227.3319549560547,
+            "Quinoa, NS as to fat": 18.03246307373047,
+            "Tofu": 83.28163146972656,
+            "Tahini": 51.409671783447266
+        }
+    },
+    "saturday": {
+        "breakfast": {
+            "Mushrooms, raw": 147.15603637695312,
+            "Egg substitute, omelet, scrambled, or fried, fat added": 81.57524871826172,
+            "Biscuit, wheat": 115.03156280517578,
+            "Tofu": 118.32695770263672,
+            "Apple, raw": 220.2200164794922
+        },
+        "lunch": {
+            "Olive oil": 87.91694641113281,
+            "Mango, dried": 78.49945068359375,
+            "Seitan": 104.19342803955078,
+            "Egg, whole, fried with oil": 30.039152145385742,
+            "Bread, gluten free, toasted": 65.64041900634766,
+            "Almond butter": 18.717662811279297
+        },
+        "dinner": {
+            "Yogurt, coconut milk": 214.70628356933594,
+            "Apple, raw": 132.1702880859375,
+            "Almond butter": 20.05230712890625,
+            "Mayonnaise, regular": 5.445998191833496
+        }
+    }
+}
