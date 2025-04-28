@@ -10,8 +10,8 @@ menus.close()
 
 ## fiil the data
 
-begin = 5450
-end = 5500
+begin = 5900
+end = 6000
 
 for menu_id in range(begin, end + 1):
     days = menudata[str(menu_id)]

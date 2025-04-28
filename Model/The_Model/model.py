@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 6.0
+MODEL_VERSION = 7.0
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -55,7 +55,7 @@ def main():
         # evaluate_on_random_sample(dataloader, model, device)
     elif split == "val" or split == "test":
         # Load the model and evaluate
-        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth"))
+        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}_best.pth"))
         evaluate_on_random_sample(dataloader, model, device)
 
 # ------ Model --------- #
