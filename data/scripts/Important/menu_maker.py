@@ -9,7 +9,7 @@ import random
 import copy
 
 # ! Paths relative to the root folder
-MENUS_FILE = "../../layouts/menusById.json"
+MENUS_FILE = "../../layouts/menusById2.json"
 FOODS_FILE = "../../layouts/FoodsByID.json"  
 ALTER_FILE = "../../layouts/FoodAlternatives.json" 
 
@@ -71,7 +71,7 @@ def fix_menu(property: str, menu_id: int, exhaustive: bool = False) -> dict | li
                 fixed_menus.append(current_menu)
                 print_menu(current_menu)
 
-                if len(fixed_menus) > 100:
+                if len(fixed_menus) > 25:
                     return fixed_menus
         else:
             invalid_menus.extend(fixed_one_step)

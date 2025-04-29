@@ -4,14 +4,14 @@ foodbyid = open("../../layouts/FoodsByID.json", "r")
 data = json.load(foodbyid)
 foodbyid.close()
 
-menus = open("../../layouts/menusById.json", "r")
+menus = open("../../layouts/menusById2.json", "r")
 menudata = json.load(menus)
 menus.close()
 
 ## fiil the data
 
-begin = 5900
-end = 6000
+begin = 1
+end = 100
 
 for menu_id in range(begin, end + 1):
     days = menudata[str(menu_id)]
@@ -118,7 +118,7 @@ for menu_id in range(begin, end + 1):
     Fat = round(Fat, 3)
     Protein = round(Protein, 3)
 
-    menusinput = open("../../layouts/MenusInput.json", "r+")
+    menusinput = open("../../layouts/MenusInput2.json", "r+")
     menusinput.seek(0)
 
     menus = json.load(menusinput)
@@ -156,7 +156,7 @@ for menu_id in range(begin, end + 1):
 
 # Move data from the "menu" section to the "Initial" section
 
-menus_input = open("../../layouts/menusInput.json", "a+")
+menus_input = open("../../layouts/menusInput2.json", "a+")
 
 menus_input.seek(0)
 

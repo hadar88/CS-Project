@@ -4,8 +4,8 @@ import menu_output_transform as mot
 from torch.utils.data import Dataset
 from enum import Enum
 
-MENUS_INPUT = "../../Data/layouts/MenusInput.json"
-MENUS_BY_ID = "../../Data/layouts/MenusById.json"
+MENUS_INPUT = "../../Data/layouts/MenusInput2.json"
+MENUS_BY_ID = "../../Data/layouts/MenusById2.json"
 
 FOODS_DATA_PATH = "../../Data/layouts/FoodsByID.json"
 
@@ -104,13 +104,15 @@ def make_ys(split="train"):
         total_menus = len(dataset)
         train_split = int(total_menus * 0.8)  # 80% for training
         val_split = int(total_menus * 0.9)    # 10% for validation
+        
+        max_foods_in_meal = 10
 
         # Check what is the maximum number of foods in a meal
         for i, menu_id in enumerate(dataset):
             y = dataset[menu_id]
             y = mot.menu_dict_to_tensor(y)
 
-            max_foods_in_meal = max(max_foods_in_meal, y.shape[2])
+            # max_foods_in_meal = max(max_foods_in_meal, y.shape[2])
 
             if split == "train" and i < train_split:
                 ys.append(y)
