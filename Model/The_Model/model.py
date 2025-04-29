@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import json
-from torch.utils.data import DataLoader, Subset
+from torch.utils.data import DataLoader
 from tqdm import tqdm
 from make_dataset import MenusDataset, read_foods_tensor, FoodProperties as FP
 from menu_output_transform import transform2, check_menu
@@ -32,7 +32,6 @@ def main():
 
     print(f"Loading {split} set...")
     menus = MenusDataset(split=SPLIT)
-    # menus = Subset(menus, range(10))
     dataloader = DataLoader(menus, batch_size=BATCH_SIZE, shuffle=(SPLIT == "train"))
     
     model = MenuGenerator()
@@ -241,7 +240,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
     torch.save(best_model, f"saved_models/model_v{MODEL_VERSION}_best.pth")
 
     if plot_loss:
-        loss_history = loss_history[100:]
+        loss_history = loss_history[1000:]
         plt.plot(loss_history)
         plt.savefig(f'models_plots/loss_plot_{int(MODEL_VERSION)}.png')
 
@@ -262,7 +261,7 @@ def evaluate_on_random_sample(dataloader, model, device):
     x, y_id, y_amount = dataloader.dataset[random_index]
     x, y_id, y_amount = x.to(device), y_id.to(device), y_amount.to(device)
 
-    # my_sample = [2826.6875, 326.16, 27.18, 72.48, 190.26, 0, 0, 1, 1, 1, 1, 1, 1, 1]
+    # my_sample = [2826, 326, 27, 72, 190, 0, 0, 1, 1, 1, 1, 1, 1, 1]
     # my_sample = torch.tensor([my_sample], dtype=torch.float32)
     # pred_id, pred_amount = model(my_sample.to(device))
 
