@@ -9,7 +9,7 @@ import random
 import copy
 
 # ! Paths relative to the root folder
-MENUS_FILE = "../../layouts/menusById2.json"
+MENUS_FILE = "../../layouts/menusById.json"
 FOODS_FILE = "../../layouts/FoodsByID.json"  
 ALTER_FILE = "../../layouts/FoodAlternatives.json" 
 

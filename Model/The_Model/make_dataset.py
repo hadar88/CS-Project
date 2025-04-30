@@ -4,8 +4,8 @@ import menu_output_transform as mot
 from torch.utils.data import Dataset
 from enum import Enum
 
-MENUS_INPUT = "../../Data/layouts/MenusInput2.json"
-MENUS_BY_ID = "../../Data/layouts/MenusById2.json"
+MENUS_INPUT = "../../Data/layouts/MenusInput.json"
+MENUS_BY_ID = "../../Data/layouts/MenusById.json"
 
 FOODS_DATA_PATH = "../../Data/layouts/FoodsByID.json"
 
