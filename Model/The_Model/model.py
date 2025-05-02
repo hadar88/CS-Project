@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 9.0
+MODEL_VERSION = 10.0
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -230,7 +230,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
 
             epoch_loss += loss.item()
 
-        bar.set_postfix_str(f"Loss = {epoch_loss:.4f}")
+        bar.set_postfix_str(f"Loss = {epoch_loss:.0f}")
         loss_history.append(epoch_loss)
 
         if epoch_loss < min_loss and (min_loss - epoch_loss) > 10:
@@ -242,7 +242,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
     torch.save(best_model, f"saved_models/model_v{MODEL_VERSION}_best.pth")
 
     if plot_loss:
-        loss_history = loss_history[100:]
+        loss_history = loss_history[200:]
         plt.plot(loss_history)
         plt.savefig(f'models_plots/loss_plot_{int(MODEL_VERSION)}.png')
 

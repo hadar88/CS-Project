@@ -75,8 +75,8 @@ def make_xs(split="train"):
         dataset = json.load(dataset_file)
 
         total_menus = len(dataset)
-        train_split = int(total_menus * 0.8)  # 80% for training
-        val_split = int(total_menus * 0.9)    # 10% for validation
+        train_split = int(total_menus * 0.9)  # 80% for training
+        val_split = int(total_menus * 0.95)    # 10% for validation
 
         for i, menu_id in enumerate(dataset):
             x = [dataset[menu_id]["Initial"][entry] for entry in dataset[menu_id]["Initial"]]
@@ -102,8 +102,8 @@ def make_ys(split="train"):
         dataset = json.load(dataset_file)
 
         total_menus = len(dataset)
-        train_split = int(total_menus * 0.8)  # 80% for training
-        val_split = int(total_menus * 0.9)    # 10% for validation
+        train_split = int(total_menus * 0.9)  # 80% for training
+        val_split = int(total_menus * 0.95)    # 10% for validation
         
         max_foods_in_meal = 10
 
