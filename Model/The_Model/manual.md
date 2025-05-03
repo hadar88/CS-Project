@@ -17,6 +17,7 @@ This strip builds the model.
 To train the model use -> python3 model.py --split train
 To test the model use -> python3 model.py --split test
 To validate the model use -> python3 model.py --split val
+To use tensorboard use -> tensorboard --logdir=runs
 [View Script](./model.py)
 
 

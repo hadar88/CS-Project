@@ -12,6 +12,10 @@ import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 
+from torch.utils.tensorboard import SummaryWriter
+import torchvision
+writer = SummaryWriter("runs")
+
 SPLIT = ["train", "val", "test"][0]
 
 MODEL_VERSION = 11.0
@@ -35,16 +39,16 @@ def main():
     dataloader = DataLoader(menus, batch_size=BATCH_SIZE, shuffle=(SPLIT == "train"))
     
     model = MenuGenerator()
+    optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
+    foods_criterions = [nn.CrossEntropyLoss()]
+    amounts_criterions = [nn.MSELoss()]
+    other_criterions = []
+
+    writer.add_graph(model, torch.randn(1, 14)) 
+    writer.close()
 
     if split == "train":
-        # Initialize the model parameters
-        optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
-        foods_criterions = [nn.CrossEntropyLoss()]
-        amounts_criterions = [nn.MSELoss()]
-        other_criterions = []
-
-        # Train the model
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 2000, device, True)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10, device)
         
         # Save the model
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
@@ -169,7 +173,7 @@ class AmountsPerMealLoss(nn.Module):
 
 # ---- Model Training --------- #
 
-def train_model(dataloader, model, foods_criterions: list, amounts_criterions: list, other_criterions: list, optimizer, epochs, device, plot_loss=True):
+def train_model(dataloader, model, foods_criterions: list, amounts_criterions: list, other_criterions: list, optimizer, epochs, device):
     model.to(device)
     model.train()
 
@@ -233,6 +237,8 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
         bar.set_postfix_str(f"Loss = {epoch_loss:.0f}")
         loss_history.append(epoch_loss)
 
+        writer.add_scalar("Loss/train", epoch_loss, e)
+
         if epoch_loss < min_loss and (min_loss - epoch_loss) > 10:
             min_loss = epoch_loss
             best_model = model.state_dict()
@@ -241,10 +247,9 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
     print(f"Best model at epoch {best_epoch} with loss {min_loss:.4f}")
     torch.save(best_model, f"saved_models/model_v{MODEL_VERSION}_best.pth")
 
-    if plot_loss:
-        loss_history = loss_history[200:]
-        plt.plot(loss_history)
-        plt.savefig(f'models_plots/loss_plot_{int(MODEL_VERSION)}.png')
+    loss_history = loss_history[0:]
+    plt.plot(loss_history)
+    plt.savefig(f'models_plots/loss_plot_{int(MODEL_VERSION)}.png')
 
 # ----- Model Evaluation --------- #
 

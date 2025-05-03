@@ -49,7 +49,7 @@ class MenuGenerator(nn.Module):
     
 model = MenuGenerator()
 
-MODEL_VERSION = 9.0
+MODEL_VERSION = 10.0
 
 model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}_best.pth"))
 
