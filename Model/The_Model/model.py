@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 10.0
+MODEL_VERSION = 11.0
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -44,7 +44,7 @@ def main():
         other_criterions = []
 
         # Train the model
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10000, device, True)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 2000, device, True)
         
         # Save the model
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
@@ -263,11 +263,11 @@ def evaluate_on_random_sample(dataloader, model, device):
     x, y_id, y_amount = dataloader.dataset[random_index]
     x, y_id, y_amount = x.to(device), y_id.to(device), y_amount.to(device)
 
-    my_sample = [2826, 326, 27, 72, 190, 0, 0, 1, 1, 1, 1, 1, 1, 1]
-    my_sample = torch.tensor([my_sample], dtype=torch.float32)
-    pred_id, pred_amount = model(my_sample.to(device))
+    # my_sample = [2826, 326, 27, 72, 190, 0, 0, 1, 1, 1, 1, 1, 1, 1]
+    # my_sample = torch.tensor([my_sample], dtype=torch.float32)
+    # pred_id, pred_amount = model(my_sample.to(device))
 
-    # pred_id, pred_amount = model(x.unsqueeze(0).to(device))
+    pred_id, pred_amount = model(x.unsqueeze(0).to(device))
 
     pred_id, pred_amount = pred_id[0], pred_amount[0]
 
@@ -275,11 +275,11 @@ def evaluate_on_random_sample(dataloader, model, device):
 
     pred_amount = pred_amount.squeeze(-1)
 
-    print("\nThe model predicted:")
+    # print("\nThe model predicted:")
     merged_pred = MenusDataset.merge_ids_and_amounts(pred_id, pred_amount)
-    print(merged_pred)
+    # print(merged_pred)
     check_menu(merged_pred)
-    print("\nThe menu is in 'check_menu.json'")
+    # print("\nThe menu is in 'check_menu.json'")
 
     merged_y = MenusDataset.merge_ids_and_amounts(y_id, y_amount)
 
