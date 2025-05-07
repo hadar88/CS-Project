@@ -13,12 +13,11 @@ matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 
 from torch.utils.tensorboard import SummaryWriter
-import torchvision
 writer = SummaryWriter("runs")
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 11.0
+MODEL_VERSION = 10.0
 BATCH_SIZE = 512
 
 # ------ Main --------- #
