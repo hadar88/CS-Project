@@ -47,7 +47,7 @@ def main():
     writer.close()
 
     if split == "train":
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 5000, device)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10000, device)
         
         # Save the model
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
@@ -246,7 +246,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
     print(f"Best model at epoch {best_epoch} with loss {min_loss:.4f}")
     torch.save(best_model, f"saved_models/model_v{MODEL_VERSION}_best.pth")
 
-    loss_history = loss_history[500:]
+    loss_history = loss_history[50:]
     plt.plot(loss_history)
     plt.savefig(f'models_plots/loss_plot_{int(MODEL_VERSION)}.png')
 
