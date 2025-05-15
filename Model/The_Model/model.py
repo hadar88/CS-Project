@@ -38,7 +38,7 @@ def main():
     dataloader = DataLoader(menus, batch_size=BATCH_SIZE, shuffle=(SPLIT == "train"))
     
     model = MenuGenerator()
-    optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
+    optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-2)
     foods_criterions = [nn.CrossEntropyLoss()]
     amounts_criterions = [nn.MSELoss()]
     other_criterions = []
@@ -47,7 +47,7 @@ def main():
     writer.close()
 
     if split == "train":
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10, device)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 5000, device)
         
         # Save the model
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
