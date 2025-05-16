@@ -12,13 +12,13 @@ import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 
-from torch.utils.tensorboard import SummaryWriter
-writer = SummaryWriter("runs")
-
 SPLIT = ["train", "val", "test"][0]
 
 MODEL_VERSION = 12.0
 BATCH_SIZE = 512
+
+from torch.utils.tensorboard import SummaryWriter
+writer = SummaryWriter(f"runs/model_v{MODEL_VERSION}")
 
 # ------ Main --------- #
 
@@ -47,7 +47,7 @@ def main():
     writer.close()
 
     if split == "train":
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10000, device)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 1, device)
         
         # Save the model
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
