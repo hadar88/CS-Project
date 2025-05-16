@@ -17,7 +17,7 @@ writer = SummaryWriter("runs")
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 11.0
+MODEL_VERSION = 12.0
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -246,7 +246,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
     print(f"Best model at epoch {best_epoch} with loss {min_loss:.4f}")
     torch.save(best_model, f"saved_models/model_v{MODEL_VERSION}_best.pth")
 
-    loss_history = loss_history[50:]
+    loss_history = loss_history[200:]
     plt.plot(loss_history)
     plt.savefig(f'models_plots/loss_plot_{int(MODEL_VERSION)}.png')
 
