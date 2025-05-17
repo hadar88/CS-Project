@@ -102,9 +102,9 @@ def make_ys(split="train"):
         dataset = json.load(dataset_file)
 
         total_menus = len(dataset)
-        train_split = int(total_menus * 1)  # 80% for training
-        val_split = int(total_menus * 1)    # 10% for validation
-        
+        train_split = int(total_menus * 0.8)  # 80% for training
+        val_split = int(total_menus * 0.9)    # 10% for validation
+
         max_foods_in_meal = 10
 
         # Check what is the maximum number of foods in a meal

@@ -17,9 +17,6 @@ SPLIT = ["train", "val", "test"][0]
 MODEL_VERSION = 12.0
 BATCH_SIZE = 512
 
-from torch.utils.tensorboard import SummaryWriter
-writer = SummaryWriter(f"runs/model_v{MODEL_VERSION}")
-
 # ------ Main --------- #
 
 def main():
@@ -43,11 +40,8 @@ def main():
     amounts_criterions = [nn.MSELoss()]
     other_criterions = []
 
-    writer.add_graph(model, torch.randn(1, 14)) 
-    writer.close()
-
     if split == "train":
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 1, device)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 1000, device)
         
         # Save the model
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
@@ -236,6 +230,8 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
         bar.set_postfix_str(f"Loss = {epoch_loss:.0f}")
         loss_history.append(epoch_loss)
 
+        from torch.utils.tensorboard import SummaryWriter
+        writer = SummaryWriter(f"runs/model_v{MODEL_VERSION}")
         writer.add_scalar("Loss/train", epoch_loss, e)
 
         if epoch_loss < min_loss and (min_loss - epoch_loss) > 10:
