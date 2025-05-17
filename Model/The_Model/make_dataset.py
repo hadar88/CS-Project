@@ -81,11 +81,14 @@ def make_xs(split="train"):
         for i, menu_id in enumerate(dataset):
             x = [dataset[menu_id]["Initial"][entry] for entry in dataset[menu_id]["Initial"]]
 
-            if split == "train" and i < train_split:
-                xs.append(x)
-            elif split == "val" and train_split <= i < val_split:
-                xs.append(x)
-            elif split == "test" and val_split <= i:
+            # if split == "train" and i < train_split:
+            #     xs.append(x)
+            # elif split == "val" and train_split <= i < val_split:
+            #     xs.append(x)
+            # elif split == "test" and val_split <= i:
+            #     xs.append(x)
+
+            if split == "train":
                 xs.append(x)
 
     return torch.tensor(xs)
@@ -112,13 +115,14 @@ def make_ys(split="train"):
             y = dataset[menu_id]
             y = mot.menu_dict_to_tensor(y)
 
-            # max_foods_in_meal = max(max_foods_in_meal, y.shape[2])
+            # if split == "train" and i < train_split:
+            #     ys.append(y)
+            # elif split == "val" and train_split <= i < val_split:
+            #     ys.append(y)
+            # elif split == "test" and val_split <= i:
+            #     ys.append(y)
 
-            if split == "train" and i < train_split:
-                ys.append(y)
-            elif split == "val" and train_split <= i < val_split:
-                ys.append(y)
-            elif split == "test" and val_split <= i:
+            if split == "train":
                 ys.append(y)
 
         for i in range(len(ys)):

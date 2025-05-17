@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 13.0
+MODEL_VERSION = 14.0
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -31,7 +31,7 @@ def main():
     split = SPLIT if args.split is None else args.split
 
     print(f"Loading {split} set...")
-    menus = MenusDataset(split=SPLIT)
+    menus = MenusDataset(split)
     dataloader = DataLoader(menus, batch_size=BATCH_SIZE, shuffle=(SPLIT == "train"))
     
     model = MenuGenerator()
@@ -64,7 +64,7 @@ class MenuGenerator(nn.Module):
             nn.Linear(14, 128),
             nn.ReLU(),
             nn.BatchNorm1d(128),
-            nn.Dropout(0.2),
+            nn.Dropout(0.5),
             nn.Linear(128, hidden_dim),
             nn.ReLU(),
         )
@@ -74,7 +74,7 @@ class MenuGenerator(nn.Module):
         self.slot_decoder = nn.Sequential(
             nn.Linear(hidden_dim, 128),
             nn.ReLU(),
-            nn.Dropout(0.2),
+            nn.Dropout(0.5),
             nn.Linear(128, 64),
             nn.ReLU(),
         )
