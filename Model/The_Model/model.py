@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 12.0
+MODEL_VERSION = 13.0
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -41,7 +41,7 @@ def main():
     other_criterions = []
 
     if split == "train":
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 1000, device)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 5000, device)
         
         # Save the model
         torch.save(model.state_dict(), f"saved_models/model_v{MODEL_VERSION}.pth")
@@ -64,7 +64,7 @@ class MenuGenerator(nn.Module):
             nn.Linear(14, 128),
             nn.ReLU(),
             nn.BatchNorm1d(128),
-            # nn.Dropout(0.2),
+            nn.Dropout(0.2),
             nn.Linear(128, hidden_dim),
             nn.ReLU(),
         )
@@ -74,7 +74,7 @@ class MenuGenerator(nn.Module):
         self.slot_decoder = nn.Sequential(
             nn.Linear(hidden_dim, 128),
             nn.ReLU(),
-            # nn.Dropout(0.2),
+            nn.Dropout(0.2),
             nn.Linear(128, 64),
             nn.ReLU(),
         )
@@ -167,6 +167,9 @@ class AmountsPerMealLoss(nn.Module):
 # ---- Model Training --------- #
 
 def train_model(dataloader, model, foods_criterions: list, amounts_criterions: list, other_criterions: list, optimizer, epochs, device):
+    from torch.utils.tensorboard import SummaryWriter
+    writer = SummaryWriter(f"runs/model_v{MODEL_VERSION}")
+        
     model.to(device)
     model.train()
 
@@ -230,8 +233,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
         bar.set_postfix_str(f"Loss = {epoch_loss:.0f}")
         loss_history.append(epoch_loss)
 
-        from torch.utils.tensorboard import SummaryWriter
-        writer = SummaryWriter(f"runs/model_v{MODEL_VERSION}")
+        
         writer.add_scalar("Loss/train", epoch_loss, e)
 
         if epoch_loss < min_loss and (min_loss - epoch_loss) > 10:
