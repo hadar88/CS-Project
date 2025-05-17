@@ -70,7 +70,7 @@ class MenuGenerator(nn.Module):
             nn.Linear(14, 128),
             nn.ReLU(),
             nn.BatchNorm1d(128),
-            nn.Dropout(0.2),
+            # nn.Dropout(0.2),
             nn.Linear(128, hidden_dim),
             nn.ReLU(),
         )
@@ -80,7 +80,7 @@ class MenuGenerator(nn.Module):
         self.slot_decoder = nn.Sequential(
             nn.Linear(hidden_dim, 128),
             nn.ReLU(),
-            nn.Dropout(0.2),
+            # nn.Dropout(0.2),
             nn.Linear(128, 64),
             nn.ReLU(),
         )
