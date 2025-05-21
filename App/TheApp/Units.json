@@ -1,0 +1,21 @@
+{
+    "Protein": "g",
+    "Fat": "g",
+    "Carbohydrate": "g",
+    "Calories": "kcal",
+    "Water": "g",
+    "Sugars": "g",
+    "Fiber": "g",
+    "Cholesterol": "mg",
+    "Saturated fat": "g",
+    "Calcium": "mg",
+    "Iron": "mg",
+    "Sodium": "mg",
+    "Magnesium": "mg",
+    "Vitamin A": "µg",
+    "Vitamin B-12": "µg",
+    "Vitamin C": "mg",
+    "Vitamin D": "µg",
+    "Vitamin E": "mg",
+    "Vitamin K": "µg"
+}
