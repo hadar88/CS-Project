@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 16
+MODEL_VERSION = 17
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -33,7 +33,7 @@ def main():
     print(f"Loading {split} set...")
     menus = MenusDataset(split)
     dataloader = DataLoader(menus, batch_size=BATCH_SIZE, shuffle=(SPLIT == "train"))
-    
+
     model = MenuGenerator()
     optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
     foods_criterions = [nn.CrossEntropyLoss()]
@@ -60,7 +60,7 @@ class MenuGenerator(nn.Module):
             nn.Linear(14, 128),
             nn.ReLU(),
             nn.BatchNorm1d(128),
-            nn.Dropout(0.5),
+            # nn.Dropout(0.5),
             nn.Linear(128, hidden_dim),
             nn.ReLU(),
         )
@@ -70,7 +70,7 @@ class MenuGenerator(nn.Module):
         self.slot_decoder = nn.Sequential(
             nn.Linear(hidden_dim, 128),
             nn.ReLU(),
-            nn.Dropout(0.5),
+            # nn.Dropout(0.5),
             nn.Linear(128, 64),
             nn.ReLU(),
         )
@@ -109,7 +109,7 @@ class Round(torch.autograd.Function):
     @staticmethod
     def backward(ctx, grad_output):
         return grad_output
-    
+
 def applyRound(input):
     return Round.apply(input)
 
@@ -156,7 +156,7 @@ class AmountsPerMealLoss(nn.Module):
         pred_sums = pred_amounts.sum(dim=-1) # Shape: (batch_size, 7, 3)
         gold_sums = gold_amounts.sum(dim=-1) # Shape: (batch_size, 7, 3)
 
-        loss = torch.mean((pred_sums - gold_sums) ** 2) 
+        loss = torch.mean((pred_sums - gold_sums) ** 2)
 
         return loss
 
@@ -167,7 +167,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
     writer = SummaryWriter(f"runs/model_v{MODEL_VERSION}")
     writer.add_graph(model, torch.randn(1, 14))
     writer.close()
-        
+
     model.to(device)
     model.train()
 
@@ -196,7 +196,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
             # Flatten
             food_logits_flat = food_logits.view(-1, 223)    # Shape: (batch_size * 7 * 3 * 10, 223)
             pred_amounts_flat = pred_amounts.view(-1)       # Shape: (batch_size * 7 * 3 * 10)
-            gold_ids_flat = gold_ids.view(-1)                         # Shape: (batch_size * 7 * 3 * 10)           
+            gold_ids_flat = gold_ids.view(-1)                         # Shape: (batch_size * 7 * 3 * 10)
             gold_amounts_flat = gold_amounts.view(-1)                 # Shape: (batch_size * 7 * 3 * 10)
 
             # Choose the most probable food ID
@@ -213,7 +213,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
 
             # Mask zero amounts
             mask = (gold_amounts_flat > 0).float()
-            
+
             # Losses that only consider food amounts
             loss_amount = ((pred_amounts_flat - gold_amounts_flat) ** 2 * mask).sum() / (mask.sum() + 1e-8)
 
@@ -231,7 +231,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
         bar.set_postfix_str(f"Loss = {epoch_loss:.0f}")
         loss_history.append(epoch_loss)
 
-        
+
         writer.add_scalar("Loss/train", epoch_loss, e)
 
         if epoch_loss < min_loss and (min_loss - epoch_loss) > 10:
@@ -285,14 +285,14 @@ def evaluate_on_random_sample(dataloader, model, device):
 
     merged_y = MenusDataset.merge_ids_and_amounts(y_id, y_amount)
 
-    values = ["Calories", "Calories1", "Calories2", "Calories3", "Calories MSE", "Carbohydrate", 
-                "Sugars", "Fat", "Protein", "Fruit", "Vegetable", "Cheese", "Meat", "Cereal", 
-                "Vegetarian", "Vegan", "Contains eggs", "Contains milk", "Contains peanuts or nuts", 
+    values = ["Calories", "Calories1", "Calories2", "Calories3", "Calories MSE", "Carbohydrate",
+                "Sugars", "Fat", "Protein", "Fruit", "Vegetable", "Cheese", "Meat", "Cereal",
+                "Vegetarian", "Vegan", "Contains eggs", "Contains milk", "Contains peanuts or nuts",
                 "Contains fish", "Contains sesame", "Contains soy", "Contains gluten"]
     print("\nComparison between the ground truth and the model's prediction:")
     menu1 = transform2(merged_y, data, device)
     menu2 = transform2(merged_pred, data, device)
-    print("\nGround truth vs Model's prediction")    
+    print("\nGround truth vs Model's prediction")
     print("" + "-" * 30)
     for i, (m1, m2) in enumerate(zip(menu1, menu2)):
         print(f"{values[i]}: {m1.item():.0f} vs {m2.item():.0f}")
