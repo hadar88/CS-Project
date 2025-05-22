@@ -35,13 +35,13 @@ def main():
     dataloader = DataLoader(menus, batch_size=BATCH_SIZE, shuffle=(SPLIT == "train"))
 
     model = MenuGenerator()
-    optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
+    optimizer = optim.Adam(model.parameters(), lr=1e-4, weight_decay=1e-5)
     foods_criterions = [nn.CrossEntropyLoss()]
     amounts_criterions = [nn.MSELoss()]
     other_criterions = []
 
     if split == "train":
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10000, device)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 100, device)
 
         # model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth"))
         # evaluate_on_random_sample(dataloader, model, device)
@@ -60,7 +60,7 @@ class MenuGenerator(nn.Module):
             nn.Linear(14, 128),
             nn.ReLU(),
             nn.BatchNorm1d(128),
-            # nn.Dropout(0.5),
+            nn.Dropout(0.5),
             nn.Linear(128, hidden_dim),
             nn.ReLU(),
         )
@@ -70,7 +70,7 @@ class MenuGenerator(nn.Module):
         self.slot_decoder = nn.Sequential(
             nn.Linear(hidden_dim, 128),
             nn.ReLU(),
-            # nn.Dropout(0.5),
+            nn.Dropout(0.5),
             nn.Linear(128, 64),
             nn.ReLU(),
         )
