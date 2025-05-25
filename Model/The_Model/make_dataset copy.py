@@ -4,10 +4,10 @@ import menu_output_transform as mot
 from torch.utils.data import Dataset
 from enum import Enum
 
-MENUS_INPUT = "../../Data/layouts/MenusInput.json"
+MENUS_INPUT = "../../Data/layouts/MenusInput copy.json"
 MENUS_BY_ID = "../../Data/layouts/MenusById.json"
 
-FOODS_DATA_PATH = "../../Data/layouts/FoodsByID.json"
+FOODS_DATA_PATH = "../../Data/layouts/FoodsByID copy.json"
 
 class FoodProperties(Enum):
     CALORIES = 0
@@ -17,18 +17,6 @@ class FoodProperties(Enum):
     PROTEIN = 4
     VEGETARIAN = 5
     VEGAN = 6
-    CONTAINS_EGGS = 7
-    CONTAINS_MILK = 8
-    CONTAINS_PEANUTS_OR_NUTS = 9
-    CONTAINS_FISH = 10
-    CONTAINS_SESAME = 11
-    CONTAINS_SOY = 12
-    CONTAINS_GLUTEN = 13
-    FRUIT = 14
-    VEGETABLE = 15
-    CHEESE = 16
-    MEAT = 17
-    CEREAL = 18
 
 def read_foods_tensor():
     foods = open(FOODS_DATA_PATH, "r")
@@ -50,18 +38,6 @@ def read_foods_tensor():
         data_tensor[index][4] = data[food_id]["Protein"]
         data_tensor[index][5] = data[food_id]["Vegetarian"]
         data_tensor[index][6] = data[food_id]["Vegan"]
-        data_tensor[index][7] = data[food_id]["Contains eggs"]
-        data_tensor[index][8] = data[food_id]["Contains milk"]
-        data_tensor[index][9] = data[food_id]["Contains peanuts or nuts"]
-        data_tensor[index][10] = data[food_id]["Contains fish"]
-        data_tensor[index][11] = data[food_id]["Contains sesame"]
-        data_tensor[index][12] = data[food_id]["Contains soy"]
-        data_tensor[index][13] = data[food_id]["Contains gluten"]
-        data_tensor[index][14] = data[food_id]["Fruit"]
-        data_tensor[index][15] = data[food_id]["Vegetable"]
-        data_tensor[index][16] = data[food_id]["Cheese"]
-        data_tensor[index][17] = data[food_id]["Meat"]
-        data_tensor[index][18] = data[food_id]["Cereal"]
 
     return data_tensor
 
@@ -143,7 +119,6 @@ class MenusDataset(Dataset):
         return len(self.xs)
     
     def __getitem__(self, index):
-        # return self.xs[index], self.mids[index], self.ys[index]
         foods_id = self.ys[index][..., 0].long()
         foods_amount = self.ys[index][..., 1].float()
         return self.xs[index], foods_id, foods_amount
