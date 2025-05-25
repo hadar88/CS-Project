@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 17
+MODEL_VERSION = 18
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -35,7 +35,7 @@ def main():
     dataloader = DataLoader(menus, batch_size=BATCH_SIZE, shuffle=(SPLIT == "train"))
 
     model = MenuGenerator()
-    optimizer = optim.Adam(model.parameters(), lr=1e-4, weight_decay=1e-5)
+    optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
     foods_criterions = [nn.CrossEntropyLoss()]
     amounts_criterions = [nn.MSELoss()]
     other_criterions = []
