@@ -1,6 +1,6 @@
 import json
 import torch
-import menu_output_transform as mot
+import menu_output_transform_copy as mot
 from torch.utils.data import Dataset
 from enum import Enum
 
@@ -55,7 +55,7 @@ def make_xs(split="train"):
         val_split = int(total_menus * 0.9)    # 10% for validation
 
         for i, menu_id in enumerate(dataset):
-            x = [dataset[menu_id]["Initial"][entry] for entry in dataset[menu_id]["Initial"]]
+            x = [dataset[menu_id][entry] for entry in dataset[menu_id]]
 
             # if split == "train" and i < train_split:
             #     xs.append(x)

@@ -41,7 +41,7 @@ def main():
     other_criterions = []
 
     if split == "train":
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10000, device)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10, device)
 
         # model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth"))
         # evaluate_on_random_sample(dataloader, model, device)
@@ -57,7 +57,7 @@ class MenuGenerator(nn.Module):
         super(MenuGenerator, self).__init__()
 
         self.input_encoder = nn.Sequential(
-            nn.Linear(14, 128),
+            nn.Linear(7, 128),
             nn.ReLU(),
             nn.BatchNorm1d(128),
             nn.Dropout(0.5),
@@ -119,8 +119,6 @@ class AmountsPerMealLoss(nn.Module):
 def train_model(dataloader, model, foods_criterions: list, amounts_criterions: list, other_criterions: list, optimizer, epochs, device):
     from torch.utils.tensorboard import SummaryWriter
     writer = SummaryWriter(f"runs/model_v{MODEL_VERSION}")
-    writer.add_graph(model, torch.randn(1, 14))
-    writer.close()
 
     model.to(device)
     model.train()
@@ -136,7 +134,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
         epoch_loss = 0.0
 
         for x, ids, amounts in dataloader:
-            # x: (batch_size, 14)
+            # x: (batch_size, 7)
             # ids: (batch_size, 7, 3, 10)
             # amounts: (batch_size, 7, 3, 10)
             x, gold_ids, gold_amounts = x.to(device), ids.to(device), amounts.to(device)
@@ -197,8 +195,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
     torch.save(best_model, f"saved_models/model_v{MODEL_VERSION}.pth")
     print(f"Model saved as saved_models/model_v{MODEL_VERSION}.pth")
 
-
-    loss_history = loss_history[200:]
+    loss_history = loss_history#[200:]
     plt.plot(loss_history)
     plt.savefig(f'models_plots/loss_plot_{int(MODEL_VERSION)}.png')
 
@@ -208,10 +205,7 @@ def evaluate_on_random_sample(dataloader, model, device):
     model.eval()
     model.to(device)
 
-    # print("Here is a random prediction:")
-
-    # print("Reading the foods data...\n")
-    FOODS_DATA_PATH = "../../Data/layouts/FoodsByID.json"
+    FOODS_DATA_PATH = "../../Data/layouts/FoodsByID_copy.json"
     foods = open(FOODS_DATA_PATH, "r")
     data = json.load(foods)
 
@@ -219,7 +213,7 @@ def evaluate_on_random_sample(dataloader, model, device):
     x, y_id, y_amount = dataloader.dataset[random_index]
     x, y_id, y_amount = x.to(device), y_id.to(device), y_amount.to(device)
 
-    # my_sample = [2826, 326, 27, 72, 190, 0, 0, 1, 1, 1, 1, 1, 1, 1]
+    # my_sample = [2826, 326, 27, 72, 190, 0, 0]
     # my_sample = torch.tensor([my_sample], dtype=torch.float32)
     # pred_id, pred_amount = model(my_sample.to(device))
 
@@ -231,19 +225,13 @@ def evaluate_on_random_sample(dataloader, model, device):
 
     pred_amount = pred_amount.squeeze(-1)
 
-    # print("\nThe model predicted:")
     merged_pred = MenusDataset.merge_ids_and_amounts(pred_id, pred_amount)
-    # print(merged_pred)
+
     check_menu(merged_pred)
-    # print("\nThe menu is in 'check_menu.json'")
 
     merged_y = MenusDataset.merge_ids_and_amounts(y_id, y_amount)
 
-    values = ["Calories", "Calories1", "Calories2", "Calories3", "Calories MSE", "Carbohydrate",
-                "Sugars", "Fat", "Protein", "Fruit", "Vegetable", "Cheese", "Meat", "Cereal",
-                "Vegetarian", "Vegan", "Contains eggs", "Contains milk", "Contains peanuts or nuts",
-                "Contains fish", "Contains sesame", "Contains soy", "Contains gluten"]
-    print("\nComparison between the ground truth and the model's prediction:")
+    values = ["Calories", "Carbohydrate", "Sugars", "Fat", "Protein", "Vegetarian", "Vegan"]
     menu1 = transform2(merged_y, data, device)
     menu2 = transform2(merged_pred, data, device)
     print("\nGround truth vs Model's prediction")
