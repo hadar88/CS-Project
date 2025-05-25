@@ -33,7 +33,6 @@ SPINNER_TEXT = (0.784, 0.902, 0.788, 1)     # light green
 class Info(object):
     def __init__(self, **kwargs):
         super(Info, self).__init__(**kwargs)
-        self.username = ""
         self.password = ""
         self.weight = ""
         self.height = ""
@@ -56,13 +55,15 @@ class Info(object):
         self.goal_weight = ""
         self.goal_time = ""
         
-info = Info()
+info = None
+current_username = None
+menu_request_window = "main"
 
 #######################################################################
 
-DATA_PATH = "data.json"
-f = open(DATA_PATH, "r")
-data = json.load(f)
+USERS_DATA_PATH = "usersData.json"
+f = open(USERS_DATA_PATH, "r")
+users_data = json.load(f)
 f.close()
 
 #######################################################################
@@ -282,7 +283,8 @@ def get_vector(current_weight, goal_weight, goal_time, height, age, gender, goal
 #######################################################################
 
 def get_meal(day, meal):
-    menu = data["menu"]
+    global current_username
+    menu = users_data[current_username]["menu"]
     m = menu[day][meal]
     a = {}
     for i in m:
@@ -317,26 +319,27 @@ def convert_to_dict(data):
 
 #######################################################################
 
-def clean_self_menu():
-    self_menu = data["self_menu"]
+def clean_self_menu(username):
+    self_menu = users_data[username]["self_menu"]
 
     for day in self_menu:
         for meal in self_menu[day]:
             self_menu[day][meal] = {}
 
-    data["self_menu"] = self_menu
-    with open(DATA_PATH, "w") as file:
-        json.dump(data, file)
+    users_data[username]["self_menu"] = self_menu
+    with open(USERS_DATA_PATH, "w") as file:
+        json.dump(users_data, file)
 
 def add_food(day, meal, food_name, amount):
-    self_menu = data["self_menu"]
+    global current_username
+    self_menu = users_data[current_username]["self_menu"]
     self_menu[day][meal][food_name] = amount
 
-    calories_today = data["calories today"]
-    carbohydrates_today = data["carbohydrates today"]
-    sugar_today = data["sugar today"]
-    fat_today = data["fat today"]
-    protein_today = data["protein today"]
+    calories_today = users_data[current_username]["calories today"]
+    carbohydrates_today = users_data[current_username]["carbohydrates today"]
+    sugar_today = users_data[current_username]["sugar today"]
+    fat_today = users_data[current_username]["fat today"]
+    protein_today = users_data[current_username]["protein today"]
 
     food = foods_dict[food_name]
     calories_today += food["Calories"] * amount / 100
@@ -345,25 +348,26 @@ def add_food(day, meal, food_name, amount):
     fat_today += food["Fat"] * amount / 100
     protein_today += food["Protein"] * amount / 100
 
-    data["calories today"] = round(calories_today, 2)
-    data["carbohydrates today"] = round(carbohydrates_today, 2)
-    data["sugar today"] = round(sugar_today, 2)
-    data["fat today"] = round(fat_today, 2)
-    data["protein today"] = round(protein_today, 2)
-    data["self_menu"] = self_menu
+    users_data[current_username]["calories today"] = round(calories_today, 2)
+    users_data[current_username]["carbohydrates today"] = round(carbohydrates_today, 2)
+    users_data[current_username]["sugar today"] = round(sugar_today, 2)
+    users_data[current_username]["fat today"] = round(fat_today, 2)
+    users_data[current_username]["protein today"] = round(protein_today, 2)
+    users_data[current_username]["self_menu"] = self_menu
 
-    with open(DATA_PATH, "w") as file:
-        json.dump(data, file)
+    with open(USERS_DATA_PATH, "w") as file:
+        json.dump(users_data, file)
 
 def remove_food(day, meal, food_name):
-    self_menu = data["self_menu"]
+    global current_username
+    self_menu = users_data[current_username]["self_menu"]
     food = foods_dict[food_name]
 
-    calories_today = data["calories today"]
-    carbohydrates_today = data["carbohydrates today"]
-    sugar_today = data["sugar today"]
-    fat_today = data["fat today"]
-    protein_today = data["protein today"]
+    calories_today = users_data[current_username]["calories today"]
+    carbohydrates_today = users_data[current_username]["carbohydrates today"]
+    sugar_today = users_data[current_username]["sugar today"]
+    fat_today = users_data[current_username]["fat today"]
+    protein_today = users_data[current_username]["protein today"]
 
     calories_today -= food["Calories"] * self_menu[day][meal][food_name] / 100
     carbohydrates_today -= food["Carbohydrate"] * self_menu[day][meal][food_name] / 100
@@ -384,15 +388,15 @@ def remove_food(day, meal, food_name):
 
     del self_menu[day][meal][food_name]
 
-    data["calories today"] = round(calories_today, 2)
-    data["carbohydrates today"] = round(carbohydrates_today, 2)
-    data["sugar today"] = round(sugar_today, 2)
-    data["fat today"] = round(fat_today, 2)
-    data["protein today"] = round(protein_today, 2)
-    data["self_menu"] = self_menu
+    users_data[current_username]["calories today"] = round(calories_today, 2)
+    users_data[current_username]["carbohydrates today"] = round(carbohydrates_today, 2)
+    users_data[current_username]["sugar today"] = round(sugar_today, 2)
+    users_data[current_username]["fat today"] = round(fat_today, 2)
+    users_data[current_username]["protein today"] = round(protein_today, 2)
+    users_data[current_username]["self_menu"] = self_menu
 
-    with open(DATA_PATH, "w") as file:
-        json.dump(data, file)
+    with open(USERS_DATA_PATH, "w") as file:
+        json.dump(users_data, file)
 
 #######################################################################
 
@@ -579,14 +583,19 @@ class LoginWindow(Screen):
     def login(self, instance):
         username = self.userName.text
         password = self.password.text
-        if(data["username"] == username and data["password"] == password and username != "" and password != ""):
-            self.errorMessage.text = ""
-            if(data["logincompleted"]):
+        global current_username
+
+        if username in users_data:
+            if users_data[username]["password"] == password:
+                self.errorMessage.text = ""
+                current_username = username
                 self.manager.current = "main"
             else:
-                self.manager.current = "registration1"
+                current_username = None
+                self.errorMessage.text = "[b]Invalid Password[/b]"
         else:
-            self.errorMessage.text = "[b]Invalid username or password[/b]"
+            current_username = None
+            self.errorMessage.text = "[b]Invalid Username[/b]"
 
     def createAccount(self, instance):
         self.errorMessage.text = ""
@@ -759,7 +768,7 @@ class PersonalDataWindow(Screen):
         self.weightupdateInput = TextInput(
             multiline = False,
             font_size = 40,
-            text = data["weight"], 
+            text = "", 
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 0.8},
             input_filter="float",
@@ -796,7 +805,7 @@ class PersonalDataWindow(Screen):
         self.heightupdateInput = TextInput(
             multiline = False,
             font_size = 40,
-            text = data["height"],
+            text = "",
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 0.8 - 1/12},
             input_filter="float",
@@ -833,7 +842,7 @@ class PersonalDataWindow(Screen):
         self.targetweightupdateInput = TextInput(
             multiline = False,
             font_size = 40,
-            text = data["goal weight"],
+            text = "",
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 0.8 - 2/12},
             input_filter="float",
@@ -869,7 +878,7 @@ class PersonalDataWindow(Screen):
 
         self.activityupdateInput = Spinner(
             font_size=40,
-            text=data["activity"],
+            text = "",
             values=("Sedentary",
             "Lightly active",
             "Moderately active",
@@ -935,18 +944,20 @@ class PersonalDataWindow(Screen):
         elif(self.weightupdateInput.text == "" or float(self.weightupdateInput.text) < 40): 
             self.errorMessage.text = "[b]Weight must be greater than 40 kg[/b]"
         else:
-            data["weight"] = self.weightupdateInput.text
+            global current_username
+            users_data[current_username]["weight"] = self.weightupdateInput.text
             day = datetime.now().date().isoformat()
-            if data["history_times"] and day in data["history_times"]:
-                data["history_weight"] = data["history_weight"][:-1] + [float(data["weight"])]
-                data["history_bmi"] = data["history_bmi"][:-1] + [bmi(float(data["weight"]), float(data["height"]))]
+            if users_data[current_username]["history_times"] and day in users_data[current_username]["history_times"]:
+                users_data[current_username]["history_weight"] = users_data[current_username]["history_weight"][:-1] + [float(users_data[current_username]["weight"])]
+                users_data[current_username]["history_bmi"] = users_data[current_username]["history_bmi"][:-1] + [bmi(float(users_data[current_username]["weight"]), float(users_data[current_username]["height"]))]
             else:
-                data["history_weight"] = data["history_weight"] + [float(data["weight"])]
-                data["history_bmi"] = data["history_bmi"] + [bmi(float(data["weight"]), float(data["height"]))]
-                data["history_times"] = data["history_times"] + [day]
+                users_data[current_username]["history_weight"] = users_data[current_username]["history_weight"] + [float(users_data[current_username]["weight"])]
+                users_data[current_username]["history_bmi"] = users_data[current_username]["history_bmi"] + [bmi(float(users_data[current_username]["weight"]), float(users_data[current_username]["height"]))]
+                users_data[current_username]["history_times"] = users_data[current_username]["history_times"] + [day]
             
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
+            with open(USERS_DATA_PATH, "w") as file:
+                json.dump(users_data, file)
+
             self.weightupdateButton.background_normal = "pencil.png"
             self.weightupdateInput.disabled = not self.weightupdateInput.disabled
             self.errorMessage.text = ""
@@ -958,17 +969,18 @@ class PersonalDataWindow(Screen):
         elif(self.heightupdateInput.text == "" or int(self.heightupdateInput.text) < 140 or int(self.heightupdateInput.text) > 250):
             self.errorMessage.text = "[b]Height must be between 140 and 250 cm[/b]"
         else:
-            data["height"] = self.heightupdateInput.text
+            global current_username
+            users_data[current_username]["height"] = self.heightupdateInput.text
             day = datetime.now().date().isoformat()
-            if data["history_times"] and day in data["history_times"]:
-                data["history_weight"] = data["history_weight"][:-1] + [float(data["weight"])]
-                data["history_bmi"] = data["history_bmi"][:-1] + [bmi(float(data["weight"]), float(data["height"]))]
+            if users_data[current_username]["history_times"] and day in users_data[current_username]["history_times"]:
+                users_data[current_username]["history_weight"] = users_data[current_username]["history_weight"][:-1] + [float(users_data[current_username]["weight"])]
+                users_data[current_username]["history_bmi"] = users_data[current_username]["history_bmi"][:-1] + [bmi(float(users_data[current_username]["weight"]), float(users_data[current_username]["height"]))]
             else:
-                data["history_weight"] = data["history_weight"] + [float(data["weight"])]
-                data["history_bmi"] = data["history_bmi"] + [bmi(float(data["weight"]), float(data["height"]))]
-                data["history_times"] = data["history_times"] + [day]
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
+                users_data[current_username]["history_weight"] = users_data[current_username]["history_weight"] + [float(users_data[current_username]["weight"])]
+                users_data[current_username]["history_bmi"] = users_data[current_username]["history_bmi"] + [bmi(float(users_data[current_username]["weight"]), float(users_data[current_username]["height"]))]
+                users_data[current_username]["history_times"] = users_data[current_username]["history_times"] + [day]
+            with open(USERS_DATA_PATH, "w") as file:
+                json.dump(users_data, file)
             self.heightupdateButton.background_normal = "pencil.png"
             self.heightupdateInput.disabled = not self.heightupdateInput.disabled
             self.errorMessage.text = ""
@@ -980,9 +992,10 @@ class PersonalDataWindow(Screen):
         elif(self.targetweightupdateInput.text == "" or int(self.targetweightupdateInput.text) < 40):
             self.errorMessage.text = "[b]Weight must be greater than 40 kg[/b]"
         else:
-            data["goal weight"] = self.targetweightupdateInput.text
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
+            global current_username
+            users_data[current_username]["goal weight"] = self.targetweightupdateInput.text
+            with open(USERS_DATA_PATH, "w") as file:
+                json.dump(users_data, file)
             self.targetweightupdateButton.background_normal = "pencil.png"
             self.targetweightupdateInput.disabled = not self.targetweightupdateInput.disabled
             self.errorMessage.text = ""
@@ -991,18 +1004,19 @@ class PersonalDataWindow(Screen):
         if self.activityupdateInput.disabled:
             self.activityupdateButton.background_normal = "vee.png"
         else:
-            data["activity"] = self.activityupdateInput.text
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
+            users_data[current_username]["activity"] = self.activityupdateInput.text
+            with open(USERS_DATA_PATH, "w") as file:
+                json.dump(users_data, file)
             self.activityupdateButton.background_normal = "pencil.png"
         self.activityupdateInput.disabled = not self.activityupdateInput.disabled
     
     def on_enter(self):
+        global current_username
         Window.bind(on_keyboard=self.on_keyboard)
-        self.weightupdateInput.text = data["weight"]
-        self.heightupdateInput.text = data["height"]
-        self.targetweightupdateInput.text = data["goal weight"]
-        self.activityupdateInput.text = data["activity"]
+        self.weightupdateInput.text = users_data[current_username]["weight"]
+        self.heightupdateInput.text = users_data[current_username]["height"]
+        self.targetweightupdateInput.text = users_data[current_username]["goal weight"]
+        self.activityupdateInput.text = users_data[current_username]["activity"]
 
     def on_leave(self):
         Window.unbind(on_keyboard=self.on_keyboard)
@@ -1193,27 +1207,28 @@ class StatisticsWindow(Screen):
     def on_enter(self): 
         Window.bind(on_keyboard=self.on_keyboard)
 
-        bmi_temp, bmi_color = check_bmi(float(data["weight"]), float(data["height"]))
-        self.bmiLabel.text = "BMI: " + str(bmi(float(data["weight"]), float(data["height"]))) + " " + str(bmi_temp)
+        global current_username
+        bmi_temp, bmi_color = check_bmi(float(users_data[current_username]["weight"]), float(users_data[current_username]["height"]))
+        self.bmiLabel.text = "BMI: " + str(bmi(float(users_data[current_username]["weight"]), float(users_data[current_username]["height"]))) + " " + str(bmi_temp)
         self.bmiLabel.color = bmi_color
 
-        calories = f"{int(data['calories'])}"
-        carbohydrates = f"{int(data['carbohydrate'])}"
-        sugar = f"{data['sugar']:.2f}"
-        fat = f"{data['fat']:.2f}"
-        protein = f"{data['protein']:.2f}"
+        calories = f"{int(users_data[current_username]['calories'])}"
+        carbohydrates = f"{int(users_data[current_username]['carbohydrate'])}"
+        sugar = f"{users_data[current_username]['sugar']:.2f}"
+        fat = f"{users_data[current_username]['fat']:.2f}"
+        protein = f"{users_data[current_username]['protein']:.2f}"
 
-        calories_today = f"{int(data['calories today'])}"
-        carbohydrates_today = f"{int(data['carbohydrates today'])}"
-        sugar_today = f"{data['sugar today']:.2f}"
-        fat_today = f"{data['fat today']:.2f}"
-        protein_today = f"{data['protein today']:.2f}"
+        calories_today = f"{int(users_data[current_username]['calories today'])}"
+        carbohydrates_today = f"{int(users_data[current_username]['carbohydrates today'])}"
+        sugar_today = f"{users_data[current_username]['sugar today']:.2f}"
+        fat_today = f"{users_data[current_username]['fat today']:.2f}"
+        protein_today = f"{users_data[current_username]['protein today']:.2f}"
 
-        history_weight = data["history_weight"]
-        history_bmi = data["history_bmi"]
-        history_times = data["history_times"]
+        history_weight = users_data[current_username]["history_weight"]
+        history_bmi = users_data[current_username]["history_bmi"]
+        history_times = users_data[current_username]["history_times"]
 
-        self.weightHeightLabel.text = data["weight"]+ " Kg | " + data["height"] + " cm"
+        self.weightHeightLabel.text = users_data[current_username]["weight"]+ " Kg | " + users_data[current_username]["height"] + " cm"
         self.caloriesLabel.text = calories_today + "/" + calories + " Kcal Calories today"
         self.carbohydratesLabel.text = carbohydrates_today + "/" + carbohydrates + " g Carbohydrates today"
         self.sugarLabel.text = sugar_today + "/" + sugar + " g Sugar today"
@@ -1443,9 +1458,8 @@ class MenuWindow(Screen):
         return wrapped_text
 
     def newMenu(self, instance):
-        data["menu_request_window"] = "menu"
-        with open(DATA_PATH, "w") as file:
-            json.dump(data, file)
+        menu_request_window = "menu"
+
         self.manager.current = "loading"
 
     def _adjust_label_height(self, *args):
@@ -1716,7 +1730,8 @@ class FoodTrackerWindow(Screen):
             label.text = ""
 
         if day != "" and meal != "":
-            foods = data["self_menu"][day][meal]
+            global current_username
+            foods = users_data[current_username]["self_menu"][day][meal]
             for food, amount in foods.items():
                 for label, button in zip(self.labels, self.remove_buttons):
                     button.opacity = 1
@@ -1750,7 +1765,8 @@ class FoodTrackerWindow(Screen):
         day = self.dayInput.text.lower()
         meal = self.mealInput.text.lower()
 
-        foods = data["self_menu"][day][meal]
+        global current_username
+        foods = users_data[current_username]["self_menu"][day][meal]
         if len(foods) >= 10:
             self.input.text = ""
             self.amount_input.text = ""
@@ -1779,7 +1795,8 @@ class FoodTrackerWindow(Screen):
         day = self.dayInput.text.lower()
         meal = self.mealInput.text.lower()
 
-        foods = data["self_menu"][day][meal]
+        global current_username
+        foods = users_data[current_username]["self_menu"][day][meal]
         food = list(foods.keys())[index]
         
         self.labels[index].text = ""
@@ -2900,14 +2917,22 @@ class CreateAccountWindow(Screen):
         Window.unbind(on_keyboard=self.on_keyboard)
 
     def registration(self, instance):
+        global info
+        info = Info()
+
         username = self.userName.text
         password = self.password.text
+
         if(username == "" or password == ""):
             self.errorMessage.text = "[b]Cannot leave fields empty[/b]"
+        elif username in users_data:
+            self.errorMessage.text = "[b]Username already exists[/b]"
         else:
             self.userName.text = ""
             self.password.text = ""
-            info.username = username
+            
+            global current_username
+            current_username = username
             info.password = password
 
             self.manager.current = "registration1"
@@ -3113,6 +3138,8 @@ class Registration1Window(Screen):
         self.rect.size = instance.size
 
     def next(self, instance):
+        global info
+
         weight_input = self.weightInput.text
         height_input = self.heightInput.text
         age_input = self.AgeInput.text
@@ -3313,6 +3340,7 @@ class Registration2Window(Screen):
         if(activity == "Level of Activity"):
             self.errorMessage.text = "[b]Please select a level of activity[/b]"
         else:
+            global info
             info.activity = activity
             info.cardio = "1" if cardio else "0"
             info.strength = "1" if strength else "0"
@@ -3463,6 +3491,7 @@ class Registration3Window(Screen):
         if(goal_input == "Goal" or diet_input == "Diet"):
             self.errorMessage.text = "[b]Please select a goal and diet[/b]"
         else:
+            global info
             info.goal = goal_input
             if(diet_input == "Vegetarian"):
                 info.vegetarian = "1"
@@ -3695,6 +3724,7 @@ class Registration4Window(Screen):
         soy_allergy = self.soyAllergyInput.active
         gluten_allergy = self.glutenAllergyInput.active
 
+        global info
         info.egg_allergy = "1" if egg_allergy else "0"
         info.milk_allergy = "1" if milk_allergy else "0"
         info.nut_allergy = "1" if nut_allergy else "0"
@@ -3854,6 +3884,7 @@ class Registration5Window(Screen):
             self.errorMessage.text = "[b]Please fill in the field[/b]"
         else:
             self.errorMessage.text = ""
+            global info
             info.goal_weight = self.goalweightInput.text
 
             self.manager.current = "registration6"
@@ -3864,6 +3895,7 @@ class Registration5Window(Screen):
 
     def on_enter(self):
         Window.bind(on_keyboard=self.on_keyboard)
+        global info
         idealBodyWeight = ideal_body_weight(int(info.height), info.gender)
         self.suggestedWeight.text = "Suggested weight: " + str(idealBodyWeight) + " kg"
 
@@ -3986,7 +4018,7 @@ class Registration6Window(Screen):
         self.window.add_widget(self.errorMessage)
 
         self.nextPage = Button(
-            text = "Next page",
+            text = "Finish",
             font_size = 50,
             background_color = BUTTON_BG,
             color = BUTTON_TEXT,
@@ -4013,8 +4045,8 @@ class Registration6Window(Screen):
             self.errorMessage.text = "[b]Please fill in the field[/b]"
         else:
             self.errorMessage.text = ""
+            global info
             info.goal_time = self.timeInput.text
-            data["menu_request_window"] = "main"
             self.manager.current = "loading"
 
     def previous(self, instance):
@@ -4023,6 +4055,7 @@ class Registration6Window(Screen):
 
     def on_enter(self):
         Window.bind(on_keyboard=self.on_keyboard)
+        global info
         self.time = time_of_change(int(info.weight), int(info.goal_weight))
         self.suggestedTime.text = "Suggested time: " + str(self.time) + " weeks (" + f'{(self.time * 7 /30):.1f}' + " months)"
 
@@ -4119,14 +4152,15 @@ class LoadingWindow(Screen):
         self.rect.size = instance.size
 
     def next(self):
-        if(data["menu_request_window"] == "main"):
+        if(menu_request_window == "main"):
             self.resetData()
             self.manager.current = "main"
         else:
             self.manager.current = "menu"
 
     def on_enter(self):
-        if(data["menu_request_window"] == "main"):
+        global info
+        if(menu_request_window == "main"):
             current_weight_temp = int(info.weight)
             goal_weight_temp = int(info.goal_weight)
             goal_time_temp = int(info.goal_time)
@@ -4147,28 +4181,30 @@ class LoadingWindow(Screen):
             sesame_allergy_temp = info.sesame_allergy
             soy_allergy_temp = info.soy_allergy
             gluten_allergy_temp = info.gluten_allergy
-
         else:
-            current_weight_temp = int(data["weight"])
-            goal_weight_temp = int(data["goal weight"])
-            goal_time_temp = int(data["goal time"])
-            height_temp = int(data["height"])
-            age_temp = int(data["age"])
-            gender_temp = data["gender"]
-            goal_temp = data["goal"]
-            cardio_temp = data["cardio"]
-            strength_temp = data["strength"]
-            muscle_temp = data["muscle"]
-            activity_temp = data["activity"]
-            vegetarian_temp = data["vegetarian"]
-            vegan_temp = data["vegan"]
-            egg_allergy_temp = data["eggs allergy"]
-            milk_allergy_temp = data["milk allergy"]
-            nuts_allergy_temp = data["nuts allergy"]
-            fish_allergy_temp = data["fish allergy"]
-            sesame_allergy_temp = data["sesame allergy"]
-            soy_allergy_temp = data["soy allergy"]
-            gluten_allergy_temp = data["gluten allergy"]
+            global current_username
+            user_data = users_data[current_username]
+
+            current_weight_temp = int(user_data["weight"])
+            goal_weight_temp = int(user_data["goal weight"])
+            goal_time_temp = int(user_data["goal time"])
+            height_temp = int(user_data["height"])
+            age_temp = int(user_data["age"])
+            gender_temp = user_data["gender"]
+            goal_temp = user_data["goal"]
+            cardio_temp = user_data["cardio"]
+            strength_temp = user_data["strength"]
+            muscle_temp = user_data["muscle"]
+            activity_temp = user_data["activity"]
+            vegetarian_temp = user_data["vegetarian"]
+            vegan_temp = user_data["vegan"]
+            egg_allergy_temp = user_data["eggs allergy"]
+            milk_allergy_temp = user_data["milk allergy"]
+            nuts_allergy_temp = user_data["nuts allergy"]
+            fish_allergy_temp = user_data["fish allergy"]
+            sesame_allergy_temp = user_data["sesame allergy"]
+            soy_allergy_temp = user_data["soy allergy"]
+            gluten_allergy_temp = user_data["gluten allergy"]
 
         self.vector = get_vector(current_weight_temp, goal_weight_temp, goal_time_temp, height_temp, age_temp,
                                             gender_temp, goal_temp, cardio_temp, strength_temp, muscle_temp, activity_temp,
@@ -4188,9 +4224,13 @@ class LoadingWindow(Screen):
             if response.status_code == 200:
                 result = response.json()
                 result = convert_to_dict(result)
-                data["menu"] = result
-                with open(DATA_PATH, "w") as file:
-                    json.dump(data, file)
+
+                global current_username
+                if current_username not in users_data:
+                    users_data[current_username] = {}
+                users_data[current_username]["menu"] = result
+                with open(USERS_DATA_PATH, "w") as file:
+                    json.dump(users_data, file)
                 self.next()
             else:
                 print("Error: " + str(response.status_code))
@@ -4201,40 +4241,40 @@ class LoadingWindow(Screen):
             Clock.schedule_once(lambda dt: self.build_menu(), 4)
 
     def resetData(self):
-        data["logincompleted"] = True
-        data["username"] = info.username
-        data["password"] = info.password
-        data["weight"] = info.weight
-        data["height"] = info.height
-        data["age"] = info.age
-        data["gender"] = info.gender
-        data["activity"] = info.activity
-        data["cardio"] = info.cardio
-        data["strength"] = info.strength
-        data["muscle"] = info.muscle
-        data["goal"] = info.goal
-        data["vegetarian"] = info.vegetarian
-        data["vegan"] = info.vegan
-        data["eggs allergy"] = info.egg_allergy
-        data["milk allergy"] = info.milk_allergy
-        data["nuts allergy"] = info.nut_allergy
-        data["fish allergy"] = info.fish_allergy
-        data["sesame allergy"] = info.sesame_allergy
-        data["soy allergy"] = info.soy_allergy
-        data["gluten allergy"] = info.gluten_allergy
-        data["goal weight"] = info.goal_weight
-        data["goal time"] = info.goal_time
-        data["calories"] = self.vector["calories"]
-        data["carbohydrate"] = self.vector["carbohydrates"]
-        data["sugar"] = self.vector["sugar"]
-        data["fat"] = self.vector["fat"]
-        data["protein"] = self.vector["protein"]
-        data["calories today"] = 0
-        data["carbohydrates today"] = 0
-        data["sugar today"] = 0
-        data["fat today"] = 0
-        data["protein today"] = 0
-        data["self_menu"] = {
+        global info
+        global current_username
+        users_data[current_username]["password"] = info.password
+        users_data[current_username]["weight"] = info.weight
+        users_data[current_username]["height"] = info.height
+        users_data[current_username]["age"] = info.age
+        users_data[current_username]["gender"] = info.gender
+        users_data[current_username]["activity"] = info.activity
+        users_data[current_username]["cardio"] = info.cardio
+        users_data[current_username]["strength"] = info.strength
+        users_data[current_username]["muscle"] = info.muscle
+        users_data[current_username]["goal"] = info.goal
+        users_data[current_username]["vegetarian"] = info.vegetarian
+        users_data[current_username]["vegan"] = info.vegan
+        users_data[current_username]["eggs allergy"] = info.egg_allergy
+        users_data[current_username]["milk allergy"] = info.milk_allergy
+        users_data[current_username]["nuts allergy"] = info.nut_allergy
+        users_data[current_username]["fish allergy"] = info.fish_allergy
+        users_data[current_username]["sesame allergy"] = info.sesame_allergy
+        users_data[current_username]["soy allergy"] = info.soy_allergy
+        users_data[current_username]["gluten allergy"] = info.gluten_allergy
+        users_data[current_username]["goal weight"] = info.goal_weight
+        users_data[current_username]["goal time"] = info.goal_time
+        users_data[current_username]["calories"] = self.vector["calories"]
+        users_data[current_username]["carbohydrate"] = self.vector["carbohydrates"]
+        users_data[current_username]["sugar"] = self.vector["sugar"]
+        users_data[current_username]["fat"] = self.vector["fat"]
+        users_data[current_username]["protein"] = self.vector["protein"]
+        users_data[current_username]["calories today"] = 0
+        users_data[current_username]["carbohydrates today"] = 0
+        users_data[current_username]["sugar today"] = 0
+        users_data[current_username]["fat today"] = 0
+        users_data[current_username]["protein today"] = 0
+        users_data[current_username]["self_menu"] = {
             "sunday": {
                 "breakfast": {},
                 "lunch": {},
@@ -4271,24 +4311,24 @@ class LoadingWindow(Screen):
                 "dinner": {}
             }
         }
-        data["history_weight"] = []
-        data["history_bmi"] = []
-        data["history_times"] = []
-        data["last_visit_time"] = datetime.now().isoformat(timespec='minutes')
+        users_data[current_username]["history_weight"] = []
+        users_data[current_username]["history_bmi"] = []
+        users_data[current_username]["history_times"] = []
+        users_data[current_username]["last_visit_time"] = datetime.now().isoformat(timespec='minutes')
 
         today = datetime.now().date().isoformat()
         bmi_temp = bmi(int(info.weight), int(info.height))
 
-        if data["history_times"] and today in data["history_times"]:
-            data["history_weight"] = data["history_weight"][:-1] + [float(int(info.weight))]
-            data["history_bmi"] = data["history_bmi"][:-1] + [bmi_temp] 
+        if users_data[current_username]["history_times"] and today in users_data[current_username]["history_times"]:
+            users_data[current_username]["history_weight"] = users_data[current_username]["history_weight"][:-1] + [float(int(info.weight))]
+            users_data[current_username]["history_bmi"] = users_data[current_username]["history_bmi"][:-1] + [bmi_temp] 
         else:
-            data["history_weight"] = data["history_weight"] + [float(int(info.weight))]
-            data["history_bmi"] = data["history_bmi"] + [bmi_temp]
-            data["history_times"] = data["history_times"] + [today] 
+            users_data[current_username]["history_weight"] = users_data[current_username]["history_weight"] + [float(int(info.weight))]
+            users_data[current_username]["history_bmi"] = users_data[current_username]["history_bmi"] + [bmi_temp]
+            users_data[current_username]["history_times"] = users_data[current_username]["history_times"] + [today] 
 
-        with open(DATA_PATH, "w") as file:
-            json.dump(data, file)
+        with open(USERS_DATA_PATH, "w") as file:
+            json.dump(users_data, file)
 
 ################################
 
@@ -4318,31 +4358,34 @@ class MainApp(App):
         return WindowManager()
     
     def end_of_week(self):
-        if data["last_visit_time"] != "":
-            current_time = datetime.fromisoformat(datetime.now().isoformat(timespec='minutes'))
-            last_visit_time = datetime.fromisoformat(data["last_visit_time"])
-            while last_visit_time <= current_time:
-                if last_visit_time.weekday() == 5 and last_visit_time.hour == 23 and last_visit_time.minute == 59:
-                    clean_self_menu()
-                    break
-                last_visit_time += timedelta(minutes=1)
+        for username in users_data:
+            if users_data[username]["last_visit_time"] != "":
+                current_time = datetime.fromisoformat(datetime.now().isoformat(timespec='minutes'))
+                last_visit_time = datetime.fromisoformat(users_data[username]["last_visit_time"])
+                while last_visit_time <= current_time:
+                    if last_visit_time.weekday() == 5 and last_visit_time.hour == 23 and last_visit_time.minute == 59:
+                        clean_self_menu(username)
+                        break
+                    last_visit_time += timedelta(minutes=1)
 
     def reset_day(self):
         entry_time = datetime.now().date().isoformat()
-        last_visit_time = data["last_visit_time"].split("T")[0]
-        
-        if last_visit_time != entry_time:
-            data["calories today"] = 0
-            data["carbohydrates today"] = 0
-            data["sugar today"] = 0
-            data["fat today"] = 0
-            data["protein today"] = 0
-            with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
 
-        data["last_visit_time"] = datetime.now().isoformat(timespec='minutes')
-        with open(DATA_PATH, "w") as file:
-                json.dump(data, file)
+        for username in users_data:
+            last_visit_time = users_data[username]["last_visit_time"].split("T")[0]
+            
+            if last_visit_time != entry_time:
+                users_data[username]["calories today"] = 0
+                users_data[username]["carbohydrates today"] = 0
+                users_data[username]["sugar today"] = 0
+                users_data[username]["fat today"] = 0
+                users_data[username]["protein today"] = 0
+                with open(USERS_DATA_PATH, "w") as file:
+                    json.dump(users_data, file)
+
+            users_data[username]["last_visit_time"] = datetime.now().isoformat(timespec='minutes')
+            with open(USERS_DATA_PATH, "w") as file:
+                    json.dump(users_data, file)
 
 if __name__ == "__main__":
     MainApp().run()
