@@ -1,6 +1,14 @@
 import torch
 import torch.nn as nn
 from make_dataset import read_foods_tensor, FoodProperties as FP
+
+class Round(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, input):
+        return torch.round(input)
+    @staticmethod
+    def backward(ctx, grad_output):
+        return grad_output
     
 class ZeroLoss(nn.Module):
     def __init__(self):
@@ -140,7 +148,28 @@ class CaloriesMSELoss(nn.Module):
         pred_mses = ((pred_calories_per_day - pred_calories_per_day.mean(dim=1, keepdim=True)).pow(2)).mean(dim=1)
 
         return self.MSE_PENALTY * pred_mses.mean() + meals_diff    
-    
+
+class AllergensLoss(nn.Module):
+    def __init__(self, device):
+        super(AllergensLoss, self).__init__()
+
+        self.ALERGENS_PENALTY = 5
+        self.device = device
+
+        self.data = read_foods_tensor().to(device)
+
+    def forward(self, pred_ids, gold_ids):
+        alergens_diff = 0.0     # Contains Eggs, Gluten, Milk, Peanuts, Soy, Fish, Sesame
+
+        properties = [FP.CONTAINS_EGGS, FP.CONTAINS_GLUTEN, FP.CONTAINS_MILK, FP.CONTAINS_PEANUTS_OR_NUTS, FP.CONTAINS_SOY, FP.CONTAINS_FISH, FP.CONTAINS_SESAME]
+
+        for fp in properties:
+            gold = get_binary_value(gold_ids, self.data, fp).sum(dim=(1, 2, 3))
+            pred = get_binary_value(applyRound(pred_ids), self.data, fp).sum(dim=(1, 2, 3))
+            alergens_diff += (torch.exp(-10 * gold) * pred.pow(2)).mean()
+
+        return alergens_diff * self.ALERGENS_PENALTY
+        
 def entropy_penalty(self, pred_ids):
     # Apply softmax to the predicted logits (IDs)
     softmax_probs = torch.nn.functional.softmax(pred_ids, dim=-1)
@@ -164,6 +193,19 @@ def get_continuous_value(x, data, category: FP):
     
 def zero_mask(x):
     return torch.exp(-4 * x)
+
+def get_binary_value(x, data, category: FP):
+    return torch.sum(
+        torch.stack([
+                v * torch.exp(-((x - i * v).pow(2)) / 0.01)
+                for i, v in enumerate(data[:, category.value])],
+            dim=0,
+        ),
+        dim=0,
+    )
+
+def applyRound(input):
+    return Round.apply(input)
 
 def get_binary_value(x, data, category: FP):
     return torch.sum(

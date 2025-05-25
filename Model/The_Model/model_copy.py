@@ -100,52 +100,6 @@ class MenuGenerator(nn.Module):
 
 # ----- Loss Components --------- #
 
-# Round (but preserve the gradient flow) and bound
-
-class Round(torch.autograd.Function):
-    @staticmethod
-    def forward(ctx, input):
-        return torch.round(input)
-    @staticmethod
-    def backward(ctx, grad_output):
-        return grad_output
-
-def applyRound(input):
-    return Round.apply(input)
-
-# Alergens Loss - penalizes the model for predicting allergens that are not allowed
-
-class AllergensLoss(nn.Module):
-    def __init__(self, device):
-        super(AllergensLoss, self).__init__()
-
-        self.ALERGENS_PENALTY = 5
-        self.device = device
-
-        self.data = read_foods_tensor().to(device)
-
-    def forward(self, pred_ids, gold_ids):
-        alergens_diff = 0.0     # Contains Eggs, Gluten, Milk, Peanuts, Soy, Fish, Sesame
-
-        properties = [FP.CONTAINS_EGGS, FP.CONTAINS_GLUTEN, FP.CONTAINS_MILK, FP.CONTAINS_PEANUTS_OR_NUTS, FP.CONTAINS_SOY, FP.CONTAINS_FISH, FP.CONTAINS_SESAME]
-
-        for fp in properties:
-            gold = get_binary_value(gold_ids, self.data, fp).sum(dim=(1, 2, 3))
-            pred = get_binary_value(applyRound(pred_ids), self.data, fp).sum(dim=(1, 2, 3))
-            alergens_diff += (torch.exp(-10 * gold) * pred.pow(2)).mean()
-
-        return alergens_diff * self.ALERGENS_PENALTY
-
-def get_binary_value(x, data, category: FP):
-    return torch.sum(
-        torch.stack([
-                v * torch.exp(-((x - i * v).pow(2)) / 0.01)
-                for i, v in enumerate(data[:, category.value])],
-            dim=0,
-        ),
-        dim=0,
-    )
-
 class AmountsPerMealLoss(nn.Module):
     def __init__(self):
         super(AmountsPerMealLoss, self).__init__()
