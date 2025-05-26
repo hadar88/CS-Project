@@ -51,21 +51,21 @@ def make_xs(split="train"):
         dataset = json.load(dataset_file)
 
         total_menus = len(dataset)
-        train_split = int(total_menus * 0.8)  # 80% for training
-        val_split = int(total_menus * 0.9)    # 10% for validation
+        train_split = int(total_menus * 0.55)  # 55% for training
+        val_split = int(total_menus * 0.8)    # 25% for validation
 
         for i, menu_id in enumerate(dataset):
             x = [dataset[menu_id][entry] for entry in dataset[menu_id]]
 
-            # if split == "train" and i < train_split:
-            #     xs.append(x)
-            # elif split == "val" and train_split <= i < val_split:
-            #     xs.append(x)
-            # elif split == "test" and val_split <= i:
-            #     xs.append(x)
-
-            if split == "train":
+            if split == "train" and i < train_split:
                 xs.append(x)
+            elif split == "val" and train_split <= i < val_split:
+                xs.append(x)
+            elif split == "test" and val_split <= i:
+                xs.append(x)
+
+            # if split == "train":
+            #     xs.append(x)
 
     return torch.tensor(xs)
 
@@ -81,8 +81,8 @@ def make_ys(split="train"):
         dataset = json.load(dataset_file)
 
         total_menus = len(dataset)
-        train_split = int(total_menus * 0.8)  # 80% for training
-        val_split = int(total_menus * 0.9)    # 10% for validation
+        train_split = int(total_menus * 0.55)  # 55% for training
+        val_split = int(total_menus * 0.8)    # 25% for validation
 
         max_foods_in_meal = 10
 
@@ -91,15 +91,15 @@ def make_ys(split="train"):
             y = dataset[menu_id]
             y = mot.menu_dict_to_tensor(y)
 
-            # if split == "train" and i < train_split:
-            #     ys.append(y)
-            # elif split == "val" and train_split <= i < val_split:
-            #     ys.append(y)
-            # elif split == "test" and val_split <= i:
-            #     ys.append(y)
-
-            if split == "train":
+            if split == "train" and i < train_split:
                 ys.append(y)
+            elif split == "val" and train_split <= i < val_split:
+                ys.append(y)
+            elif split == "test" and val_split <= i:
+                ys.append(y)
+
+            # if split == "train":
+            #     ys.append(y)
 
         for i in range(len(ys)):
             y = torch.zeros(7, 3, max_foods_in_meal, 2)

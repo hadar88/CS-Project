@@ -4,7 +4,7 @@ import torch.optim as optim
 import json
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-from make_dataset_copy import MenusDataset, read_foods_tensor, FoodProperties as FP
+from make_dataset_copy import MenusDataset, FoodProperties as FP
 from menu_output_transform_copy import transform2, check_menu
 import argparse
 
@@ -41,7 +41,7 @@ def main():
     other_criterions = []
 
     if split == "train":
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10, device)
+        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10000, device)
 
         # model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth"))
         # evaluate_on_random_sample(dataloader, model, device)
