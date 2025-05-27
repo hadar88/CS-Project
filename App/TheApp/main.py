@@ -773,7 +773,7 @@ class PersonalDataWindow(Screen):
             text = "", 
             size_hint=(0.35, 0.05),
             pos_hint={"x": 0.4, "top": 0.8},
-            input_filter="float",
+            input_filter="int",
             disabled = True, 
             halign="center",
             background_normal="",
@@ -3006,7 +3006,7 @@ class Registration1Window(Screen):
             hint_text = "Kg",
             size_hint=(0.44, 0.1),
             pos_hint={"x": 0.51, "top": 0.7},
-            input_filter="float",
+            input_filter="int",
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
             halign="center"
@@ -3835,7 +3835,7 @@ class Registration5Window(Screen):
             hint_text = "Kg",
             size_hint=(0.44, 0.1),
             pos_hint={"x": 0.51, "top": 0.44},
-            input_filter="float",
+            input_filter="int",
             background_normal="",
             background_color=(0.95, 0.95, 0.95, 1),
             halign="center"
@@ -3884,12 +3884,18 @@ class Registration5Window(Screen):
     def next(self, instance):
         if(self.goalweightInput.text == ""):
             self.errorMessage.text = "[b]Please fill in the field[/b]"
+        elif(int(self.goalweightInput.text) < 40):
+            self.errorMessage.text = "[b]Weight must be greater than 40 kg[/b]"
         else:
             self.errorMessage.text = ""
             global info
             info.goal_weight = self.goalweightInput.text
-
-            self.manager.current = "registration6"
+            t = time_of_change(int(info.weight), int(info.goal_weight))
+            if(t == 0):
+                info.goal_time = 0
+                self.manager.current = "loading"
+            else:   
+                self.manager.current = "registration6"
 
     def previous(self, instance):
         self.manager.current = "registration4"
@@ -4045,6 +4051,8 @@ class Registration6Window(Screen):
     def next(self, instance):
         if(self.timeInput.text == ""):
             self.errorMessage.text = "[b]Please fill in the field[/b]"
+        elif(int(self.timeInput.text) <= 0):
+            self.errorMessage.text = "[b]Time must be greater than 0 weeks[/b]"
         else:
             self.errorMessage.text = ""
             global info
