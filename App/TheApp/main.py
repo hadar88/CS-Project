@@ -207,6 +207,8 @@ def time_of_change(current_weight, goal_weight):
     return round(260 * c / current_weight)
 
 def weekly_change(current_weight, goal_weight, goal_time):
+    if goal_time <= 0:
+        return 0
     c = weight_change(current_weight, goal_weight)
     return round(1000 * c / goal_time)
 
