@@ -3410,34 +3410,34 @@ class Registration3Window(Screen):
         )
         self.window.add_widget(self.title)
 
-        self.goalLabel = ColoredLabel(
-            text = "[b]Goal:[/b]",
-            font_size = 60,
-            size_hint = (0.44, 0.1),
-            pos_hint = {"x": 0.05, "top": 0.6},
-            color = LABEL_BG,
-            text_color = LABEL_TEXT,
-            markup=True
-        )
-        self.window.add_widget(self.goalLabel)
+        # self.goalLabel = ColoredLabel(
+        #     text = "[b]Goal:[/b]",
+        #     font_size = 60,
+        #     size_hint = (0.44, 0.1),
+        #     pos_hint = {"x": 0.05, "top": 0.6},
+        #     color = LABEL_BG,
+        #     text_color = LABEL_TEXT,
+        #     markup=True
+        # )
+        # self.window.add_widget(self.goalLabel)
 
-        self.goalInput = Spinner(
-            text="Goal",
-            values=("Lose Weight", "Maintain Weight", "Gain Weight"),
-            size_hint=(0.44, 0.1),
-            pos_hint={"x": 0.51, "top": 0.6},
-            font_size = 40,
-            background_color = SPINNER_BG,
-            color = SPINNER_TEXT,
-            option_cls=CustomSpinnerOption
-        )
-        self.window.add_widget(self.goalInput)
+        # self.goalInput = Spinner(
+        #     text="Goal",
+        #     values=("Lose Weight", "Maintain Weight", "Gain Weight"),
+        #     size_hint=(0.44, 0.1),
+        #     pos_hint={"x": 0.51, "top": 0.6},
+        #     font_size = 40,
+        #     background_color = SPINNER_BG,
+        #     color = SPINNER_TEXT,
+        #     option_cls=CustomSpinnerOption
+        # )
+        # self.window.add_widget(self.goalInput)
 
         self.dietLabel = ColoredLabel(
             text = "[b]Diet:[/b]",
             font_size = 60,
-            size_hint = (0.44, 0.1),
-            pos_hint = {"x": 0.05, "top": 0.46},
+            size_hint = (0.9, 0.1),
+            pos_hint = {"x": 0.05, "top": 0.6},
             color = LABEL_BG,
             text_color = LABEL_TEXT,
             markup=True
@@ -3447,8 +3447,8 @@ class Registration3Window(Screen):
         self.dietInput = Spinner(
             text="Diet",
             values=("Vegetarian", "Vegan", "Regular"),
-            size_hint=(0.44, 0.1),
-            pos_hint={"x": 0.51, "top": 0.46},
+            size_hint=(0.9, 0.1),
+            pos_hint={"x": 0.05, "top": 0.46},
             font_size = 40,
             background_color = SPINNER_BG,
             color = SPINNER_TEXT,
@@ -3488,13 +3488,11 @@ class Registration3Window(Screen):
         self.rect.size = instance.size
 
     def next(self, instance):
-        goal_input = self.goalInput.text
         diet_input = self.dietInput.text
-        if(goal_input == "Goal" or diet_input == "Diet"):
-            self.errorMessage.text = "[b]Please select a goal and diet[/b]"
+        if(diet_input == "Diet"):
+            self.errorMessage.text = "[b]Please select a diet[/b]"
         else:
             global info
-            info.goal = goal_input
             if(diet_input == "Vegetarian"):
                 info.vegetarian = "1"
                 info.vegan = "0"
