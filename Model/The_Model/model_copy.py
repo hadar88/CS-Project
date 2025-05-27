@@ -213,11 +213,11 @@ def evaluate_on_random_sample(dataloader, model, device):
     x, y_id, y_amount = dataloader.dataset[random_index]
     x, y_id, y_amount = x.to(device), y_id.to(device), y_amount.to(device)
 
-    # my_sample = [2826, 326, 27, 72, 190, 0, 0]
-    # my_sample = torch.tensor([my_sample], dtype=torch.float32)
-    # pred_id, pred_amount = model(my_sample.to(device))
+    my_sample = [2826, 326, 27, 72, 190, 0, 0]
+    my_sample = torch.tensor([my_sample], dtype=torch.float32)
+    pred_id, pred_amount = model(my_sample.to(device))
 
-    pred_id, pred_amount = model(x.unsqueeze(0).to(device))
+    # pred_id, pred_amount = model(x.unsqueeze(0).to(device))
 
     pred_id, pred_amount = pred_id[0], pred_amount[0]
 
