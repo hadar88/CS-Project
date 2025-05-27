@@ -3890,6 +3890,12 @@ class Registration5Window(Screen):
             self.errorMessage.text = ""
             global info
             info.goal_weight = self.goalweightInput.text
+            if(info.goal_weight > info.weight):
+                info.goal = "Gain Weight"
+            elif(info.goal_weight < info.weight):
+                info.goal = "Lose Weight"
+            else:
+                info.goal = "Maintain Weight"
             t = time_of_change(int(info.weight), int(info.goal_weight))
             if(t == 0):
                 info.goal_time = 0
