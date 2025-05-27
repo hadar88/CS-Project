@@ -3410,29 +3410,6 @@ class Registration3Window(Screen):
         )
         self.window.add_widget(self.title)
 
-        # self.goalLabel = ColoredLabel(
-        #     text = "[b]Goal:[/b]",
-        #     font_size = 60,
-        #     size_hint = (0.44, 0.1),
-        #     pos_hint = {"x": 0.05, "top": 0.6},
-        #     color = LABEL_BG,
-        #     text_color = LABEL_TEXT,
-        #     markup=True
-        # )
-        # self.window.add_widget(self.goalLabel)
-
-        # self.goalInput = Spinner(
-        #     text="Goal",
-        #     values=("Lose Weight", "Maintain Weight", "Gain Weight"),
-        #     size_hint=(0.44, 0.1),
-        #     pos_hint={"x": 0.51, "top": 0.6},
-        #     font_size = 40,
-        #     background_color = SPINNER_BG,
-        #     color = SPINNER_TEXT,
-        #     option_cls=CustomSpinnerOption
-        # )
-        # self.window.add_widget(self.goalInput)
-
         self.dietLabel = ColoredLabel(
             text = "[b]Diet:[/b]",
             font_size = 60,
