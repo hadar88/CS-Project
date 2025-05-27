@@ -195,7 +195,7 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
     torch.save(best_model, f"saved_models/model_v{MODEL_VERSION}.pth")
     print(f"Model saved as saved_models/model_v{MODEL_VERSION}.pth")
 
-    loss_history = loss_history#[200:]
+    loss_history = loss_history[200:]
     plt.plot(loss_history)
     plt.savefig(f'models_plots/loss_plot_{int(MODEL_VERSION)}.png')
 
