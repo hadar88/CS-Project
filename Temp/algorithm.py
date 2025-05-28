@@ -1,5 +1,7 @@
 import random
 import json
+import numpy as np
+from scipy.optimize import minimize
 
 FOODS_DATA_PATH = "FoodsByID.json"
 FOODS_ALTERNATIVES_PATH = "FoodAlternatives.json"
@@ -55,7 +57,6 @@ def generate_menu(nutrition_goals):
             values_totals = [0, 0, 0, 0, 0]
 
             goal_values = breakfast_values if meal_type == "breakfast" else lunch_values if meal_type == "lunch" else dinner_values
-            print(f'Goal values: {goal_values}')
             meal_foods = breakfast_meals if meal_type == "breakfast" else lunch_meals if meal_type == "lunch" else dinner_meals
 
             foods = set()
@@ -87,6 +88,8 @@ def generate_menu(nutrition_goals):
                         foods.remove(food_id)
                         foods.add(str(food))
                     
+            foods = list(foods)
+                    
             parts = []
             for food_id in foods:
                 upper = foods_data[food_id]["Upper bound part"]
@@ -95,35 +98,49 @@ def generate_menu(nutrition_goals):
                 parts.append(round(part, 1))
             sum_parts = sum(parts)
             parts = [round(part / sum_parts, 2) for part in parts]
-            print(f'Parts: {parts}')
 
             temp_food_values = {food_id: foods_values[food_id] for food_id in foods}
-            print(f'Foods: {foods}')
-            print(f'Temp food values: {temp_food_values}')
 
-            amounts = getAmount(temp_food_values, parts, goal_values)
-            print(f'Amounts: {amounts}')
+            goal_values = np.array(goal_values)
+            parts = np.array(parts)
+            amounts = np.round(getAmounts(temp_food_values, parts, goal_values))
+            amounts = [int(amount) for amount in amounts]
 
-            # Calculate the total values for the selected foods
             for i, food_id in enumerate(foods):
                 for j in range(5):
                     values_totals[j] += amounts[i] * foods_values[food_id][j] / 100
+
+            values_totals = np.round(values_totals)
+            values_totals = [int(value) for value in values_totals]
             
-            print(f'Values total: {values_totals}')
-            day_plan.append(zip(list(foods), amounts))
-            break
-
+            foods = [int(food_id) for food_id in foods]
+            meal = [[food_id, amount] for food_id, amount in zip(foods, amounts)]
+            day_plan.append(meal)
+            
         menu.append(day_plan)
-        break
+        
+    return {"output": menu}
 
-    return menu
+def getAmounts(temp_food_values, parts, goal_values):
+    A = np.array([np.array(v) / 100 for v in temp_food_values.values()]).T 
 
-def getAmount():
-    pass
+    def cost(w, A, goal_values, parts, lambd):
+        nutrition_error = np.sum((A @ w - goal_values)**2)
+        alpha = np.sum(w)
+        ratio_error = np.sum((w - parts * alpha)**2)
+        return nutrition_error + lambd * ratio_error
 
+    initial_alpha = 700
+    w0 = parts * initial_alpha
 
-# Example usage:
+    lambd = 5
+    res = minimize(cost, w0, args=(A, goal_values, parts, lambd), bounds=[(0, None)]*len(w0), method='L-BFGS-B')
+
+    final_weights = res.x
+    return final_weights
+
+# Example usage
 
 nutrition_goals = [2826, 326, 27, 72, 190, 1, 0]
 menu = generate_menu(nutrition_goals)
-# print(f"Menu: {menu}")
+print(f"Menu: {menu}")
