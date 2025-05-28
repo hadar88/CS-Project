@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 19
+MODEL_VERSION = 20
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -60,7 +60,7 @@ class MenuGenerator(nn.Module):
             nn.Linear(7, 128),
             nn.ReLU(),
             nn.BatchNorm1d(128),
-            nn.Dropout(0.5),
+            nn.Dropout(0.2),
             nn.Linear(128, hidden_dim),
             nn.ReLU(),
         )
@@ -70,7 +70,7 @@ class MenuGenerator(nn.Module):
         self.slot_decoder = nn.Sequential(
             nn.Linear(hidden_dim, 128),
             nn.ReLU(),
-            nn.Dropout(0.5),
+            nn.Dropout(0.2),
             nn.Linear(128, 64),
             nn.ReLU(),
         )
