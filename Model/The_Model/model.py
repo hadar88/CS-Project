@@ -41,13 +41,13 @@ def main():
     other_criterions = []
 
     if split == "train":
-        train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10000, device)
+        # train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10000, device)
 
-        # model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth"))
-        # evaluate_on_random_sample(dataloader, model, device)
+        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth", weights_only=True))
+        evaluate_on_random_sample(dataloader, model, device)
     elif split == "val" or split == "test":
         # Load the model and evaluate
-        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth"))
+        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth", weights_only=True))
         evaluate_on_random_sample(dataloader, model, device)
 
 # ------ Model --------- #
