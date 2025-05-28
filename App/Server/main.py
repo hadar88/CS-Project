@@ -25,7 +25,7 @@ if __name__ == "__main__":
     # Load the model
     print("Loading model...")
     model = MenuGenerator()
-    model.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device("cpu")))
+    model.load_state_dict(torch.load(MODEL_PATH, map_location=torch.device("cpu"), weights_only=True))
     model.eval()
 
     # Create the server instance with the model

@@ -1425,6 +1425,7 @@ class MenuWindow(Screen):
         return wrapped_text
 
     def newMenu(self, instance):
+        global menu_request_window
         menu_request_window = "menu"
 
         self.manager.current = "loading"
@@ -3902,13 +3903,6 @@ class LoadingWindow(Screen):
             activity_temp = info.activity
             vegetarian_temp = info.vegetarian
             vegan_temp = info.vegan
-            egg_allergy_temp = info.egg_allergy
-            milk_allergy_temp = info.milk_allergy
-            nuts_allergy_temp = info.nut_allergy
-            fish_allergy_temp = info.fish_allergy
-            sesame_allergy_temp = info.sesame_allergy
-            soy_allergy_temp = info.soy_allergy
-            gluten_allergy_temp = info.gluten_allergy
         else:
             global current_username
             user_data = users_data[current_username]
@@ -3926,18 +3920,11 @@ class LoadingWindow(Screen):
             activity_temp = user_data["activity"]
             vegetarian_temp = user_data["vegetarian"]
             vegan_temp = user_data["vegan"]
-            egg_allergy_temp = user_data["eggs allergy"]
-            milk_allergy_temp = user_data["milk allergy"]
-            nuts_allergy_temp = user_data["nuts allergy"]
-            fish_allergy_temp = user_data["fish allergy"]
-            sesame_allergy_temp = user_data["sesame allergy"]
-            soy_allergy_temp = user_data["soy allergy"]
-            gluten_allergy_temp = user_data["gluten allergy"]
 
         self.vector = get_vector(current_weight_temp, goal_weight_temp, goal_time_temp, height_temp, age_temp,
                                             gender_temp, goal_temp, cardio_temp, strength_temp, muscle_temp, activity_temp,
-                                            vegetarian_temp, vegan_temp, egg_allergy_temp, milk_allergy_temp, nuts_allergy_temp,
-                                            fish_allergy_temp, sesame_allergy_temp, soy_allergy_temp, gluten_allergy_temp)
+                                            vegetarian_temp, vegan_temp)
+        print("Vector:", self.vector)
 
         self.build_menu()
 
@@ -3946,7 +3933,7 @@ class LoadingWindow(Screen):
             server_url = "https://cs-project-m5hy.onrender.com/"
 
             requests.get(server_url + "wakeup")
-
+            
             response = requests.post(server_url + "predict", json=self.vector)
 
             if response.status_code == 200:
@@ -3983,13 +3970,6 @@ class LoadingWindow(Screen):
         users_data[current_username]["goal"] = info.goal
         users_data[current_username]["vegetarian"] = info.vegetarian
         users_data[current_username]["vegan"] = info.vegan
-        users_data[current_username]["eggs allergy"] = info.egg_allergy
-        users_data[current_username]["milk allergy"] = info.milk_allergy
-        users_data[current_username]["nuts allergy"] = info.nut_allergy
-        users_data[current_username]["fish allergy"] = info.fish_allergy
-        users_data[current_username]["sesame allergy"] = info.sesame_allergy
-        users_data[current_username]["soy allergy"] = info.soy_allergy
-        users_data[current_username]["gluten allergy"] = info.gluten_allergy
         users_data[current_username]["goal weight"] = info.goal_weight
         users_data[current_username]["goal time"] = info.goal_time
         users_data[current_username]["calories"] = self.vector["calories"]
