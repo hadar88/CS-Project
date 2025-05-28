@@ -3924,7 +3924,6 @@ class LoadingWindow(Screen):
         self.vector = get_vector(current_weight_temp, goal_weight_temp, goal_time_temp, height_temp, age_temp,
                                             gender_temp, goal_temp, cardio_temp, strength_temp, muscle_temp, activity_temp,
                                             vegetarian_temp, vegan_temp)
-        print("Vector:", self.vector)
 
         self.build_menu()
 

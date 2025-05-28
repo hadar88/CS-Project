@@ -36,6 +36,8 @@ for food_id in foods_data:
     foods_values[food_id] = values
 
 def generate_menu(nutrition_goals):
+    nutrition_goals = [int(nutrition_goals[key]) for key in nutrition_goals]
+
     combinations = {
         "146": "181",
         "181": "146",
@@ -50,7 +52,7 @@ def generate_menu(nutrition_goals):
 
     menu = []
 
-    for day in range(7):
+    for _ in range(7):
         day_plan = []
 
         for meal_type in ["breakfast", "lunch", "dinner"]:
@@ -141,6 +143,6 @@ def getAmounts(temp_food_values, parts, goal_values):
 
 # Example usage
 
-nutrition_goals = [2826, 326, 27, 72, 190, 1, 0]
+nutrition_goals = {'calories': 2826.6875, 'carbohydrates': 326.16, 'sugar': 27.18, 'fat': 72.48, 'protein': 190.26, 'vegetarian': 0, 'vegan': 0}
 menu = generate_menu(nutrition_goals)
 print(f"Menu: {menu}")
