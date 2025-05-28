@@ -5,7 +5,7 @@ class MenuGenerator(nn.Module):
         super(MenuGenerator, self).__init__()
 
         self.input_encoder = nn.Sequential(
-            nn.Linear(14, 128),
+            nn.Linear(7, 128),
             nn.ReLU(),
             nn.BatchNorm1d(128),
             nn.Dropout(0.2),

@@ -45,13 +45,6 @@ class Info(object):
         self.goal = ""
         self.vegetarian = ""
         self.vegan = ""
-        self.egg_allergy = ""
-        self.milk_allergy = ""
-        self.nut_allergy = ""
-        self.fish_allergy = ""
-        self.sesame_allergy = ""
-        self.soy_allergy = ""
-        self.gluten_allergy = ""
         self.goal_weight = ""
         self.goal_time = ""
         
@@ -222,7 +215,7 @@ def calculate_calories(current_weight, goal_weight, goal_time, height, age, gend
     i = 1 if current_weight <= goal_weight else -1
     return a + i * p
 
-def get_vector(current_weight, goal_weight, goal_time, height, age, gender, goal, cardio, strength, muscle, activity, vegetarian, vegan, eggs, milk, nuts, fish, sesame, soy, gluten):
+def get_vector(current_weight, goal_weight, goal_time, height, age, gender, goal, cardio, strength, muscle, activity, vegetarian, vegan):
     activity_type = []
     if cardio == "1":
         activity_type.append("cardio")
@@ -251,34 +244,6 @@ def get_vector(current_weight, goal_weight, goal_time, height, age, gender, goal
         vec["vegan"] = 1
     else:
         vec["vegan"] = 0
-    if eggs == "1":
-        vec["eggs"] = 0
-    else:
-        vec["eggs"] = 1
-    if milk == "1":
-        vec["milk"] = 0
-    else:
-        vec["milk"] = 1
-    if nuts == "1":
-        vec["nuts"] = 0
-    else:
-        vec["nuts"] = 1
-    if fish == "1":
-        vec["fish"] = 0
-    else:
-        vec["fish"] = 1
-    if sesame == "1":
-        vec["sesame"] = 0
-    else:
-        vec["sesame"] = 1
-    if soy == "1":
-        vec["soy"] = 0
-    else:
-        vec["soy"] = 1
-    if gluten == "1":
-        vec["gluten"] = 0
-    else:
-        vec["gluten"] = 1
 
     return vec
 
@@ -3516,234 +3481,6 @@ class Registration4Window(Screen):
 
         ###
 
-        self.back = Button(
-            background_normal="back.png",
-            size_hint=(0.1125, 0.07),
-            pos_hint={"x": 0, "top": 1},
-            on_press=self.previous
-        )
-        self.window.add_widget(self.back)
-
-        self.logo = Image(
-            source = "logo.png",
-            size_hint = (0.1, 0.1),
-            pos_hint = {"x": 0.45, "top": 1}
-        )
-        self.window.add_widget(self.logo)
-
-        self.title = ColoredLabel(
-            text = "[b]Registration[/b]",
-            font_size = 150,
-            size_hint = (0.775, 0.2),
-            pos_hint = {"x": 0.1125, "top": 0.9},
-            color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1),
-            markup=True,
-        )
-        self.window.add_widget(self.title)
-
-        self.allergiesLabel = ColoredLabel(
-            text = "[b]Allergies:[/b]",
-            font_size = 60,
-            size_hint = (0.6, 0.1),
-            pos_hint = {"x": 0.2, "top": 0.7},
-            color = LABEL_BG,
-            text_color = LABEL_TEXT,
-            markup=True
-        )
-        self.window.add_widget(self.allergiesLabel)
-
-        self.eggAllergyLabel = ColoredLabel(
-            text = "Eggs",
-            font_size = 50,
-            size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.3, "top": 0.57},
-            color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
-        )
-        self.window.add_widget(self.eggAllergyLabel)
-
-        self.eggAllergyInput = CheckBox(
-            size_hint=(0.1, 0.1),
-            pos_hint={"x": 0.55, "top": 0.6},
-            color= LABEL_BG
-        )
-        self.window.add_widget(self.eggAllergyInput)
-
-        self.milkAllergyLabel = ColoredLabel(
-            text = "Milk",
-            font_size = 50,
-            size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.3, "top": 0.51},
-            color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
-        )
-        self.window.add_widget(self.milkAllergyLabel)
-
-        self.milkAllergyInput = CheckBox(
-            size_hint=(0.1, 0.1),
-            pos_hint={"x": 0.55, "top": 0.54},
-            color= LABEL_BG
-        )
-        self.window.add_widget(self.milkAllergyInput)
-
-        self.nutAllergyLabel = ColoredLabel(
-            text = "Nuts",
-            font_size = 50,
-            size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.3, "top": 0.45},
-            color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
-        )
-        self.window.add_widget(self.nutAllergyLabel)
-
-        self.nutAllergyInput = CheckBox(
-            size_hint=(0.1, 0.1),
-            pos_hint={"x": 0.55, "top": 0.48},
-            color= LABEL_BG
-        )
-        self.window.add_widget(self.nutAllergyInput)
-
-        self.fishAllergyLabel = ColoredLabel(
-            text = "Fish",
-            font_size = 50,
-            size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.3, "top": 0.39},
-            color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
-        )
-        self.window.add_widget(self.fishAllergyLabel)
-
-        self.fishAllergyInput = CheckBox(
-            size_hint=(0.1, 0.1),
-            pos_hint={"x": 0.55, "top": 0.42},
-            color= LABEL_BG
-        )
-        self.window.add_widget(self.fishAllergyInput)
-
-        self.sesameAllergyLabel = ColoredLabel(
-            text = "Sesame",
-            font_size = 50,
-            size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.3, "top": 0.33},
-            color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
-        )
-        self.window.add_widget(self.sesameAllergyLabel)
-
-        self.sesameAllergyInput = CheckBox(
-            size_hint=(0.1, 0.1),
-            pos_hint={"x": 0.55, "top": 0.36},
-            color= LABEL_BG
-        )
-        self.window.add_widget(self.sesameAllergyInput)
-
-        self.soyAllergyLabel = ColoredLabel(
-            text = "Soy",
-            font_size = 50,
-            size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.3, "top": 0.27},
-            color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
-        )
-        self.window.add_widget(self.soyAllergyLabel)
-
-        self.soyAllergyInput = CheckBox(
-            size_hint=(0.1, 0.1),
-            pos_hint={"x": 0.55, "top": 0.3},
-            color= LABEL_BG
-        )
-        self.window.add_widget(self.soyAllergyInput)
-
-        self.glutenAllergyLabel = ColoredLabel(
-            text = "Gluten",
-            font_size = 50,
-            size_hint = (0.2, 0.04),
-            pos_hint = {"x": 0.3, "top": 0.21},
-            color=(1, 1, 1, 1),
-            text_color=(0, 0, 0, 1)
-        )
-        self.window.add_widget(self.glutenAllergyLabel)
-
-        self.glutenAllergyInput = CheckBox(
-            size_hint=(0.1, 0.1),
-            pos_hint={"x": 0.55, "top": 0.24},
-            color= LABEL_BG
-        )
-        self.window.add_widget(self.glutenAllergyInput)
-
-        self.nextPage = Button(
-            text = "[b]Next page[/b]",
-            font_size = 50,
-            background_color = BUTTON_BG,
-            color = BUTTON_TEXT,
-            size_hint = (0.4, 0.1),
-            pos_hint = {"x": 0.3, "top": 0.14},
-            on_press = self.next,
-            markup=True,
-        )
-        self.window.add_widget(self.nextPage)
-
-        ###
-
-        self.add_widget(self.window)
-
-    def _update_rect(self, instance, value):
-        self.rect.pos = instance.pos
-        self.rect.size = instance.size
-
-    def next(self, instance):
-        egg_allergy = self.eggAllergyInput.active
-        milk_allergy = self.milkAllergyInput.active
-        nut_allergy = self.nutAllergyInput.active
-        fish_allergy = self.fishAllergyInput.active
-        sesame_allergy = self.sesameAllergyInput.active
-        soy_allergy = self.soyAllergyInput.active
-        gluten_allergy = self.glutenAllergyInput.active
-
-        global info
-        info.egg_allergy = "1" if egg_allergy else "0"
-        info.milk_allergy = "1" if milk_allergy else "0"
-        info.nut_allergy = "1" if nut_allergy else "0"
-        info.fish_allergy = "1" if fish_allergy else "0"
-        info.sesame_allergy = "1" if sesame_allergy else "0"
-        info.soy_allergy = "1" if soy_allergy else "0"
-        info.gluten_allergy = "1" if gluten_allergy else "0"
-
-        self.manager.current = "registration5"
-
-    def previous(self, instance):
-        self.manager.current = "registration3"
-
-    def on_enter(self):
-        Window.bind(on_keyboard=self.on_keyboard)
-
-    def on_leave(self):
-        Window.unbind(on_keyboard=self.on_keyboard)
-
-    def on_keyboard(self, window, key, *args):
-        if key == 27:
-            if self.manager.current == "registration4":
-                self.previous(self)
-                return True
-        return False
-
-################################
-
-class Registration5Window(Screen):
-    def __init__(self, **kw):
-        super(Registration5Window, self).__init__(**kw)
-        Window.bind(on_keyboard=self.on_keyboard)
-        self.cols = 1
-
-        self.window = FloatLayout(size_hint=(1, 1))
-        with self.window.canvas.before:
-            Color(1, 1, 1, 1)
-            self.rect = Rectangle(size=self.window.size, pos=self.window.pos)
-            self.window.bind(size=self._update_rect, pos=self._update_rect)
-
-        ###
-
         self.idealBodyWeight = 0
 
         self.back = Button(
@@ -3876,10 +3613,10 @@ class Registration5Window(Screen):
                 info.goal_time = 0
                 self.manager.current = "loading"
             else:   
-                self.manager.current = "registration6"
+                self.manager.current = "registration5"
 
     def previous(self, instance):
-        self.manager.current = "registration4"
+        self.manager.current = "registration3"
         self.errorMessage.text = ""
 
     def on_enter(self):
@@ -3893,7 +3630,7 @@ class Registration5Window(Screen):
 
     def on_keyboard(self, window, key, *args):
         if key == 27:
-            if self.manager.current == "registration5":
+            if self.manager.current == "registration4":
                 self.previous(self)
                 return True
         return False
@@ -3903,9 +3640,9 @@ class Registration5Window(Screen):
 
 ################################
 
-class Registration6Window(Screen):
+class Registration5Window(Screen):
     def __init__(self, **kw):
-        super(Registration6Window, self).__init__(**kw)
+        super(Registration5Window, self).__init__(**kw)
         Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
@@ -4041,7 +3778,7 @@ class Registration6Window(Screen):
             self.manager.current = "loading"
 
     def previous(self, instance):
-        self.manager.current = "registration5"
+        self.manager.current = "registration4"
         self.errorMessage.text = ""
 
     def on_enter(self):
@@ -4055,7 +3792,7 @@ class Registration6Window(Screen):
 
     def on_keyboard(self, window, key, *args):
         if key == 27:
-            if self.manager.current == "registration6":
+            if self.manager.current == "registration5":
                 self.previous(self)
                 return True
         return False 
@@ -4338,9 +4075,8 @@ class WindowManager(ScreenManager):
         self.add_widget(Registration1Window(name = "registration1"))
         self.add_widget(Registration2Window(name = "registration2"))
         self.add_widget(Registration3Window(name = "registration3"))
-        self.add_widget(Registration5Window(name = "registration5"))
         self.add_widget(Registration4Window(name = "registration4"))
-        self.add_widget(Registration6Window(name = "registration6"))
+        self.add_widget(Registration5Window(name = "registration5"))
 
 class MainApp(App):
     def build(self):
