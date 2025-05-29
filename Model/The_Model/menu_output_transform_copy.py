@@ -117,6 +117,8 @@ def transform2(menu: torch.Tensor, food_data, device, bound_fn=lambda x: x):
 
     daily_calories = torch.zeros(7, device=device)
     
+    output[5], output[6] = 1, 1 
+
     for didx, day in enumerate(menu):
         for midx, meal in enumerate(day):
             for food in meal:
@@ -141,8 +143,11 @@ def transform2(menu: torch.Tensor, food_data, device, bound_fn=lambda x: x):
                 output[5] = output[5] * food_nut["Vegetarian"]
                 output[6] = output[6] * food_nut["Vegan"]
 
-    output_final = output / 7.0
-    
+    output_final = output
+    output_final[:5] = output[:5] / 7.0
+    output_final[5] = output[5]
+    output_final[6] = output[6]
+
     return output_final.requires_grad_(True).int()
 
 def check_menu(ten):

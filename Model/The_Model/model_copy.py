@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 SPLIT = ["train", "val", "test"][0]
 
-MODEL_VERSION = 20
+MODEL_VERSION = 19
 BATCH_SIZE = 512
 
 # ------ Main --------- #
@@ -217,7 +217,7 @@ def evaluate_on_random_sample(dataloader, model, device):
     my_sample = torch.tensor([my_sample], dtype=torch.float32)
     pred_id, pred_amount = model(my_sample.to(device))
 
-    # pred_id, pred_amount = model(x.unsqueeze(0).to(device))
+    pred_id, pred_amount = model(x.unsqueeze(0).to(device))
 
     pred_id, pred_amount = pred_id[0], pred_amount[0]
 
