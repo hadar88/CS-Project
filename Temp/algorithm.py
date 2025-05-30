@@ -146,7 +146,7 @@ def getAmounts(temp_food_values, parts, goal_values):
     return final_weights
 
 
-######
+###### checking functions ######
 
 
 def transform(menu, food_data):

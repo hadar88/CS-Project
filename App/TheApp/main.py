@@ -61,9 +61,9 @@ f.close()
 
 #######################################################################
 
-FOODS_MENU_DATA_PATH = "FoodsByID.json"
-f = open(FOODS_MENU_DATA_PATH, "r")
-foods_menu_data = json.load(f)
+FOODS_ID_NAME_PATH = "FoodsIDName.json"
+f = open(FOODS_ID_NAME_PATH, "r")
+foods_id_name = json.load(f)
 f.close()
 
 #######################################################################
@@ -257,11 +257,11 @@ def get_meal(day, meal):
     for i in m:
         if int(i) != 0 and int(m[i]) != 0:
             key = str(i)
-            if key in foods_menu_data:
-                name = foods_menu_data[key]["Name"]
+            if key in foods_id_name:
+                name = foods_id_name[key]
                 a[name] = m[i]
             else:
-                print(f"Warning: Key {key} not found in foods_menu_data")
+                print(f"Warning: Key {key} not found in foods_id_name")
     return a
 
 def convert_to_dict(data):
