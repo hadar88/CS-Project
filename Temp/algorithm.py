@@ -2,6 +2,7 @@ import random
 import json
 import numpy as np
 from scipy.optimize import minimize
+import time
 
 FOODS_DATA_PATH = "FoodsByID.json"
 FOODS_ALTERNATIVES_PATH = "FoodAlternatives.json"
@@ -234,6 +235,7 @@ def checkMenu(menu):
 # Example usage
 
 nutrition_goals = {'calories': 2826.6875, 'carbohydrates': 326.16, 'sugar': 27.18, 'fat': 72.48, 'protein': 190.26, 'vegetarian': 0, 'vegan': 0}
+time1 = time.time()
 menu = generate_menu(nutrition_goals)
 
 menuId = convert_to_dictId(menu)
@@ -242,7 +244,11 @@ menuName = convert_to_dictName(menu)
 m = transform(menuId, foods_data)
 n = [round(ng) for ng in nutrition_goals.values()]
 values = ["Calories", "Carbohydrate", "Sugars", "Fat", "Protein", "Vegetarian", "Vegan"]
+print("Generated vs Nutrition Goals:")
 for i, (m1, m2) in enumerate(zip(m, n)):
     print(f"{values[i]}: {m1:.0f} vs {m2:.0f}")
 
 checkMenu(menuName)
+
+time2 = time.time()
+print(f"Time taken: {time2 - time1:.2f} seconds")
