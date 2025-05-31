@@ -215,7 +215,7 @@
         "Protein": 22.5,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": ["Breakfast", "Lunch"],
+        "Meals": ["Breakfast", "Dinner"],
         "Name": "Peanut butter",
         "Upper bound part": 0.2,
         "Lower bound part": 0.05
@@ -644,7 +644,7 @@
         "Protein": 0.85,
         "Vegetarian": 1,
         "Vegan": 0,
-        "Meals": ["Breakfast", "Lunch", "Dinner"],
+        "Meals": ["Breakfast", "Dinner"],
         "Name": "Butter, NFS",
         "Upper bound part": 0.1,
         "Lower bound part": 0.05
