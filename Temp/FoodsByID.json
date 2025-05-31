@@ -358,7 +358,7 @@
         "Protein": 8.2,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": ["Breakfast", "Lunch", "Dinner"],
+        "Meals": ["Lunch", "Dinner"],
         "Name": "Tortilla, flour",
         "Upper bound part": 0.3,
         "Lower bound part": 0.2
@@ -529,8 +529,8 @@
         "Vegan": 1,
         "Meals": ["Lunch", "Dinner"],
         "Name": "Black beans, NFS",
-        "Upper bound part": 0.5,
-        "Lower bound part": 0.3
+        "Upper bound part": 0.2,
+        "Lower bound part": 0.1
     },
     "42": {
         "Calories": 160,
@@ -865,7 +865,7 @@
         "Protein": 9.76,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": ["Breakfast", "Lunch", "Dinner"],
+        "Meals": ["Lunch", "Dinner"],
         "Name": "Tortilla, whole wheat",
         "Upper bound part": 0.3,
         "Lower bound part": 0.2
@@ -1619,7 +1619,7 @@
         "Protein": 7.36,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": ["Breakfast", "Lunch", "Dinner"],
+        "Meals": ["Lunch", "Dinner"],
         "Name": "Tortilla chips, nacho cheese flavor (Doritos)",
         "Upper bound part": 0.2,
         "Lower bound part": 0.1
@@ -2258,8 +2258,8 @@
         "Vegan": 1,
         "Meals": ["Lunch", "Dinner"],
         "Name": "Lentils",
-        "Upper bound part": 0.8,
-        "Lower bound part": 0.6
+        "Upper bound part": 0.3,
+        "Lower bound part": 0.2
     },
     "175": {
         "Calories": 62.0,

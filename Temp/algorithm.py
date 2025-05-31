@@ -37,16 +37,41 @@ for food_id in foods_data:
     foods_values[food_id] = values
 
 combinations = {
-        "146": "181",
-        "181": "146",
-        "166": "132",
-        "182": "183",
-        "183": "182",
-        "192": "146", 
-        "217": "146",
-        "33": "90",
-        "90": "33",
+        "146": ["181"],
+        "181": ["146"],
+        "166": ["132"],
+        "182": ["183", "92"],
+        "183": ["182", "92"],
+        "192": ["146"],
+        "217": ["146"],
+        "33": ["90"],
+        "90": ["33"],
+        "10": ["90"],
+        "4": ["3"],
+        "36": ["3"],
+        "17": ["2"],
+        "50": ["2"],
+        "81": ["2"],
+        "73": ["92"],
+        "24": ["125"],
+        "86": ["132"],
+        "64": ["3"],
+        "118": ["181"]
     }
+
+only_one_of = {
+    "Milk": ["53", "74", "132", "164", "212"],
+    "Yogurt": ["3", "131", "202", "202", "203"],
+    "Egg": ["1", "37", "58", "70", "155", "195"],
+    "Chicken": ["6", "26", "75", "84"],
+    "Bread": ["2", "48", "66", "92", "108", "200", "201"],
+    "Pancake": ["181", "192", "217"],
+    "Tortilla": ["28", "67", "208"]
+}
+food_to_category = {}
+for category, ids in only_one_of.items():
+    for fid in ids:
+        food_to_category[fid] = category
 
 def generate_menu(nutrition_goals):
     nutrition_goals = [int(nutrition_goals[key]) for key in nutrition_goals]
@@ -67,15 +92,22 @@ def generate_menu(nutrition_goals):
             meal_foods = breakfast_meals if meal_type == "breakfast" else lunch_meals if meal_type == "lunch" else dinner_meals
 
             foods = set()
+            used_categories = set()
 
-            while len(foods) != 5:
+            while len(foods) != 4:
                 food_id = random.choice(meal_foods)
+                category = food_to_category.get(food_id)
+                if category:
+                    if category in used_categories:
+                        continue
+                    used_categories.add(category)
                 foods.add(food_id)
 
             foods_temp = set(foods)
             for food_id in foods_temp:
                 if food_id in combinations and len(foods) < 10:
-                    foods.add(combinations[food_id])
+                    food_alternatives = combinations[food_id]
+                    foods.update(food_alternatives)
 
             foods_temp = set(foods)
             if nutrition_goals[5]:
