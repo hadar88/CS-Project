@@ -211,6 +211,13 @@ class Server:
 
             return send_file(img_buffer, mimetype="image/png")
 
+        @self.app.route("/predict", methods=["POST"])
+        def predict():
+            data = request.json
+            
+            result = self.generate_menu(data)
+            return jsonify(result)
+        
         @self.app.route("/predict2", methods=["POST"])
         def predict2():
             data = request.json
@@ -234,12 +241,6 @@ class Server:
 
             return jsonify({"output": merged_pred.tolist()})
 
-        @self.app.route("/predict", methods=["POST"])
-        def predict():
-            data = request.json
-            
-            result = self.generate_menu(data)
-            return jsonify(result)
 
     def generate_menu(self, nutrition_goals):
         nutrition_goals = [int(nutrition_goals[key]) for key in nutrition_goals]
