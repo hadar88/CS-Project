@@ -2,6 +2,8 @@ import random
 import json
 import numpy as np
 from scipy.optimize import minimize
+import time
+
 FOODS_DATA_PATH = "FoodsByID.json"
 FOODS_ALTERNATIVES_PATH = "FoodAlternatives.json"
 MEALS_PATH = "MealsByType.json"
@@ -61,7 +63,7 @@ only_one_of = {
     "Milk": ["1", "52", "72", "130", "200"],
     "Yogurt": ["3", "129", "192"],
     "Egg": ["37", "56", "68", "149", "186"],
-    "Chicken": ["6", "26", "73", "82"],
+    "Meat": ["6", "12", "26", "47", "73", "82", "105", "163"],
     "Bread": ["2", "48", "64", "90", "106"],
     "Pancake": ["172", "183"],
     "Tortilla": ["28", "65", "196"],
@@ -86,7 +88,6 @@ def generate_menu(nutrition_goals):
         day_plan = []
 
         for meal_type in ["breakfast", "lunch", "dinner"]:
-
             goal_values = breakfast_values if meal_type == "breakfast" else lunch_values if meal_type == "lunch" else dinner_values
             meal_foods = breakfast_meals if meal_type == "breakfast" else lunch_meals if meal_type == "lunch" else dinner_meals
 
@@ -153,23 +154,37 @@ def generate_menu(nutrition_goals):
     return {"output": menu}
 
 def getAmounts(temp_food_values, parts, goal_values):
-    A = np.array([np.array(v) / 100 for v in temp_food_values.values()]).T 
+    # Precompute the nutrition matrix (transpose only once)
+    A = np.array([v for v in temp_food_values.values()]).T / 100
 
-    def cost(w, A, goal_values, parts, lambd):
-        nutrition_error = np.sum((A @ w - goal_values)**2)
+    # Precompute repeated parts
+    parts = np.array(parts)
+    goal_values = np.array(goal_values)
+    parts_outer = np.outer(parts, parts)
+
+    # Precompute constants
+    five = 5.0
+
+    def cost(w):
+        # Nutrition error
+        Aw = A @ w
+        nutrition_error = np.sum((Aw - goal_values) ** 2)
+
+        # Ratio error
         alpha = np.sum(w)
-        ratio_error = np.sum((w - parts * alpha)**2)
-        return nutrition_error + lambd * ratio_error
+        w_diff = w - parts * alpha
+        ratio_error = np.dot(w_diff, w_diff)  # faster than sum of squares
 
+        return nutrition_error + five * ratio_error
+
+    # Initial guess
     initial_alpha = 700
     w0 = parts * initial_alpha
 
-    lambd = 5
-    res = minimize(cost, w0, args=(A, goal_values, parts, lambd), 
-                       bounds=[(0, None)]*len(w0), method='powell')
+    # Use L-BFGS-B (faster convergence, still derivative-free)
+    res = minimize(cost, w0, method='L-BFGS-B', bounds=[(0, None)] * len(w0))
 
-    final_weights = res.x
-    return final_weights
+    return res.x
 
 
 ###### checking functions ######
@@ -260,7 +275,10 @@ def checkMenu(menu):
 # Example usage
 
 nutrition_goals = {'calories': 2826.6875, 'carbohydrates': 326.16, 'sugar': 27.18, 'fat': 72.48, 'protein': 190.26, 'vegetarian': 0, 'vegan': 0}
+time1 = time.time()
 menu = generate_menu(nutrition_goals)
+time2 = time.time()
+print(f"Menu generated in {time2 - time1:.2f} seconds")
 
 menuId = convert_to_dictId(menu)
 menuName = convert_to_dictName(menu)

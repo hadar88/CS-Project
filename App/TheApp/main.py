@@ -15,7 +15,6 @@ from kivy.core.window import Window
 from kivy.uix.scrollview import ScrollView 
 from kivy.uix.stencilview import StencilView
 from kivy.clock import Clock
-import time
 
 #######################################################################
 
@@ -3933,13 +3932,10 @@ class LoadingWindow(Screen):
             server_url = "https://cs-project-m5hy.onrender.com/"
 
             requests.get(server_url + "wakeup")
-            time1 = time.time()
             response = requests.post(server_url + "predict", json=self.vector)
 
             if response.status_code == 200:
                 result = response.json()
-                time2 = time.time()
-                print("Time taken for request:", time2 - time1)
                 result = convert_to_dict(result)
 
                 global current_username

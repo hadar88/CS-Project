@@ -81,7 +81,7 @@ class Server:
             "Milk": ["1", "52", "72", "130", "200"],
             "Yogurt": ["3", "129", "192"],
             "Egg": ["37", "56", "68", "149", "186"],
-            "Chicken": ["6", "26", "73", "82"],
+            "Meat": ["6", "12", "26", "47", "73", "82", "105", "163"],
             "Bread": ["2", "48", "64", "90", "106"],
             "Pancake": ["172", "183"],
             "Tortilla": ["28", "65", "196"],
@@ -252,12 +252,10 @@ class Server:
 
         menu = []
 
-        for _ in range(7):
+        for i in range(7):
             day_plan = []
 
             for meal_type in ["breakfast", "lunch", "dinner"]:
-                values_totals = [0, 0, 0, 0, 0]
-
                 goal_values = breakfast_values if meal_type == "breakfast" else lunch_values if meal_type == "lunch" else dinner_values
                 meal_foods = self.breakfast_meals if meal_type == "breakfast" else self.lunch_meals if meal_type == "lunch" else self.dinner_meals
 
@@ -276,8 +274,8 @@ class Server:
                 foods_temp = set(foods)
                 for food_id in foods_temp:
                     if food_id in self.combinations and len(foods) < 10:
-                        food_alternatives = self.combinations[food_id]
-                        foods.update(food_alternatives)
+                        food_combination = self.combinations[food_id]
+                        foods.update(food_combination)
 
                 foods_temp = set(foods)
                 if nutrition_goals[5]:
@@ -314,13 +312,6 @@ class Server:
                 parts = np.array(parts)
                 amounts = np.round(self.getAmounts(temp_food_values, parts, goal_values))
                 amounts = [int(amount) for amount in amounts]
-
-                for i, food_id in enumerate(foods):
-                    for j in range(5):
-                        values_totals[j] += amounts[i] * self.foods_values[food_id][j] / 100
-
-                values_totals = np.round(values_totals)
-                values_totals = [int(value) for value in values_totals]
                 
                 foods = [int(food_id) for food_id in foods]
                 meal = [[food_id, amount] for food_id, amount in zip(foods, amounts)]
@@ -331,23 +322,37 @@ class Server:
         return {"output": menu}
         
     def getAmounts(self, temp_food_values, parts, goal_values):
-        A = np.array([np.array(v) / 100 for v in temp_food_values.values()]).T 
+        # Precompute the nutrition matrix (transpose only once)
+        A = np.array([v for v in temp_food_values.values()]).T / 100
 
-        def cost(w, A, goal_values, parts, lambd):
-            nutrition_error = np.sum((A @ w - goal_values)**2)
+        # Precompute repeated parts
+        parts = np.array(parts)
+        goal_values = np.array(goal_values)
+        parts_outer = np.outer(parts, parts)
+
+        # Precompute constants
+        five = 5.0
+
+        def cost(w):
+            # Nutrition error
+            Aw = A @ w
+            nutrition_error = np.sum((Aw - goal_values) ** 2)
+
+            # Ratio error
             alpha = np.sum(w)
-            ratio_error = np.sum((w - parts * alpha)**2)
-            return nutrition_error + lambd * ratio_error
+            w_diff = w - parts * alpha
+            ratio_error = np.dot(w_diff, w_diff)  # faster than sum of squares
 
+            return nutrition_error + five * ratio_error
+
+        # Initial guess
         initial_alpha = 700
         w0 = parts * initial_alpha
 
-        lambd = 5
-        res = minimize(cost, w0, args=(A, goal_values, parts, lambd), 
-                       bounds=[(0, None)]*len(w0), method='Powell')
+        # Use L-BFGS-B (faster convergence, still derivative-free)
+        res = minimize(cost, w0, method='L-BFGS-B', bounds=[(0, None)] * len(w0))
 
-        final_weights = res.x
-        return final_weights
+        return res.x
 
     def __bmi_decs_and_color(self, bmi_val):
         if bmi_val < 16:
