@@ -2,8 +2,6 @@ import random
 import json
 import numpy as np
 from scipy.optimize import minimize
-import time
-
 FOODS_DATA_PATH = "FoodsByID.json"
 FOODS_ALTERNATIVES_PATH = "FoodAlternatives.json"
 MEALS_PATH = "MealsByType.json"
@@ -67,7 +65,8 @@ only_one_of = {
     "Bread": ["2", "48", "64", "90", "106"],
     "Pancake": ["172", "183"],
     "Tortilla": ["28", "65", "196"],
-    "Fish": ["18", "54", "108", "159", "160"]
+    "Fish": ["18", "54", "108", "159", "160"],
+    "Cheese": ["22", "27", "38", "63", "80", "87", "95", "148", "152", "153"]
 }
 food_to_category = {}
 for category, ids in only_one_of.items():
@@ -126,7 +125,7 @@ def generate_menu(nutrition_goals):
                         food = random.choice(food_alternatives)
                         foods.remove(food_id)
                         foods.add(str(food))
-                    
+       
             foods = list(foods)
                     
             parts = []
@@ -166,7 +165,8 @@ def getAmounts(temp_food_values, parts, goal_values):
     w0 = parts * initial_alpha
 
     lambd = 5
-    res = minimize(cost, w0, args=(A, goal_values, parts, lambd), bounds=[(0, None)]*len(w0), method='L-BFGS-B')
+    res = minimize(cost, w0, args=(A, goal_values, parts, lambd), 
+                       bounds=[(0, None)]*len(w0), method='powell')
 
     final_weights = res.x
     return final_weights
@@ -273,4 +273,3 @@ for i, (m1, m2) in enumerate(zip(m, n)):
     print(f"{values[i]}: {m1:.0f} vs {m2:.0f}")
 
 checkMenu(menuName)
-

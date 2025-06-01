@@ -411,8 +411,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Turkey, light and dark meat, roasted, skin not eaten",
         "Upper bound part": 1.0,
@@ -748,8 +747,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Beef, roast",
         "Upper bound part": 0.9,
@@ -1986,7 +1984,6 @@
         "Vegetarian": 1,
         "Vegan": 1,
         "Meals": [
-            "Lunch",
             "Dinner"
         ],
         "Name": "Popcorn, NFS",

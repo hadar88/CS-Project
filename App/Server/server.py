@@ -85,7 +85,8 @@ class Server:
             "Bread": ["2", "48", "64", "90", "106"],
             "Pancake": ["172", "183"],
             "Tortilla": ["28", "65", "196"],
-            "Fish": ["18", "54", "108", "159", "160"]
+            "Fish": ["18", "54", "108", "159", "160"],
+            "Cheese": ["22", "27", "38", "63", "80", "87", "95", "148", "152", "153"]
         }
         self.food_to_category = {}
         for category, ids in only_one_of.items():
@@ -343,8 +344,7 @@ class Server:
 
         lambd = 5
         res = minimize(cost, w0, args=(A, goal_values, parts, lambd), 
-                       bounds=[(0, None)]*len(w0), method='Powell', 
-                       options={'maxiter': 30})
+                       bounds=[(0, None)]*len(w0), method='Powell')
 
         final_weights = res.x
         return final_weights
