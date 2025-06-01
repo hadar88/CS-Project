@@ -2708,7 +2708,7 @@
             "Dinner"
         ],
         "Name": "Curry sauce",
-        "Upper bound part": 0.4,
+        "Upper bound part": 0.2,
         "Lower bound part": 0.05
     },
     "172": {

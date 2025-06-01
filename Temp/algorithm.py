@@ -59,14 +59,14 @@ combinations = {
     '170': ['60']}
 
 only_one_of = {
-    "Milk": [],
-    "Yogurt": [],
-    "Egg": [],
-    "Chicken": [],
-    "Bread": [],
-    "Pancake": [],
-    "Tortilla": [],
-    "Fish": []
+    "Milk": [1, 52, 72, 130, 200],
+    "Yogurt": [3, 129, 192],
+    "Egg": [37, 56, 68, 149, 186],
+    "Chicken": [6, 26, 73, 82],
+    "Bread": [2, 48, 64, 90, 106],
+    "Pancake": [172, 183],
+    "Tortilla": [28, 65, 196],
+    "Fish": [18, 54, 108, 159, 160]
 }
 food_to_category = {}
 for category, ids in only_one_of.items():
@@ -105,8 +105,8 @@ def generate_menu(nutrition_goals):
             foods_temp = set(foods)
             for food_id in foods_temp:
                 if food_id in combinations and len(foods) < 10:
-                    food_alternatives = combinations[food_id]
-                    foods.update(food_alternatives)
+                    food_combination = combinations[food_id]
+                    foods.update(food_combination)
 
             foods_temp = set(foods)
             if nutrition_goals[5]:
