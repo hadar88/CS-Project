@@ -350,7 +350,7 @@ class Server:
         w0 = parts * initial_alpha
 
         # Use L-BFGS-B (faster convergence, still derivative-free)
-        res = minimize(cost, w0, method='L-BFGS-B', bounds=[(0, None)] * len(w0))
+        res = minimize(cost, w0, method='powell', bounds=[(0, None)] * len(w0))
 
         return res.x
 
