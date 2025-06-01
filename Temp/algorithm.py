@@ -56,7 +56,9 @@ combinations = {
     "24": ["125"],
     "86": ["132"],
     "64": ["3"],
-    "118": ["181"]
+    "118": ["181"],
+    "62": ["179"],
+    "179": ["62"],
 }
 
 only_one_of = {
@@ -86,7 +88,6 @@ def generate_menu(nutrition_goals):
         day_plan = []
 
         for meal_type in ["breakfast", "lunch", "dinner"]:
-            values_totals = [0, 0, 0, 0, 0]
 
             goal_values = breakfast_values if meal_type == "breakfast" else lunch_values if meal_type == "lunch" else dinner_values
             meal_foods = breakfast_meals if meal_type == "breakfast" else lunch_meals if meal_type == "lunch" else dinner_meals
@@ -144,13 +145,6 @@ def generate_menu(nutrition_goals):
             parts = np.array(parts)
             amounts = np.round(getAmounts(temp_food_values, parts, goal_values))
             amounts = [int(amount) for amount in amounts]
-
-            for i, food_id in enumerate(foods):
-                for j in range(5):
-                    values_totals[j] += amounts[i] * foods_values[food_id][j] / 100
-
-            values_totals = np.round(values_totals)
-            values_totals = [int(value) for value in values_totals]
             
             foods = [int(food_id) for food_id in foods]
             meal = [[food_id, amount] for food_id, amount in zip(foods, amounts)]
@@ -267,7 +261,6 @@ def checkMenu(menu):
 # Example usage
 
 nutrition_goals = {'calories': 2826.6875, 'carbohydrates': 326.16, 'sugar': 27.18, 'fat': 72.48, 'protein': 190.26, 'vegetarian': 0, 'vegan': 0}
-time1 = time.time()
 menu = generate_menu(nutrition_goals)
 
 menuId = convert_to_dictId(menu)
@@ -282,5 +275,3 @@ for i, (m1, m2) in enumerate(zip(m, n)):
 
 checkMenu(menuName)
 
-time2 = time.time()
-print(f"Time taken: {time2 - time1:.2f} seconds")
