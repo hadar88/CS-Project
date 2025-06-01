@@ -2178,10 +2178,7 @@
         "Protein": 4,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Breakfast",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Vegan cheese",
         "Upper bound part": 0.3,
         "Lower bound part": 0.1
@@ -2210,10 +2207,7 @@
         "Protein": 5,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Breakfast",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Vegan cream cheese",
         "Upper bound part": 0.2,
         "Lower bound part": 0.05
@@ -2274,10 +2268,7 @@
         "Protein": 11,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Lunch",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Vegan pesto sauce",
         "Upper bound part": 0.2,
         "Lower bound part": 0.05
@@ -2676,10 +2667,7 @@
         "Protein": 15.7,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Lunch",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Vegan burger patty, no bun",
         "Upper bound part": 0.9,
         "Lower bound part": 0.7
@@ -2931,10 +2919,7 @@
         "Protein": 3,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Breakfast",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Vegan pancakes",
         "Upper bound part": 0.8,
         "Lower bound part": 0.6
@@ -2947,9 +2932,7 @@
         "Protein": 0,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Pudding, tapioca, vegan",
         "Upper bound part": 0.3,
         "Lower bound part": 0.1
@@ -2962,10 +2945,7 @@
         "Protein": 18,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Lunch",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Pasta, vegan",
         "Upper bound part": 0.8,
         "Lower bound part": 0.6
@@ -2995,10 +2975,7 @@
         "Protein": 0.3,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Lunch",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Vegan mayonnaise",
         "Upper bound part": 0.1,
         "Lower bound part": 0.05
@@ -3011,10 +2988,7 @@
         "Protein": 5,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Breakfast",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Cookie, vegan",
         "Upper bound part": 0.2,
         "Lower bound part": 0.05
@@ -3076,10 +3050,7 @@
         "Protein": 19.6,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Lunch",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Hot dog, vegan",
         "Upper bound part": 0.8,
         "Lower bound part": 0.6
@@ -3099,22 +3070,6 @@
         "Name": "Corn schnitzel",
         "Upper bound part": 0.8,
         "Lower bound part": 0.6
-    },
-    "194": {
-        "Calories": 474,
-        "Carbohydrate": 76.0,
-        "Sugars": 49.0,
-        "Fat": 17.9,
-        "Protein": 2.19,
-        "Vegetarian": 1,
-        "Vegan": 0,
-        "Meals": [
-            "Breakfast",
-            "Dinner"
-        ],
-        "Name": "Cookie, gluten free",
-        "Upper bound part": 0.2,
-        "Lower bound part": 0.05
     },
     "195": {
         "Calories": 370,
@@ -3214,38 +3169,6 @@
         "Upper bound part": 0.4,
         "Lower bound part": 0.05
     },
-    "201": {
-        "Calories": 179,
-        "Carbohydrate": 38.0,
-        "Sugars": 0,
-        "Fat": 1.0,
-        "Protein": 3.2,
-        "Vegetarian": 1,
-        "Vegan": 0,
-        "Meals": [
-            "Lunch",
-            "Dinner"
-        ],
-        "Name": "Pasta, gluten free",
-        "Upper bound part": 0.8,
-        "Lower bound part": 0.6
-    },
-    "202": {
-        "Calories": 410,
-        "Carbohydrate": 37.9,
-        "Sugars": 34.0,
-        "Fat": 29.4,
-        "Protein": 4.87,
-        "Vegetarian": 1,
-        "Vegan": 0,
-        "Meals": [
-            "Breakfast",
-            "Dinner"
-        ],
-        "Name": "Cake or cupcake, gluten free",
-        "Upper bound part": 0.3,
-        "Lower bound part": 0.1
-    },
     "203": {
         "Calories": 268,
         "Carbohydrate": 22,
@@ -3276,22 +3199,6 @@
         "Name": "Lasagna with meat",
         "Upper bound part": 0.9,
         "Lower bound part": 0.7
-    },
-    "205": {
-        "Calories": 215,
-        "Carbohydrate": 40.3,
-        "Sugars": 4.06,
-        "Fat": 4.55,
-        "Protein": 3.31,
-        "Vegetarian": 1,
-        "Vegan": 0,
-        "Meals": [
-            "Breakfast",
-            "Dinner"
-        ],
-        "Name": "Pancakes, gluten free",
-        "Upper bound part": 0.8,
-        "Lower bound part": 0.6
     },
     "206": {
         "Calories": 218,
