@@ -342,7 +342,9 @@ class Server:
         w0 = parts * initial_alpha
 
         lambd = 5
-        res = minimize(cost, w0, args=(A, goal_values, parts, lambd), bounds=[(0, None)]*len(w0), method='L-BFGS-B')
+        res = minimize(cost, w0, args=(A, goal_values, parts, lambd), 
+                       bounds=[(0, None)]*len(w0), method='Powell', 
+                       options={'maxiter': 30})
 
         final_weights = res.x
         return final_weights
