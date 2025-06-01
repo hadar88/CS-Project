@@ -90,8 +90,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Chicken breast, grilled without sauce, skin not eaten",
         "Upper bound part": 1.0,
@@ -189,8 +188,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Beef, steak, sirloin, NS as to fat eaten",
         "Upper bound part": 1.0,
@@ -494,8 +492,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Hamburger, NFS",
         "Upper bound part": 0.9,
@@ -510,7 +507,6 @@
         "Vegetarian": 1,
         "Vegan": 1,
         "Meals": [
-            "Breakfast",
             "Lunch",
             "Dinner"
         ],
@@ -544,8 +540,7 @@
         "Vegetarian": 1,
         "Vegan": 1,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Ketchup",
         "Upper bound part": 0.1,
@@ -560,7 +555,6 @@
         "Vegetarian": 1,
         "Vegan": 1,
         "Meals": [
-            "Breakfast",
             "Lunch",
             "Dinner"
         ],
@@ -866,8 +860,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Fish, salmon, grilled",
         "Upper bound part": 1.0,
@@ -1011,7 +1004,6 @@
         "Vegan": 0,
         "Meals": [
             "Breakfast",
-            "Lunch",
             "Dinner"
         ],
         "Name": "Cheese, Cheddar",
@@ -1155,10 +1147,7 @@
         "Protein": 0.55,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Breakfast",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Almond milk, unsweetened",
         "Upper bound part": 0.4,
         "Lower bound part": 0.05
@@ -1172,8 +1161,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Turkey, NFS",
         "Upper bound part": 0.9,
@@ -1284,7 +1272,6 @@
         "Vegan": 0,
         "Meals": [
             "Breakfast",
-            "Lunch",
             "Dinner"
         ],
         "Name": "Cheese, NFS",
@@ -1316,8 +1303,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Chicken breast, baked, broiled, or roasted, skin not eaten, from raw",
         "Upper bound part": 1.0,
@@ -1603,10 +1589,7 @@
         "Protein": 6.6,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Lunch",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Tofu",
         "Upper bound part": 0.8,
         "Lower bound part": 0.6
@@ -1683,8 +1666,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Beef, steak, NFS",
         "Upper bound part": 1.0,
@@ -2331,7 +2313,6 @@
         "Vegan": 0,
         "Meals": [
             "Breakfast",
-            "Lunch",
             "Dinner"
         ],
         "Name": "Sour cream, regular",
@@ -2347,8 +2328,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Salami, NFS",
         "Upper bound part": 0.4,
@@ -2396,8 +2376,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Meatballs, NS as to type of meat, with sauce",
         "Upper bound part": 0.9,
@@ -2459,8 +2438,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Stuffed pepper, with rice and meat",
         "Upper bound part": 0.9,
@@ -2603,8 +2581,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Beef, steak, tenderloin",
         "Upper bound part": 1.0,
@@ -2619,8 +2596,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Lamb, NS as to cut",
         "Upper bound part": 1.0,
@@ -2792,7 +2768,6 @@
         "Vegetarian": 1,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
             "Dinner"
         ],
         "Name": "Eggplant parmesan casserole, regular",
@@ -3002,29 +2977,11 @@
         "Vegetarian": 1,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
             "Dinner"
         ],
         "Name": "Eggplant with cheese and tomato sauce",
         "Upper bound part": 0.9,
         "Lower bound part": 0.7
-    },
-    "190": {
-        "Calories": 900,
-        "Carbohydrate": 0,
-        "Sugars": 0,
-        "Fat": 100,
-        "Protein": 0,
-        "Vegetarian": 1,
-        "Vegan": 1,
-        "Meals": [
-            "Breakfast",
-            "Lunch",
-            "Dinner"
-        ],
-        "Name": "Canola oil",
-        "Upper bound part": 0.1,
-        "Lower bound part": 0.05
     },
     "191": {
         "Calories": 64.0,
@@ -3079,10 +3036,7 @@
         "Protein": 75,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Lunch",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Seitan",
         "Upper bound part": 0.9,
         "Lower bound part": 0.7
@@ -3143,11 +3097,7 @@
         "Protein": 0.17,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Breakfast",
-            "Lunch",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Margarine, NFS",
         "Upper bound part": 0.1,
         "Lower bound part": 0.05
@@ -3160,11 +3110,7 @@
         "Protein": 3.41,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Breakfast",
-            "Lunch",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Soy milk",
         "Upper bound part": 0.4,
         "Lower bound part": 0.05
@@ -3193,8 +3139,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Lasagna with meat",
         "Upper bound part": 0.9,
@@ -3225,8 +3170,7 @@
         "Vegetarian": 0,
         "Vegan": 0,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Schnitzel",
         "Upper bound part": 0.9,
