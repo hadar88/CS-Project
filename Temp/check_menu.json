@@ -1,0 +1,149 @@
+{
+    "sunday": {
+        "breakfast": {
+            "Clementine, raw": 21,
+            "Almond butter": 24,
+            "Watermelon, raw": 21,
+            "Cereal or granola bar (Quaker Chewy 25% Less Sugar Granola Bar)": 42,
+            "Bread, whole wheat, toasted": 132
+        },
+        "lunch": {
+            "Lasagna with meat": 259,
+            "Mayonnaise, regular": 32,
+            "Vinegar": 39,
+            "Meatballs, NS as to type of meat, with sauce": 294
+        },
+        "dinner": {
+            "Cookie, chocolate chip": 75,
+            "Avocado, raw": 76,
+            "Tortilla chips, nacho cheese flavor (Doritos)": 40,
+            "Vegetable curry": 343
+        }
+    },
+    "monday": {
+        "breakfast": {
+            "Orange, raw": 77,
+            "Banana, raw": 76,
+            "Oatmeal, NFS": 666,
+            "Pineapple, canned, NFS": 144
+        },
+        "lunch": {
+            "Vinaigrette": 149,
+            "Green beans, raw": 457,
+            "Curry sauce": 152,
+            "Snowpeas, raw": 457
+        },
+        "dinner": {
+            "Mustard": 124,
+            "Cheese, Provolone": 123,
+            "Cherries, raw": 247,
+            "Peanut sauce": 123
+        }
+    },
+    "tuesday": {
+        "breakfast": {
+            "Clementine, raw": 127,
+            "Pepper, sweet, green, raw": 128,
+            "Fruit juice, acai blend": 255,
+            "Raspberries, raw": 128,
+            "Yogurt, Greek, nonfat milk, plain": 640
+        },
+        "lunch": {
+            "Green beans, raw": 173,
+            "Broccoli, raw": 114,
+            "Corn schnitzel": 345,
+            "Bread, rye": 113
+        },
+        "dinner": {
+            "Milk, NFS": 262,
+            "Bean soup, NFS": 1081,
+            "Watermelon, raw": 261,
+            "Lime juice, 100%, freshly squeezed": 139
+        }
+    },
+    "wednesday": {
+        "breakfast": {
+            "Strawberries, raw": 41,
+            "Cucumber, raw": 124,
+            "Muffin, fruit": 85,
+            "Honeydew melon, raw": 41,
+            "Olive oil": 37
+        },
+        "lunch": {
+            "Beets, canned, cooked, no added fat": 136,
+            "Edamame, cooked": 205,
+            "Tortilla, flour": 203,
+            "Bread, rye": 68
+        },
+        "dinner": {
+            "Egg omelet or scrambled egg, made with oil": 186,
+            "Tzatziki dip": 28,
+            "Cream cheese, regular, plain": 49,
+            "Sweet potato chips": 83
+        }
+    },
+    "thursday": {
+        "breakfast": {
+            "Pancakes, whole grain": 149,
+            "Bread, rye": 91,
+            "Lime juice, 100%, freshly squeezed": 19,
+            "Spinach, raw": 38,
+            "Pancake syrup": 17
+        },
+        "lunch": {
+            "Chicken breast, baked, broiled, or roasted, skin not eaten, from raw": 227,
+            "Chickpea": 116,
+            "Lettuce, raw": 28,
+            "Tortilla chips, nacho cheese flavor (Doritos)": 57,
+            "Guacamole, NFS": 28
+        },
+        "dinner": {
+            "Cookie, chocolate chip": 92,
+            "Rice noodles, cooked": 331,
+            "Tabasco": 46,
+            "Cream cheese, regular, plain": 49
+        }
+    },
+    "friday": {
+        "breakfast": {
+            "Peach, raw": 23,
+            "Egg, whole, fried with oil": 140,
+            "Lasagna, meatless, with vegetables": 190,
+            "Date": 25
+        },
+        "lunch": {
+            "Raisins": 81,
+            "Fish, cod, baked or broiled": 649,
+            "Pepper, sweet, red, raw": 164,
+            "Spinach, raw": 77
+        },
+        "dinner": {
+            "Crackers, matzo": 150,
+            "Asparagus, raw": 311,
+            "Fruit juice, acai blend": 149,
+            "Milk, reduced fat (2%)": 461
+        }
+    },
+    "saturday": {
+        "breakfast": {
+            "Pineapple, canned, NFS": 18,
+            "Clementine, raw": 38,
+            "Cereal, granola": 113,
+            "Egg, whole, fried with oil": 79,
+            "Yogurt, Greek, nonfat milk, plain": 78
+        },
+        "lunch": {
+            "Turkey, NFS": 300,
+            "Cucumber, raw": 38,
+            "Potato chips, NFS": 78,
+            "Lime juice, 100%, freshly squeezed": 39,
+            "Olive oil": 31
+        },
+        "dinner": {
+            "Chickpea": 69,
+            "Tortilla chips, nacho cheese flavor (Doritos)": 35,
+            "Cheese, Colby Jack": 29,
+            "Fish, salmon, baked or broiled": 163
+        }
+    }
+}
