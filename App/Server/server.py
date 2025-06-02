@@ -322,35 +322,24 @@ class Server:
         return {"output": menu}
         
     def getAmounts(self, temp_food_values, parts, goal_values):
-        # Precompute the nutrition matrix (transpose only once)
-        A = np.array([v for v in temp_food_values.values()]).T / 100
-
-        # Precompute repeated parts
-        parts = np.array(parts)
-        goal_values = np.array(goal_values)
-        parts_outer = np.outer(parts, parts)
-
-        # Precompute constants
-        five = 5.0
+        A = np.array([np.array(v) / 100 for v in temp_food_values.values()]).T 
 
         def cost(w):
-            # Nutrition error
-            Aw = A @ w
-            nutrition_error = np.sum((Aw - goal_values) ** 2)
-
-            # Ratio error
+            nutrition_error = np.sum((A @ w - goal_values)**2)
             alpha = np.sum(w)
-            w_diff = w - parts * alpha
-            ratio_error = np.dot(w_diff, w_diff)  # faster than sum of squares
+            ratio_error = np.sum((w - parts * alpha)**2)
+            return nutrition_error + 5 * ratio_error
 
-            return nutrition_error + five * ratio_error
-
-        # Initial guess
         initial_alpha = 700
         w0 = parts * initial_alpha
 
-        # Use L-BFGS-B (faster convergence, still derivative-free)
-        res = minimize(cost, w0, method='powell', bounds=[(0, None)] * len(w0))
+        res = minimize(
+            cost,
+            w0,
+            bounds=[(0, 250)]*len(w0),
+            method='L-BFGS-B',
+            options={'ftol': 1e-4, 'gtol': 1e-4}
+        )
 
         return res.x
 

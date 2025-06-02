@@ -165,7 +165,13 @@ def getAmounts(temp_food_values, parts, goal_values):
     initial_alpha = 700
     w0 = parts * initial_alpha
 
-    res = minimize(cost, w0, bounds=[(0, None)]*len(w0), method='powell')
+    res = minimize(
+        cost,
+        w0,
+        bounds=[(0, 250)]*len(w0),
+        method='L-BFGS-B',
+        options={'ftol': 1e-4, 'gtol': 1e-4}
+    )
 
     return res.x
 
