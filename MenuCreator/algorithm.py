@@ -2,7 +2,6 @@ import random
 import json
 import numpy as np
 from scipy.optimize import minimize
-import time
 
 FOODS_DATA_PATH = "FoodsByID.json"
 FOODS_ALTERNATIVES_PATH = "FoodAlternatives.json"
@@ -160,7 +159,7 @@ def getAmounts(temp_food_values, parts, goal_values):
         nutrition_error = np.sum((A @ w - goal_values)**2)
         alpha = np.sum(w)
         ratio_error = np.sum((w - parts * alpha)**2)
-        return nutrition_error + 5 * ratio_error
+        return nutrition_error + ratio_error
 
     initial_alpha = 700
     w0 = parts * initial_alpha
@@ -177,7 +176,6 @@ def getAmounts(temp_food_values, parts, goal_values):
 
 
 ###### checking functions ######
-
 
 def transform(menu, food_data):
     output = [0.0] * 7
@@ -257,26 +255,37 @@ def convert_to_dictName(menu):
 
     return structured_dict
 
-def checkMenu(menu):
+def evaluate_menu(menu, nutrition_goals):
+    score = 0
+
+    ########################
+
+    menuName = convert_to_dictName(menu)
     with open("check_menu.json", "w") as file:
-        json.dump(menu, file, indent=4)
+        json.dump(menuName, file, indent=4)
+
+    ########################
+
+    menuId = convert_to_dictId(menu)
+    m = transform(menuId, foods_data)
+    n = [round(ng) for ng in nutrition_goals.values()]
+    values = ["Calories", "Carbohydrate", "Sugars", "Fat", "Protein", "Vegetarian", "Vegan"]
+    print("Generated vs Nutrition Goals:")
+    for i, (m1, m2) in enumerate(zip(m, n)):
+        if i == 0:
+            score += 2 * (m1 - m2) ** 2
+        else:
+            score += (m1 - m2) ** 2
+        print(f"{values[i]}: {m1:.0f} vs {m2:.0f}")
+
+    ########################
+
+    score = np.sqrt(score)
+
+    print(f"\nTotal Score: {score:.0f}")
 
 # Example usage
 
 nutrition_goals = {'calories': 2826.6875, 'carbohydrates': 326.16, 'sugar': 27.18, 'fat': 72.48, 'protein': 190.26, 'vegetarian': 0, 'vegan': 0}
-time1 = time.time()
 menu = generate_menu(nutrition_goals)
-time2 = time.time()
-print(f"Menu generated in {time2 - time1:.2f} seconds")
-
-menuId = convert_to_dictId(menu)
-menuName = convert_to_dictName(menu)
-
-m = transform(menuId, foods_data)
-n = [round(ng) for ng in nutrition_goals.values()]
-values = ["Calories", "Carbohydrate", "Sugars", "Fat", "Protein", "Vegetarian", "Vegan"]
-print("Generated vs Nutrition Goals:")
-for i, (m1, m2) in enumerate(zip(m, n)):
-    print(f"{values[i]}: {m1:.0f} vs {m2:.0f}")
-
-checkMenu(menuName)
+evaluate_menu(menu, nutrition_goals)

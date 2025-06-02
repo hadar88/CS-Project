@@ -2357,7 +2357,6 @@
         "Vegan": 0,
         "Meals": [
             "Breakfast",
-            "Lunch",
             "Dinner"
         ],
         "Name": "Egg, whole, raw",
@@ -2471,7 +2470,7 @@
             "Dinner"
         ],
         "Name": "Peanuts, NFS",
-        "Upper bound part": 0.3,
+        "Upper bound part": 0.2,
         "Lower bound part": 0.1
     },
     "157": {
@@ -2932,7 +2931,6 @@
         "Vegan": 1,
         "Meals": [
             "Breakfast",
-            "Lunch",
             "Dinner"
         ],
         "Name": "Egg substitute, omelet, scrambled, or fried, fat added",
