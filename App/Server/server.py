@@ -4,7 +4,6 @@ import time
 import requests
 import matplotlib.pyplot as plt
 from collections import defaultdict
-from utils import merge_ids_and_amounts
 from flask import Flask, jsonify, request, send_file
 from datetime import datetime, timedelta
 import io
@@ -239,7 +238,7 @@ class Server:
 
             pred_amount = pred_amount.squeeze(-1)
 
-            merged_pred = merge_ids_and_amounts(pred_id, pred_amount)
+            merged_pred = self.merge_ids_and_amounts(pred_id, pred_amount)
 
             return jsonify({"output": merged_pred.tolist()})
 
@@ -368,6 +367,9 @@ class Server:
 
         # Start the thread as a daemon so it doesn't block server shutdown
         threading.Thread(target=send_wakeup_request, daemon=True).start()
+
+    def merge_ids_and_amounts(self, ids, amounts):
+        return torch.stack((ids, amounts), dim=-1)
 
     def run(self, host="0.0.0.0", port=5000):
         self.app.run(host=host, port=port, debug=False)
