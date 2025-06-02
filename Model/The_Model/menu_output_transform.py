@@ -1,7 +1,7 @@
 import json
 import torch
 
-FOODS_DATA_PATH = "../../Data/layouts/FoodsByID_copy.json"
+FOODS_DATA_PATH = "../../Data/layouts/FoodsByID.json"
 
 def menu_dict_to_tensor(menu_dict: dict):
     """This function is used to convert the menu dictionary to a tensor."""
@@ -113,12 +113,12 @@ def transform_batch2(menu_batch: torch.Tensor, food_data, device):
     return torch.stack([transform2(menu, food_data, device) for menu in menu_batch])
 
 def transform2(menu: torch.Tensor, food_data, device, bound_fn=lambda x: x):
-    output = torch.zeros(23, dtype=torch.float32, device=device)
+    output = torch.zeros(7, dtype=torch.float32, device=device)
 
-    output[14] = 1.0
-    output[15] = 1.0
     daily_calories = torch.zeros(7, device=device)
     
+    output[5], output[6] = 1, 1 
+
     for didx, day in enumerate(menu):
         for midx, meal in enumerate(day):
             for food in meal:
@@ -135,37 +135,19 @@ def transform2(menu: torch.Tensor, food_data, device, bound_fn=lambda x: x):
                 # Update accumulators
                 daily_calories[didx] += food_calories
                 output[0] = output[0] + food_calories
-                output[midx + 1] = output[midx + 1] + food_calories
  
-                output[5] = output[5] + food_nut["Carbohydrate"] * food_amount
-                output[6] = output[6] + food_nut["Sugars"] * food_amount
-                output[7] = output[7] + food_nut["Fat"] * food_amount
-                output[8] = output[8] + food_nut["Protein"] * food_amount
-                output[9] = output[9] + food_nut["Fruit"]
-                output[10] = output[10] + food_nut["Vegetable"]
-                output[11] = output[11] + food_nut["Cheese"]
-                output[12] = output[12] + food_nut["Meat"]
-                output[13] = output[13] + food_nut["Cereal"]
-                output[14] = output[14] * food_nut["Vegetarian"]
-                output[15] = output[15] * food_nut["Vegan"]
-                output[16] = torch.maximum(output[16], torch.tensor(float(food_nut["Contains eggs"]), device=menu.device))
-                output[17] = torch.maximum(output[17], torch.tensor(float(food_nut["Contains milk"]), device=menu.device))
-                output[18] = torch.maximum(output[18], torch.tensor(float(food_nut["Contains peanuts or nuts"]), device=menu.device))
-                output[19] = torch.maximum(output[19], torch.tensor(float(food_nut["Contains fish"]), device=menu.device))
-                output[20] = torch.maximum(output[20], torch.tensor(float(food_nut["Contains sesame"]), device=menu.device))
-                output[21] = torch.maximum(output[21], torch.tensor(float(food_nut["Contains soy"]), device=menu.device))
-                output[22] = torch.maximum(output[22], torch.tensor(float(food_nut["Contains gluten"]), device=menu.device))
-    
-    # Division operations
-    output_final = torch.clone(output)
-    output_final[:4] = output[:4] / 7.0
-    
-    # Calculate daily calorie variance
-    output_final[4] = torch.mean((daily_calories - output_final[0]) ** 2)
-    
-    output_final[5:9] = output[5:9] / 7.0
-    
-    # Make it require gradients at the end of all operations
+                output[1] = output[1] + food_nut["Carbohydrate"] * food_amount
+                output[2] = output[2] + food_nut["Sugars"] * food_amount
+                output[3] = output[3] + food_nut["Fat"] * food_amount
+                output[4] = output[4] + food_nut["Protein"] * food_amount
+                output[5] = output[5] * food_nut["Vegetarian"]
+                output[6] = output[6] * food_nut["Vegan"]
+
+    output_final = output
+    output_final[:5] = output[:5] / 7.0
+    output_final[5] = output[5]
+    output_final[6] = output[6]
+
     return output_final.requires_grad_(True).int()
 
 def check_menu(ten):
@@ -188,15 +170,6 @@ def check_menu(ten):
 
     with open("check_menu.json", "w") as f:
         json.dump(temp_menu, f, indent=4)
-
-    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    # data = transform2(ten, data, device)
-    # values = ["Calories", "Calories1", "Calories2", "Calories3", "Calories MSE", "Carbohydrate", 
-    #             "Sugars", "Fat", "Protein", "Fruit", "Vegetable", "Cheese", "Meat", "Cereal", 
-    #             "Vegetarian", "Vegan", "Contains eggs", "Contains milk", "Contains peanuts or nuts", 
-    #             "Contains fish", "Contains sesame", "Contains soy", "Contains gluten"]
-    # for i, v in enumerate(data):
-    #     print(f"{values[i]}: {v.item():.0f}")
 
 if __name__ == "__main__":
     ten = torch.tensor([[[[195.0000,  72.8652],
