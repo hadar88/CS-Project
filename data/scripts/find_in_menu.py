@@ -7,11 +7,11 @@ check = input("Test: ")
 
 ###########
 
-foodbyid = open("../../layouts/FoodsByID.json", "r")
+foodbyid = open("../layouts/FoodsByID.json", "r")
 data = json.load(foodbyid)
 foodbyid.close()
 
-menus = open("../../layouts/menusById.json", "r")
+menus = open("../layouts/menusById.json", "r")
 menus_data = json.load(menus)
 menus.close()
 

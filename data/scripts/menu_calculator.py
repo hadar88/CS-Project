@@ -1,10 +1,10 @@
 import json
 
-foodbyid = open("../../layouts/FoodsByID.json", "r")
+foodbyid = open("../layouts/FoodsByID.json", "r")
 data = json.load(foodbyid)
 foodbyid.close()
 
-menus = open("../../layouts/menusById.json", "r")
+menus = open("../layouts/menusById.json", "r")
 menudata = json.load(menus)
 menus.close()
 
@@ -118,7 +118,7 @@ for menu_id in range(begin, end + 1):
     Fat = round(Fat, 3)
     Protein = round(Protein, 3)
 
-    menusinput = open("../../layouts/MenusInput.json", "r+")
+    menusinput = open("../layouts/MenusInput.json", "r+")
     menusinput.seek(0)
 
     menus = json.load(menusinput)
@@ -156,7 +156,7 @@ for menu_id in range(begin, end + 1):
 
 # Move data from the "menu" section to the "Initial" section
 
-menus_input = open("../../layouts/menusInput.json", "a+")
+menus_input = open("../layouts/menusInput.json", "a+")
 
 menus_input.seek(0)
 
@@ -190,12 +190,12 @@ menus_input.close()
 
 # menusById to menusByName
 
-# menus = open("../../layouts/menusById.json", "r")
+# menus = open("../layouts/menusById.json", "r")
 # menusById = json.load(menus)
 # menusName = {}
 # menus.close()
 
-# foods = open("../../layouts/FoodsByID.json", "r")
+# foods = open("../layouts/FoodsByID.json", "r")
 # foodsByid = json.load(foods)
 # foods.close()
 
@@ -218,15 +218,15 @@ menus_input.close()
 
 #                 menusName[menuid][day][meal][foodname] = amount
 
-# menusByName = open("../../layouts/menusByName.json", "w")
+# menusByName = open("../layouts/menusByName.json", "w")
 # json.dump(menusName, menusByName, indent=4)
 # menusByName.close()
 
-# db = open("../../layouts/menusByName.json")
+# db = open("../layouts/menusByName.json")
 # dict = json.load(db)
 # db.close()
 
-# onelinedb = open("../../layouts/menusByName.json", "w")
+# onelinedb = open("../layouts/menusByName.json", "w")
 
 # onelinedb.writelines("{\n")
 

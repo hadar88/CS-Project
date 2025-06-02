@@ -9,9 +9,9 @@ import random
 import copy
 
 # ! Paths relative to the root folder
-MENUS_FILE = "../../layouts/menusById.json"
-FOODS_FILE = "../../layouts/FoodsByID.json"  
-ALTER_FILE = "../../layouts/FoodAlternatives.json" 
+MENUS_FILE = "../layouts/menusById.json"
+FOODS_FILE = "../layouts/FoodsByID.json"  
+ALTER_FILE = "../layouts/FoodAlternatives.json" 
 
 w = open("new_menus.json", "w")
 
@@ -151,7 +151,7 @@ def print_menu(menu: dict):
 
 properties = ["Vegetarian", "Vegan", "Contains eggs", "Contains milk", "Contains peanuts or nuts", "Contains fish", "Contains sesame", "Contains soy", "Contains gluten"]
 
-me = menus = open("../../layouts/menusById.json", "r")
+me = menus = open("../layouts/menusById.json", "r")
 da = json.load(me)
 current_menu_id = da.__len__() + 1
 me.close()
