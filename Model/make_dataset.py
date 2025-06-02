@@ -1,13 +1,13 @@
 import json
 import torch
-import Model.The_Model.menu_output_transform as mot
+import Model.menu_output_transform as mot
 from torch.utils.data import Dataset
 from enum import Enum
 
-MENUS_INPUT = "../../Data/layouts/MenusInput_copy.json"
-MENUS_BY_ID = "../../Data/layouts/MenusById.json"
+MENUS_INPUT = "../Data/layouts/MenusInput_copy.json"
+MENUS_BY_ID = "../Data/layouts/MenusById.json"
 
-FOODS_DATA_PATH = "../../Data/layouts/FoodsByID_copy.json"
+FOODS_DATA_PATH = "../Data/layouts/FoodsByID_copy.json"
 
 class FoodProperties(Enum):
     CALORIES = 0

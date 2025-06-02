@@ -1,7 +1,7 @@
 import json
 import torch
 
-FOODS_DATA_PATH = "../../Data/layouts/FoodsByID.json"
+FOODS_DATA_PATH = "../Data/layouts/FoodsByID.json"
 
 def menu_dict_to_tensor(menu_dict: dict):
     """This function is used to convert the menu dictionary to a tensor."""

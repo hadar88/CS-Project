@@ -4,8 +4,8 @@ import torch.optim as optim
 import json
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-from Model.The_Model.make_dataset import MenusDataset, FoodProperties as FP
-from Model.The_Model.menu_output_transform import transform2, check_menu
+from Model.make_dataset import MenusDataset, FoodProperties as FP
+from Model.menu_output_transform import transform2, check_menu
 import argparse
 
 import matplotlib
