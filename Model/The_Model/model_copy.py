@@ -43,11 +43,11 @@ def main():
     if split == "train":
         train_model(dataloader, model, foods_criterions, amounts_criterions, other_criterions, optimizer, 10000, device)
 
-        # model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth", weights_only=True))
+        # model.load_state_dict(torch.load(f"model_v{MODEL_VERSION}.pth", weights_only=True))
         # evaluate_on_random_sample(dataloader, model, device)
     elif split == "val" or split == "test":
         # Load the model and evaluate
-        model.load_state_dict(torch.load(f"saved_models/model_v{MODEL_VERSION}.pth", weights_only=True))
+        model.load_state_dict(torch.load(f"model_v{MODEL_VERSION}.pth", weights_only=True))
         evaluate_on_random_sample(dataloader, model, device)
 
 # ------ Model --------- #
@@ -192,8 +192,8 @@ def train_model(dataloader, model, foods_criterions: list, amounts_criterions: l
             best_epoch = e
 
     print(f"Best model at epoch {best_epoch} with loss {min_loss:.4f}")
-    torch.save(best_model, f"saved_models/model_v{MODEL_VERSION}.pth")
-    print(f"Model saved as saved_models/model_v{MODEL_VERSION}.pth")
+    torch.save(best_model, f"model_v{MODEL_VERSION}.pth")
+    print(f"Model saved as model_v{MODEL_VERSION}.pth")
 
     loss_history = loss_history[200:]
     plt.plot(loss_history)

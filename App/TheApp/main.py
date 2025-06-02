@@ -262,7 +262,7 @@ def get_meal(day, meal):
                 a[name] = m[i]
             else:
                 print(f"Warning: Key {key} not found in foods_id_name")
-    return a
+    return dict(sorted(a.items()))
 
 def convert_to_dict(data):
     days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]

@@ -168,7 +168,7 @@ def getAmounts(temp_food_values, parts, goal_values):
     res = minimize(
         cost,
         w0,
-        bounds=[(0, None)]*len(w0),
+        bounds=[(0, 300)]*len(w0),
         method='L-BFGS-B',
         options={'ftol': 1e-3, 'gtol': 1e-3}
     )
