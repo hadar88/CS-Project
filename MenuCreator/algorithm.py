@@ -2,6 +2,7 @@ import random
 import json
 import numpy as np
 from scipy.optimize import minimize
+import pandas as pd
 
 FOODS_DATA_PATH = "FoodsByID.json"
 FOODS_ALTERNATIVES_PATH = "FoodAlternatives.json"
@@ -93,7 +94,7 @@ def generate_menu(nutrition_goals):
             foods = set()
             used_categories = set()
 
-            while len(foods) != 4:
+            while len(foods) != 5:
                 food_id = random.choice(meal_foods)
                 category = food_to_category.get(food_id)
                 if category:
@@ -104,7 +105,7 @@ def generate_menu(nutrition_goals):
 
             foods_temp = set(foods)
             for food_id in foods_temp:
-                if food_id in combinations and len(foods) < 10:
+                if food_id in combinations:
                     food_combination = combinations[food_id]
                     foods.update(food_combination)
 
@@ -154,12 +155,12 @@ def generate_menu(nutrition_goals):
 
 def getAmounts(temp_food_values, parts, goal_values):
     A = np.array([np.array(v) / 100 for v in temp_food_values.values()]).T 
-
+    
     def cost(w):
         nutrition_error = np.sum((A @ w - goal_values)**2)
         alpha = np.sum(w)
         ratio_error = np.sum((w - parts * alpha)**2)
-        return nutrition_error + ratio_error
+        return nutrition_error + ratio_error 
 
     initial_alpha = 700
     w0 = parts * initial_alpha
@@ -171,9 +172,8 @@ def getAmounts(temp_food_values, parts, goal_values):
         method='L-BFGS-B',
         options={'ftol': 1e-3, 'gtol': 1e-3}
     )
-
+    
     return res.x
-
 
 ###### checking functions ######
 
@@ -258,27 +258,72 @@ def convert_to_dictName(menu):
 def evaluate_menu(menu, nutrition_goals):
     score = 0
 
-    ########################
+    ####### Load the menu into file #######
 
     menuName = convert_to_dictName(menu)
     with open("check_menu.json", "w") as file:
         json.dump(menuName, file, indent=4)
 
-    ########################
+    ####### Print nutrition values comparison #######
 
     menuId = convert_to_dictId(menu)
     m = transform(menuId, foods_data)
     n = [round(ng) for ng in nutrition_goals.values()]
     values = ["Calories", "Carbohydrate", "Sugars", "Fat", "Protein", "Vegetarian", "Vegan"]
+
+    calories_goal = nutrition_goals['calories']
+    veggie = nutrition_goals['vegetarian']
+    vegan = nutrition_goals['vegan']
+
+    max_values = [
+        int(1 * calories_goal), 
+        int(0.65 * calories_goal / 4), 
+        int(0.1 * calories_goal / 4), 
+        int(0.35 * calories_goal / 9), 
+        int(0.35 * calories_goal / 4),
+        int(veggie),
+        int(vegan)
+    ]
+
+    min_values = [
+        int(1 * calories_goal), 
+        int(0.45 * calories_goal / 4), 
+        int(0 * calories_goal / 4), 
+        int(0.25 * calories_goal / 9), 
+        int(0.1 * calories_goal / 4),
+        int(veggie),
+        int(vegan)
+    ]
+
+    table = []
+
     print("Generated vs Nutrition Goals:")
     for i, (m1, m2) in enumerate(zip(m, n)):
+        diff = abs(m1 - m2)
+        diff_max = abs(max_values[i] - m1)
+        diff_min = abs(min_values[i] - m1)
+
+        min_diff = min(diff_max, diff_min, diff)
+
+        in_range = min_values[i] <= m1 <= max_values[i]
+
         if i == 0:
-            score += 2 * (m1 - m2) ** 2
-        else:
-            score += (m1 - m2) ** 2
-        print(f"{values[i]}: {m1:.0f} vs {m2:.0f}")
+            in_range = None
+
+        table.append((values[i], m1, m2, max_values[i], min_values[i], min_diff, in_range))
+
+        if not in_range:
+            score += min_diff ** 2
+
+    df = pd.DataFrame(table, columns=["Nutrition", "Generated", "Goal", "Max", "Min", "Min Difference", "In Range"])
+
+    print(df.to_string(index=False))
+
+    ###### Evaluate the menu ######
+
 
     ########################
+
 
     score = np.sqrt(score)
 
