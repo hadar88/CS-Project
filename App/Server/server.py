@@ -288,7 +288,7 @@ class Server:
             nutrition_error = np.sum((A @ w - goal_values)**2)
             alpha = np.sum(w)
             ratio_error = np.sum((w - parts * alpha)**2)
-            return nutrition_error + 5 * ratio_error
+            return nutrition_error + ratio_error
 
         initial_alpha = 700
         w0 = parts * initial_alpha
@@ -296,7 +296,7 @@ class Server:
         res = minimize(
             cost,
             w0,
-            bounds=[(0, None)]*len(w0),
+            bounds=[(0, 300)]*len(w0),
             method='L-BFGS-B',
             options={'ftol': 1e-3, 'gtol': 1e-3}
         )

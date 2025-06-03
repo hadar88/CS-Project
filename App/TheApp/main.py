@@ -15,6 +15,7 @@ from kivy.core.window import Window
 from kivy.uix.scrollview import ScrollView 
 from kivy.uix.stencilview import StencilView
 from kivy.clock import Clock
+import threading
 
 #######################################################################
 
@@ -3821,14 +3822,16 @@ class LoadingWindow(Screen):
         self.window.add_widget(self.logo)
 
         self.loading = ColoredLabel(
-            text = "Loading...",
-            font_size = 150,
-            size_hint = (0.6, 0.6),
-            pos_hint = {"x": 0.2, "top": 0.8},
+            text="Loading",
+            font_size=150,
+            size_hint=(0.6, 0.6),
+            pos_hint={"x": 0.2, "top": 0.8},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1)
         )
         self.window.add_widget(self.loading)
+        self._loading_anim_event = None
+        self._loading_dots = 0
 
         self.toastLabel = RoundedStencilView(
             size_hint=(0.6, 0.06),
@@ -3854,6 +3857,17 @@ class LoadingWindow(Screen):
 
         self.add_widget(self.window)
 
+    def _animate_loading(self, dt):
+        self.loading.text = "Loading" + "." * self._loading_dots
+        self._loading_dots = (self._loading_dots + 1) % 4
+
+    def on_leave(self):
+        if self._loading_anim_event:
+            self._loading_anim_event.cancel()
+            self._loading_anim_event = None
+        self._loading_dots = 0
+        self.loading.text = "Loading"
+            
     def hide_toast(self):
         self.toastLabel.pos_hint = {"x": 0.2, "top": 1}
         self.toast.pos_hint = {"x": 0.2, "top": 1}
@@ -3883,6 +3897,14 @@ class LoadingWindow(Screen):
             self.manager.current = "menu"
 
     def on_enter(self):
+        self._loading_dots = 0
+        self.loading.text = "Loading"
+        if self._loading_anim_event is None:
+            self._loading_anim_event = Clock.schedule_interval(self._animate_loading, 0.5)
+
+        threading.Thread(target=self._start_build_menu, daemon=True).start()
+
+    def _start_build_menu(self):
         global info
         if(menu_request_window == "main"):
             current_weight_temp = int(info.weight)
@@ -3920,9 +3942,6 @@ class LoadingWindow(Screen):
                                             gender_temp, goal_temp, cardio_temp, strength_temp, muscle_temp, activity_temp,
                                             vegetarian_temp, vegan_temp)
 
-        self.build_menu()
-
-    def build_menu(self):
         try:
             requests.get(SERVER_URL + "wakeup")
             response = requests.post(SERVER_URL + "predict", json=self.vector)
@@ -3931,20 +3950,26 @@ class LoadingWindow(Screen):
                 result = response.json()
                 result = convert_to_dict(result)
 
-                global current_username
-                if current_username not in users_data:
-                    users_data[current_username] = {}
-                users_data[current_username]["menu"] = result
-                with open(USERS_DATA_PATH, "w") as file:
-                    json.dump(users_data, file)
-                self.next()
+                Clock.schedule_once(lambda dt: self._on_menu_ready(result))
             else:
                 print("Error: " + str(response.status_code))
-
+                Clock.schedule_once(lambda dt: self._on_menu_error(), 0)
         except Exception as e:
-            self.show_toast("No internet connection. Retrying...")
-            Clock.schedule_once(lambda _: self.hide_toast(), 3)
-            Clock.schedule_once(lambda dt: self.build_menu(), 4)
+            Clock.schedule_once(lambda dt: self._on_menu_error(), 0)
+
+    def _on_menu_ready(self, result):
+        global current_username
+        if current_username not in users_data:
+            users_data[current_username] = {}
+        users_data[current_username]["menu"] = result
+        with open(USERS_DATA_PATH, "w") as file:
+            json.dump(users_data, file)
+        self.next()
+
+    def _on_menu_error(self):
+        self.show_toast("No internet connection. Retrying...")
+        Clock.schedule_once(lambda _: self.hide_toast(), 3)
+        Clock.schedule_once(lambda dt: threading.Thread(target=self._start_build_menu, daemon=True).start(), 4)
 
     def resetData(self):
         global info
