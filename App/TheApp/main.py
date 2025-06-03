@@ -28,6 +28,8 @@ SPINNER_BG = (0.106, 0.369, 0.125, 1)       # dark green
 SPINNER_DD_BG = (0.263, 0.635, 0.294, 1)    # dark green
 SPINNER_TEXT = (0.784, 0.902, 0.788, 1)     # light green
 
+SERVER_URL = "http://172.25.209.61:5000/"
+
 #######################################################################
 
 class Info(object):
@@ -1203,17 +1205,15 @@ class StatisticsWindow(Screen):
         self.proteinLabel.text = protein_today + "/" + protein + " g Protein today"
 
         try:
-            server_url = "https://cs-project-m5hy.onrender.com/"
-
             wgraph_data = {
                 "weights": history_weight,
                 "bmis": history_bmi,
                 "times": history_times
             }
 
-            requests.get(server_url + "wakeup")
+            requests.get(SERVER_URL + "wakeup") 
 
-            response = requests.get(server_url + "wgraph", json=wgraph_data)
+            response = requests.get(SERVER_URL + "wgraph", json=wgraph_data)
 
             if response.status_code == 200:
                 with open("weight_history.png", "wb") as file:
@@ -1845,15 +1845,13 @@ class FoodTrackerWindow(Screen):
 
     def get_words(self, query):
         try:
-            server_url = "https://cs-project-m5hy.onrender.com/"
-
-            requests.get(server_url + "wakeup")
+            requests.get(SERVER_URL + "wakeup")
 
             query = {
             "query": query
             }
 
-            response = requests.get(server_url + "search", json=query)
+            response = requests.get(SERVER_URL + "search", json=query)
 
             if response.status_code == 200:
                 return response.json().get("results", [])
@@ -2717,15 +2715,13 @@ class DictionaryWindow(Screen):
         
     def get_words(self, query):
         try:
-            server_url = "https://cs-project-m5hy.onrender.com/"
-
-            requests.get(server_url + "wakeup")
+            requests.get(SERVER_URL + "wakeup")
 
             query = {
             "query": query
             }
 
-            response = requests.get(server_url + "search", json=query)
+            response = requests.get(SERVER_URL + "search", json=query)
 
             if response.status_code == 200:
                 return response.json().get("results", [])
@@ -3929,10 +3925,8 @@ class LoadingWindow(Screen):
 
     def build_menu(self):
         try:
-            server_url = "https://cs-project-m5hy.onrender.com/"
-
-            requests.get(server_url + "wakeup")
-            response = requests.post(server_url + "predict", json=self.vector)
+            requests.get(SERVER_URL + "wakeup")
+            response = requests.post(SERVER_URL + "predict", json=self.vector)
 
             if response.status_code == 200:
                 result = response.json()

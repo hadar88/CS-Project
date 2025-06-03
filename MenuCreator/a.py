@@ -17,7 +17,7 @@ for food_id in foods:
         dinner.append(food_id)
 
     
-with open("MealsByType.json", "w") as file:
+with open("Meals.json", "w") as file:
     json.dump({
         "Breakfast": breakfast,
         "Lunch": lunch,

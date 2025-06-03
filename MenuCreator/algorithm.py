@@ -6,7 +6,7 @@ import pandas as pd
 
 FOODS_DATA_PATH = "FoodsByID.json"
 FOODS_ALTERNATIVES_PATH = "FoodAlternatives.json"
-MEALS_PATH = "MealsByType.json"
+MEALS_PATH = "Meals.json"
 
 BREAKFAST = 0.25
 LUNCH = 0.4

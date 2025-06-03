@@ -1,5 +1,4 @@
 flask
-torch
 requests
 joblib
 scikit-learn

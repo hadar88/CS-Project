@@ -1,4 +1,3 @@
-import torch
 import threading
 import time
 import requests
@@ -12,26 +11,8 @@ from scipy.optimize import minimize
 import numpy as np
 import json
 
-FOODS_DATA_PATH = "FoodsByID.json"
-FOODS_ALTERNATIVES_PATH = "FoodAlternatives.json"
-MEALS_PATH = "MealsByType.json"
-
-BREAKFAST = 0.25
-LUNCH = 0.4
-DINNER = 0.35
-
-with open(FOODS_DATA_PATH, "r") as file:
-    foods_data = json.load(file)
-
-with open(FOODS_ALTERNATIVES_PATH, "r") as file:
-    foods_alternatives = json.load(file)
-
-with open(MEALS_PATH, "r") as file:
-    meals_by_type = json.load(file)
-
 class Server:
-    def __init__(self, model, food_names, char_vec, char_nn, word_vec, word_nn):
-        self.model = model
+    def __init__(self, food_names, char_vec, char_nn, word_vec, word_nn, foods_data, foods_alternatives, meals):
         self.app = Flask(__name__)
         self.setup_routes()
         self.start_wakeup_thread()
@@ -40,9 +21,14 @@ class Server:
         self.char_nn = char_nn
         self.word_vec = word_vec
         self.word_nn = word_nn
-        self.breakfast_meals = meals_by_type["Breakfast"]
-        self.lunch_meals = meals_by_type["Lunch"]
-        self.dinner_meals = meals_by_type["Dinner"]
+        self.BREAKFAST = 0.25
+        self.LUNCH = 0.4
+        self.DINNER = 0.35
+        self.foods_data = foods_data
+        self.foods_alternatives = foods_alternatives
+        self.breakfast_meals = meals["Breakfast"]
+        self.lunch_meals = meals["Lunch"]
+        self.dinner_meals = meals["Dinner"]
 
         self.foods_values = {}
         for food_id in foods_data:
@@ -215,39 +201,15 @@ class Server:
         @self.app.route("/predict", methods=["POST"])
         def predict():
             data = request.json
-            
             result = self.generate_menu(data)
             return jsonify(result)
-        
-        @self.app.route("/predict2", methods=["POST"])
-        def predict2():
-            data = request.json
-
-            vec = []
-
-            for key in data:
-                vec.append(data[key])
-
-            vec = torch.tensor([vec], dtype=torch.float32)
-
-            pred_id, pred_amount = self.model(vec)
-
-            pred_id, pred_amount = pred_id[0], pred_amount[0]
-
-            pred_id = torch.argmax(pred_id, dim=-1)
-
-            pred_amount = pred_amount.squeeze(-1)
-
-            merged_pred = self.merge_ids_and_amounts(pred_id, pred_amount)
-
-            return jsonify({"output": merged_pred.tolist()})
 
     def generate_menu(self, nutrition_goals):
         nutrition_goals = [int(nutrition_goals[key]) for key in nutrition_goals]
 
-        breakfast_values = [round(BREAKFAST * goal) for goal in nutrition_goals[:5]] 
-        lunch_values = [round(LUNCH * goal) for goal in nutrition_goals[:5]]
-        dinner_values = [round(DINNER * goal) for goal in nutrition_goals[:5]]
+        breakfast_values = [round(self.BREAKFAST * goal) for goal in nutrition_goals[:5]] 
+        lunch_values = [round(self.LUNCH * goal) for goal in nutrition_goals[:5]]
+        dinner_values = [round(self.DINNER * goal) for goal in nutrition_goals[:5]]
 
         menu = []
 
@@ -279,7 +241,7 @@ class Server:
                 foods_temp = set(foods)
                 if nutrition_goals[5]:
                     for food_id in foods_temp:
-                        if foods_data[food_id]["Vegetarian"] == 0:
+                        if self.foods_data[food_id]["Vegetarian"] == 0:
                             food_alternatives = self.foods_alternatives[food_id]["Vegetarian"]
                             food = random.choice(food_alternatives)
                             foods.remove(food_id)
@@ -288,7 +250,7 @@ class Server:
                 foods_temp = set(foods)
                 if nutrition_goals[6]:
                     for food_id in foods_temp:
-                        if foods_data[food_id]["Vegan"] == 0:
+                        if self.foods_data[food_id]["Vegan"] == 0:
                             food_alternatives = self.foods_alternatives[food_id]["Vegan"]
                             food = random.choice(food_alternatives)
                             foods.remove(food_id)
@@ -298,8 +260,8 @@ class Server:
                         
                 parts = []
                 for food_id in foods:
-                    upper = foods_data[food_id]["Upper bound part"]
-                    lower = foods_data[food_id]["Lower bound part"]
+                    upper = self.foods_data[food_id]["Upper bound part"]
+                    lower = self.foods_data[food_id]["Lower bound part"]
                     part = random.uniform(lower, upper)
                     parts.append(round(part, 1))
                 sum_parts = sum(parts)
@@ -367,9 +329,6 @@ class Server:
 
         # Start the thread as a daemon so it doesn't block server shutdown
         threading.Thread(target=send_wakeup_request, daemon=True).start()
-
-    def merge_ids_and_amounts(self, ids, amounts):
-        return torch.stack((ids, amounts), dim=-1)
 
     def run(self, host="0.0.0.0", port=5000):
         self.app.run(host=host, port=port, debug=False)
