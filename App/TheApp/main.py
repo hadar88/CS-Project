@@ -28,7 +28,7 @@ SPINNER_BG = (0.106, 0.369, 0.125, 1)       # dark green
 SPINNER_DD_BG = (0.263, 0.635, 0.294, 1)    # dark green
 SPINNER_TEXT = (0.784, 0.902, 0.788, 1)     # light green
 
-SERVER_URL = "http://172.25.209.61:5000/"
+SERVER_URL = "https://cs-project-m5hy.onrender.com/"
 
 #######################################################################
 

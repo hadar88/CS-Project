@@ -9,7 +9,6 @@ import io
 import random
 from scipy.optimize import minimize
 import numpy as np
-import json
 
 class Server:
     def __init__(self, food_names, char_vec, char_nn, word_vec, word_nn, foods_data, foods_alternatives, meals):
