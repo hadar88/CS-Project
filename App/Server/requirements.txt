@@ -1,7 +1,6 @@
 flask
 requests
 joblib
-scikit-learn
 matplotlib
 numpy
 scipy

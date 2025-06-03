@@ -921,7 +921,6 @@
         "Vegetarian": 1,
         "Vegan": 1,
         "Meals": [
-            "Breakfast",
             "Lunch",
             "Dinner"
         ],

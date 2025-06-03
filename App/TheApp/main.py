@@ -118,7 +118,6 @@ def calculate_nutritional_data(goal, activity_type, activity_level, daily_calori
         x3 = min(x3 + 0.1, 0.35)
 
     x1 = max(0.45, min(x1, 0.65))
-    x2 = max(0, min(x2, 0.1))
     x3 = max(0.25, min(x3, 0.35))
     x4 = max(0.1, min(x4, 0.35))
 

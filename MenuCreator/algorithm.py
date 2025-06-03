@@ -297,7 +297,6 @@ def evaluate_menu(menu, nutrition_goals):
 
     table = []
 
-    print("Generated vs Nutrition Goals:")
     for i, (m1, m2) in enumerate(zip(m, n)):
         diff = abs(m1 - m2)
         diff_max = abs(max_values[i] - m1)
