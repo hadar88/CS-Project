@@ -12,7 +12,7 @@
             "Dinner"
         ],
         "Name": "Milk, NFS",
-        "Upper bound part": 0.4,
+        "Upper bound part": 0.2,
         "Lower bound part": 0.05
     },
     "2": {
@@ -29,7 +29,7 @@
             "Dinner"
         ],
         "Name": "Bread, whole wheat, toasted",
-        "Upper bound part": 0.7,
+        "Upper bound part": 0.4,
         "Lower bound part": 0.1
     },
     "3": {
@@ -61,7 +61,7 @@
             "Dinner"
         ],
         "Name": "Blueberries, raw",
-        "Upper bound part": 0.2,
+        "Upper bound part": 0.1,
         "Lower bound part": 0.05
     },
     "5": {
@@ -78,8 +78,8 @@
             "Dinner"
         ],
         "Name": "Cashews, NFS",
-        "Upper bound part": 0.3,
-        "Lower bound part": 0.1
+        "Upper bound part": 0.1,
+        "Lower bound part": 0.05
     },
     "6": {
         "Calories": 176,
@@ -93,8 +93,8 @@
             "Lunch"
         ],
         "Name": "Chicken breast, grilled without sauce, skin not eaten",
-        "Upper bound part": 1.0,
-        "Lower bound part": 0.8
+        "Upper bound part": 0.8,
+        "Lower bound part": 0.7
     },
     "7": {
         "Calories": 15.0,
@@ -143,8 +143,8 @@
             "Dinner"
         ],
         "Name": "Sunflower seeds, NFS",
-        "Upper bound part": 0.2,
-        "Lower bound part": 0.1
+        "Upper bound part": 0.1,
+        "Lower bound part": 0.05
     },
     "10": {
         "Calories": 900,
@@ -171,10 +171,7 @@
         "Protein": 0,
         "Vegetarian": 1,
         "Vegan": 1,
-        "Meals": [
-            "Lunch",
-            "Dinner"
-        ],
+        "Meals": [],
         "Name": "Vinegar",
         "Upper bound part": 0.05,
         "Lower bound part": 0.05
@@ -191,7 +188,7 @@
             "Lunch"
         ],
         "Name": "Beef, steak, sirloin, NS as to fat eaten",
-        "Upper bound part": 1.0,
+        "Upper bound part": 0.9,
         "Lower bound part": 0.8
     },
     "13": {
@@ -207,7 +204,7 @@
             "Dinner"
         ],
         "Name": "Potato, baked, NFS",
-        "Upper bound part": 0.5,
+        "Upper bound part": 0.4,
         "Lower bound part": 0.3
     },
     "14": {
@@ -222,8 +219,8 @@
             "Breakfast"
         ],
         "Name": "Oats, raw",
-        "Upper bound part": 0.8,
-        "Lower bound part": 0.6
+        "Upper bound part": 0.15,
+        "Lower bound part": 0.1
     },
     "15": {
         "Calories": 598,
@@ -239,8 +236,8 @@
             "Dinner"
         ],
         "Name": "Almonds, NFS",
-        "Upper bound part": 0.2,
-        "Lower bound part": 0.1
+        "Upper bound part": 0.1,
+        "Lower bound part": 0.05
     },
     "16": {
         "Calories": 61.0,
@@ -254,7 +251,7 @@
             "Breakfast"
         ],
         "Name": "Apple, raw",
-        "Upper bound part": 0.2,
+        "Upper bound part": 0.1,
         "Lower bound part": 0.05
     },
     "17": {
@@ -286,7 +283,7 @@
             "Dinner"
         ],
         "Name": "Fish, tuna, canned",
-        "Upper bound part": 0.5,
+        "Upper bound part": 0.4,
         "Lower bound part": 0.3
     },
     "19": {
@@ -318,8 +315,8 @@
             "Dinner"
         ],
         "Name": "Biscuit, wheat",
-        "Upper bound part": 0.3,
-        "Lower bound part": 0.1
+        "Upper bound part": 0.1,
+        "Lower bound part": 0.05
     },
     "21": {
         "Calories": 39.0,
@@ -335,8 +332,8 @@
             "Dinner"
         ],
         "Name": "Broccoli, raw",
-        "Upper bound part": 0.3,
-        "Lower bound part": 0.2
+        "Upper bound part": 0.2,
+        "Lower bound part": 0.1
     },
     "22": {
         "Calories": 82.0,
@@ -351,8 +348,8 @@
             "Dinner"
         ],
         "Name": "Cheese, cottage, NFS",
-        "Upper bound part": 0.4,
-        "Lower bound part": 0.2
+        "Upper bound part": 0.2,
+        "Lower bound part": 0.1
     },
     "23": {
         "Calories": 55.0,
@@ -367,7 +364,7 @@
             "Dinner"
         ],
         "Name": "Pineapple, canned, NFS",
-        "Upper bound part": 0.2,
+        "Upper bound part": 0.15,
         "Lower bound part": 0.05
     },
     "24": {
@@ -383,7 +380,7 @@
             "Dinner"
         ],
         "Name": "Guacamole, NFS",
-        "Upper bound part": 0.15,
+        "Upper bound part": 0.1,
         "Lower bound part": 0.05
     },
     "25": {
@@ -414,7 +411,7 @@
             "Lunch"
         ],
         "Name": "Turkey, light and dark meat, roasted, skin not eaten",
-        "Upper bound part": 1.0,
+        "Upper bound part": 0.8,
         "Lower bound part": 0.7
     },
     "27": {
@@ -462,7 +459,7 @@
             "Dinner"
         ],
         "Name": "Edamame, cooked",
-        "Upper bound part": 0.4,
+        "Upper bound part": 0.3,
         "Lower bound part": 0.2
     },
     "30": {
@@ -510,7 +507,7 @@
             "Dinner"
         ],
         "Name": "Bun",
-        "Upper bound part": 0.4,
+        "Upper bound part": 0.3,
         "Lower bound part": 0.2
     },
     "33": {
@@ -558,7 +555,7 @@
             "Dinner"
         ],
         "Name": "Onions, raw",
-        "Upper bound part": 0.2,
+        "Upper bound part": 0.1,
         "Lower bound part": 0.05
     },
     "36": {
@@ -649,8 +646,7 @@
         "Vegetarian": 1,
         "Vegan": 1,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Black beans, NFS",
         "Upper bound part": 0.2,
@@ -702,7 +698,7 @@
             "Dinner"
         ],
         "Name": "Ice cream, NFS",
-        "Upper bound part": 0.3,
+        "Upper bound part": 0.15,
         "Lower bound part": 0.1
     },
     "45": {
@@ -718,7 +714,7 @@
             "Dinner"
         ],
         "Name": "Noodles, cooked",
-        "Upper bound part": 0.7,
+        "Upper bound part": 0.6,
         "Lower bound part": 0.5
     },
     "46": {
@@ -735,8 +731,8 @@
             "Dinner"
         ],
         "Name": "Pistachio nuts, NFS",
-        "Upper bound part": 0.2,
-        "Lower bound part": 0.1
+        "Upper bound part": 0.1,
+        "Lower bound part": 0.05
     },
     "47": {
         "Calories": 206,
@@ -751,7 +747,7 @@
         ],
         "Name": "Beef, roast",
         "Upper bound part": 0.9,
-        "Lower bound part": 0.7
+        "Lower bound part": 0.8
     },
     "48": {
         "Calories": 259,
@@ -767,7 +763,7 @@
             "Dinner"
         ],
         "Name": "Bread, rye",
-        "Upper bound part": 0.7,
+        "Upper bound part": 0.4,
         "Lower bound part": 0.1
     },
     "49": {
@@ -783,7 +779,7 @@
             "Dinner"
         ],
         "Name": "Rice, brown, cooked, NS as to fat",
-        "Upper bound part": 0.7,
+        "Upper bound part": 0.5,
         "Lower bound part": 0.3
     },
     "50": {
@@ -815,8 +811,8 @@
             "Dinner"
         ],
         "Name": "Oatmeal, NFS",
-        "Upper bound part": 1,
-        "Lower bound part": 0.9
+        "Upper bound part": 0.9,
+        "Lower bound part": 0.8
     },
     "52": {
         "Calories": 43.0,
@@ -831,7 +827,7 @@
             "Dinner"
         ],
         "Name": "Milk, low fat (1%)",
-        "Upper bound part": 0.4,
+        "Upper bound part": 0.2,
         "Lower bound part": 0.05
     },
     "53": {
@@ -861,7 +857,7 @@
             "Lunch"
         ],
         "Name": "Fish, salmon, grilled",
-        "Upper bound part": 1.0,
+        "Upper bound part": 0.9,
         "Lower bound part": 0.8
     },
     "55": {
@@ -877,7 +873,7 @@
             "Dinner"
         ],
         "Name": "Asparagus, raw",
-        "Upper bound part": 0.3,
+        "Upper bound part": 0.2,
         "Lower bound part": 0.1
     },
     "56": {
@@ -894,7 +890,7 @@
         ],
         "Name": "Egg omelet or scrambled egg, made with oil",
         "Upper bound part": 0.7,
-        "Lower bound part": 0.4
+        "Lower bound part": 0.3
     },
     "57": {
         "Calories": 31.0,
@@ -909,7 +905,7 @@
             "Dinner"
         ],
         "Name": "Mushrooms, raw",
-        "Upper bound part": 0.3,
+        "Upper bound part": 0.2,
         "Lower bound part": 0.1
     },
     "58": {
@@ -925,7 +921,7 @@
             "Dinner"
         ],
         "Name": "Spinach, raw",
-        "Upper bound part": 0.2,
+        "Upper bound part": 0.1,
         "Lower bound part": 0.05
     },
     "59": {
@@ -940,7 +936,7 @@
             "Breakfast"
         ],
         "Name": "Banana, raw",
-        "Upper bound part": 0.3,
+        "Upper bound part": 0.15,
         "Lower bound part": 0.1
     },
     "60": {
@@ -956,7 +952,7 @@
             "Dinner"
         ],
         "Name": "Teriyaki sauce",
-        "Upper bound part": 0.1,
+        "Upper bound part": 0.07,
         "Lower bound part": 0.05
     },
     "61": {
@@ -972,7 +968,7 @@
             "Dinner"
         ],
         "Name": "Rice, white, cooked, NS as to fat",
-        "Upper bound part": 0.7,
+        "Upper bound part": 0.5,
         "Lower bound part": 0.3
     },
     "62": {
@@ -988,8 +984,8 @@
             "Dinner"
         ],
         "Name": "Cereal, granola",
-        "Upper bound part": 0.8,
-        "Lower bound part": 0.5
+        "Upper bound part": 0.4,
+        "Lower bound part": 0.2
     },
     "63": {
         "Calories": 409,
@@ -1129,8 +1125,7 @@
         "Vegetarian": 1,
         "Vegan": 1,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Hummus, plain",
         "Upper bound part": 0.8,
@@ -1146,7 +1141,7 @@
         "Vegan": 1,
         "Meals": [],
         "Name": "Almond milk, unsweetened",
-        "Upper bound part": 0.4,
+        "Upper bound part": 0.2,
         "Lower bound part": 0.05
     },
     "73": {
@@ -1161,7 +1156,7 @@
             "Lunch"
         ],
         "Name": "Turkey, NFS",
-        "Upper bound part": 0.9,
+        "Upper bound part": 0.8,
         "Lower bound part": 0.7
     },
     "74": {
@@ -1177,7 +1172,7 @@
             "Dinner"
         ],
         "Name": "Lettuce, raw",
-        "Upper bound part": 0.2,
+        "Upper bound part": 0.1,
         "Lower bound part": 0.05
     },
     "75": {
@@ -1209,8 +1204,8 @@
             "Dinner"
         ],
         "Name": "Potato, french fries, NFS",
-        "Upper bound part": 0.6,
-        "Lower bound part": 0.4
+        "Upper bound part": 0.4,
+        "Lower bound part": 0.2
     },
     "77": {
         "Calories": 264,
@@ -1225,8 +1220,8 @@
             "Dinner"
         ],
         "Name": "Bagel",
-        "Upper bound part": 0.5,
-        "Lower bound part": 0.3
+        "Upper bound part": 0.3,
+        "Lower bound part": 0.2
     },
     "78": {
         "Calories": 319,
@@ -1240,7 +1235,7 @@
             "Breakfast"
         ],
         "Name": "Mango, dried",
-        "Upper bound part": 0.3,
+        "Upper bound part": 0.2,
         "Lower bound part": 0.1
     },
     "79": {
@@ -1288,8 +1283,8 @@
             "Dinner"
         ],
         "Name": "Pretzels, NFS",
-        "Upper bound part": 0.5,
-        "Lower bound part": 0.3
+        "Upper bound part": 0.3,
+        "Lower bound part": 0.2
     },
     "82": {
         "Calories": 161,
@@ -1303,8 +1298,8 @@
             "Lunch"
         ],
         "Name": "Chicken breast, baked, broiled, or roasted, skin not eaten, from raw",
-        "Upper bound part": 1.0,
-        "Lower bound part": 0.8
+        "Upper bound part": 0.8,
+        "Lower bound part": 0.7
     },
     "83": {
         "Calories": 299,
@@ -1315,8 +1310,7 @@
         "Vegetarian": 1,
         "Vegan": 1,
         "Meals": [
-            "Breakfast",
-            "Lunch"
+            "Breakfast"
         ],
         "Name": "Raisins",
         "Upper bound part": 0.2,
@@ -1350,7 +1344,7 @@
             "Dinner"
         ],
         "Name": "Chickpea",
-        "Upper bound part": 0.5,
+        "Upper bound part": 0.3,
         "Lower bound part": 0.2
     },
     "86": {
@@ -1367,7 +1361,7 @@
             "Dinner"
         ],
         "Name": "Olives, NFS",
-        "Upper bound part": 0.2,
+        "Upper bound part": 0.1,
         "Lower bound part": 0.05
     },
     "87": {
@@ -1433,7 +1427,7 @@
             "Dinner"
         ],
         "Name": "Bread, pita",
-        "Upper bound part": 0.7,
+        "Upper bound part": 0.3,
         "Lower bound part": 0.1
     },
     "91": {
@@ -1448,8 +1442,8 @@
             "Breakfast"
         ],
         "Name": "Banana chips",
-        "Upper bound part": 0.2,
-        "Lower bound part": 0.1
+        "Upper bound part": 0.1,
+        "Lower bound part": 0.05
     },
     "92": {
         "Calories": 123,
@@ -1559,8 +1553,8 @@
             "Dinner"
         ],
         "Name": "Walnut",
-        "Upper bound part": 0.3,
-        "Lower bound part": 0.1
+        "Upper bound part": 0.1,
+        "Lower bound part": 0.05
     },
     "99": {
         "Calories": 107,
@@ -1588,7 +1582,7 @@
         "Vegan": 1,
         "Meals": [],
         "Name": "Tofu",
-        "Upper bound part": 0.8,
+        "Upper bound part": 0.7,
         "Lower bound part": 0.6
     },
     "101": {
@@ -1683,7 +1677,7 @@
             "Dinner"
         ],
         "Name": "Bread, whole wheat",
-        "Upper bound part": 0.7,
+        "Upper bound part": 0.4,
         "Lower bound part": 0.1
     },
     "107": {
@@ -1822,9 +1816,7 @@
         "Vegetarian": 1,
         "Vegan": 1,
         "Meals": [
-            "Breakfast",
-            "Lunch",
-            "Dinner"
+            "Breakfast"
         ],
         "Name": "Date",
         "Upper bound part": 0.1,
@@ -2065,7 +2057,7 @@
             "Dinner"
         ],
         "Name": "Milk, reduced fat (2%)",
-        "Upper bound part": 0.4,
+        "Upper bound part": 0.2,
         "Lower bound part": 0.05
     },
     "131": {
@@ -2481,8 +2473,7 @@
         "Vegetarian": 1,
         "Vegan": 1,
         "Meals": [
-            "Lunch",
-            "Dinner"
+            "Lunch"
         ],
         "Name": "Green beans, raw",
         "Upper bound part": 0.4,
@@ -2517,7 +2508,7 @@
         ],
         "Name": "Fish, cod, baked or broiled",
         "Upper bound part": 0.9,
-        "Lower bound part": 0.7
+        "Lower bound part": 0.8
     },
     "160": {
         "Calories": 274,
@@ -2532,7 +2523,7 @@
             "Dinner"
         ],
         "Name": "Fish, salmon, baked or broiled",
-        "Upper bound part": 1.0,
+        "Upper bound part": 0.9,
         "Lower bound part": 0.8
     },
     "161": {
@@ -2933,7 +2924,7 @@
             "Dinner"
         ],
         "Name": "Egg substitute, omelet, scrambled, or fried, fat added",
-        "Upper bound part": 0.8,
+        "Upper bound part": 0.7,
         "Lower bound part": 0.3
     },
     "187": {
@@ -3106,7 +3097,7 @@
         "Vegan": 1,
         "Meals": [],
         "Name": "Soy milk",
-        "Upper bound part": 0.4,
+        "Upper bound part": 0.2,
         "Lower bound part": 0.05
     },
     "203": {

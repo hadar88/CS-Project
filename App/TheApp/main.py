@@ -596,17 +596,17 @@ class MainWindow(Screen):
         )
         self.window.add_widget(self.logo)
 
-        self.personalDataButton = Button(
-            text = "[b]Personal Data[/b]",
+        self.profileButton = Button(
+            text = "[b]Profile[/b]",
             font_size = 100,
             background_color = BUTTON_BG,
             color = BUTTON_TEXT,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.9},
-            on_press = self.personalData,
+            on_press = self.profile,
             markup=True
         )
-        self.window.add_widget(self.personalDataButton)
+        self.window.add_widget(self.profileButton)
 
         self.StatisticsButton = Button(
             text = "[b]Statistics[/b]",
@@ -644,17 +644,17 @@ class MainWindow(Screen):
         )
         self.window.add_widget(self.foodTrackerButton)
 
-        self.dictionaryButton = Button(
-            text = "[b]Dictionary[/b]",
+        self.fooddictionaryButton = Button(
+            text = "[b]Food Dictionary[/b]",
             font_size = 100,
             background_color = BUTTON_BG,
             color = BUTTON_TEXT,
             size_hint = (0.8, 0.1),
             pos_hint = {"x": 0.1, "top": 0.2},
-            on_press = self.dictionary,
+            on_press = self.fooddictionary,
             markup=True
         )
-        self.window.add_widget(self.dictionaryButton)
+        self.window.add_widget(self.fooddictionaryButton)
 
         ###
 
@@ -667,8 +667,8 @@ class MainWindow(Screen):
     def on_enter(self):
         pass
 
-    def personalData(self, instance):
-        self.manager.current = "personalData"
+    def profile(self, instance):
+        self.manager.current = "profile"
 
     def statistics(self, instance):
         self.manager.current = "statistics"
@@ -679,14 +679,14 @@ class MainWindow(Screen):
     def foodTracker(self, instance):
         self.manager.current = "foodTracker"
 
-    def dictionary(self, instance):
-        self.manager.current = "dictionary"
+    def fooddictionary(self, instance):
+        self.manager.current = "foodDictionary"
 
 ################################
 
-class PersonalDataWindow(Screen):
+class ProfileDataWindow(Screen):
     def __init__(self, **kw):
-        super(PersonalDataWindow, self).__init__(**kw)
+        super(ProfileDataWindow, self).__init__(**kw)
         Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
@@ -714,7 +714,7 @@ class PersonalDataWindow(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "[b]Personal Data[/b]",
+            text = "[b]Profile[/b]",
             font_size = 100,
             size_hint = (0.8, 0.05),
             pos_hint = {"x": 0.1, "top": 0.9},
@@ -992,7 +992,7 @@ class PersonalDataWindow(Screen):
 
     def on_keyboard(self, window, key, *args):
         if key == 27:
-            if self.manager.current == "personalData":
+            if self.manager.current == "profile":
                 self.go_home(self)
                 return True
         return False
@@ -1864,9 +1864,9 @@ class FoodTrackerWindow(Screen):
 
 ################################
 
-class DictionaryWindow(Screen):
+class FoodDictionaryWindow(Screen):
     def __init__(self, **kw):
-        super(DictionaryWindow, self).__init__(**kw)
+        super(FoodDictionaryWindow, self).__init__(**kw)
         Window.bind(on_keyboard=self.on_keyboard)
         self.cols = 1
 
@@ -1894,7 +1894,7 @@ class DictionaryWindow(Screen):
         self.window.add_widget(self.logo)
 
         self.title = ColoredLabel(
-            text = "[b]Dictionary[/b]",
+            text = "[b]Food Dictionary[/b]",
             font_size = 100,
             size_hint = (0.8, 0.05),
             pos_hint = {"x": 0.1, "top": 0.9},
@@ -2643,7 +2643,7 @@ class DictionaryWindow(Screen):
 
     def on_keyboard(self, window, key, *args):
         if key == 27:
-            if self.manager.current == "dictionary":
+            if self.manager.current == "foodDictionary":
                 self.go_home(self)
                 return True
         return False
@@ -2736,14 +2736,14 @@ class DictionaryWindow(Screen):
         if (self.input.collide_point(*touch.pos) or 
             self.search_button.collide_point(*touch.pos) or 
             any(button.collide_point(*touch.pos) for button in self.result_buttons)):
-            return super(DictionaryWindow, self).on_touch_down(touch)
+            return super(FoodDictionaryWindow, self).on_touch_down(touch)
 
         for button in self.result_buttons:
             button.opacity = 0
             button.disabled = True
 
-        return super(DictionaryWindow, self).on_touch_down(touch)
-        
+        return super(FoodDictionaryWindow, self).on_touch_down(touch)
+
 ################################
 
 class CreateAccountWindow(Screen):
@@ -4062,11 +4062,11 @@ class WindowManager(ScreenManager):
         self.add_widget(LoginWindow(name = "login"))
         self.add_widget(LoadingWindow(name = "loading"))
         self.add_widget(MainWindow(name = "main"))
-        self.add_widget(PersonalDataWindow(name = "personalData"))
+        self.add_widget(ProfileDataWindow(name = "profile"))
         self.add_widget(StatisticsWindow(name = "statistics"))
         self.add_widget(MenuWindow(name = "menu"))
         self.add_widget(FoodTrackerWindow(name = "foodTracker"))
-        self.add_widget(DictionaryWindow(name = "dictionary"))
+        self.add_widget(FoodDictionaryWindow(name = "foodDictionary"))
         self.add_widget(CreateAccountWindow(name = "createAccount"))
         self.add_widget(Registration1Window(name = "registration1"))
         self.add_widget(Registration2Window(name = "registration2"))
