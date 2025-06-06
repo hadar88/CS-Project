@@ -108,7 +108,7 @@ def generate_menu(nutrition_goals):
             foods = set()
             used_categories = set()
 
-            while len(foods) != 4:
+            while len(foods) != 5:
                 food_id = random.choice(meal_foods)
                 category = food_to_category.get(food_id)
                 if category:
@@ -121,6 +121,8 @@ def generate_menu(nutrition_goals):
             for food_id in foods_temp:
                 if food_id in combinations:
                     food_combination = combinations[food_id]
+                    if len(foods) + len(food_combination) > 10:
+                        continue
                     foods.update(food_combination)
 
             foods_temp = set(foods)
@@ -217,7 +219,6 @@ def transform(menu, food_data):
                 output[3] += food_nut["Fat"] * food_amount
                 output[4] += food_nut["Protein"] * food_amount
                 output[5] *= food_nut["Vegetarian"]
-                # print(output[5])
                 output[6] *= food_nut["Vegan"]
 
     output_final = output
