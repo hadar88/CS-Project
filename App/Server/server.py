@@ -236,7 +236,7 @@ class Server:
                 foods = set()
                 used_categories = set()
 
-                while len(foods) != 5:
+                while len(foods) != 4:
                     food_id = random.choice(meal_foods)
                     category = self.food_to_category.get(food_id)
                     if category:

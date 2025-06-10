@@ -1,21 +1,21 @@
 import json
 import requests
-from datetime import datetime, timedelta
+import threading
 from kivy.app import App
-from kivy.uix.button import Button
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.clock import Clock
 from kivy.uix.label import Label
-from kivy.graphics import Color, Rectangle, Line, RoundedRectangle
-from kivy.uix.textinput import TextInput
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
-from kivy.uix.spinner import Spinner, SpinnerOption
-from kivy.uix.checkbox import CheckBox
+from kivy.uix.button import Button
 from kivy.core.window import Window
+from kivy.uix.checkbox import CheckBox
+from datetime import datetime, timedelta
+from kivy.uix.textinput import TextInput
 from kivy.uix.scrollview import ScrollView 
 from kivy.uix.stencilview import StencilView
-from kivy.clock import Clock
-import threading
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.spinner import Spinner, SpinnerOption
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.graphics import Color, Rectangle, Line, RoundedRectangle
 
 #######################################################################
 
@@ -30,6 +30,8 @@ SPINNER_DD_BG = (0.263, 0.635, 0.294, 1)    # dark green
 SPINNER_TEXT = (0.784, 0.902, 0.788, 1)     # light green
 
 SERVER_URL = "https://cs-project-m5hy.onrender.com/"
+
+need_update = False
 
 #######################################################################
 
@@ -178,7 +180,7 @@ def amr(weight, height, age, gender, activity_level):
         return bmr_value * 1.55
     elif activity_level == "Active":
         return bmr_value * 1.725
-    elif activity_level == "xtremely active":
+    elif activity_level == "Extremely active":
         return bmr_value * 1.9
     else:
         return 1
@@ -903,15 +905,15 @@ class ProfileDataWindow(Screen):
         self.heightupdateButton.background_normal = "pencil.png"
         self.targetweightupdateButton.background_normal = "pencil.png"
         self.activityupdateButton.background_normal = "pencil.png"
-
+        self.errorMessage.text = ""
         self.manager.current = "main"
 
     def weightupdate(self, instance):
         if self.weightupdateInput.disabled:
             self.weightupdateButton.background_normal = "vee.png"
             self.weightupdateInput.disabled = not self.weightupdateInput.disabled
-        elif(self.weightupdateInput.text == "" or float(self.weightupdateInput.text) < 40): 
-            self.errorMessage.text = "[b]Weight must be greater than 40 kg[/b]"
+        elif(self.weightupdateInput.text == "" or float(self.weightupdateInput.text) < 40 or float(self.weightupdateInput.text) > 300): 
+            self.errorMessage.text = "[b]Weight must be between 40 and 300 kg[/b]"
         else:
             global current_username
             users_data[current_username]["weight"] = self.weightupdateInput.text
@@ -930,6 +932,9 @@ class ProfileDataWindow(Screen):
             self.weightupdateButton.background_normal = "pencil.png"
             self.weightupdateInput.disabled = not self.weightupdateInput.disabled
             self.errorMessage.text = ""
+
+            global need_update
+            need_update = True
         
     def heightupdate(self, instance):
         if self.heightupdateInput.disabled:
@@ -954,12 +959,15 @@ class ProfileDataWindow(Screen):
             self.heightupdateInput.disabled = not self.heightupdateInput.disabled
             self.errorMessage.text = ""
 
+            global need_update
+            need_update = True
+
     def targetweightupdate(self, instance):
         if self.targetweightupdateInput.disabled:
             self.targetweightupdateButton.background_normal = "vee.png"
             self.targetweightupdateInput.disabled = not self.targetweightupdateInput.disabled
-        elif(self.targetweightupdateInput.text == "" or int(self.targetweightupdateInput.text) < 40):
-            self.errorMessage.text = "[b]Weight must be greater than 40 kg[/b]"
+        elif(self.targetweightupdateInput.text == "" or int(self.targetweightupdateInput.text) < 40 or int(self.targetweightupdateInput.text) > 300):
+            self.errorMessage.text = "[b]Weight must be between 40 and 300 kg[/b]"
         else:
             global current_username
             users_data[current_username]["goal weight"] = self.targetweightupdateInput.text
@@ -969,6 +977,9 @@ class ProfileDataWindow(Screen):
             self.targetweightupdateInput.disabled = not self.targetweightupdateInput.disabled
             self.errorMessage.text = ""
 
+            global need_update
+            need_update = True
+
     def activityupdate(self, instance):
         if self.activityupdateInput.disabled:
             self.activityupdateButton.background_normal = "vee.png"
@@ -977,6 +988,10 @@ class ProfileDataWindow(Screen):
             with open(USERS_DATA_PATH, "w") as file:
                 json.dump(users_data, file)
             self.activityupdateButton.background_normal = "pencil.png"
+
+            global need_update
+            need_update = True
+
         self.activityupdateInput.disabled = not self.activityupdateInput.disabled
     
     def on_enter(self):
@@ -988,6 +1003,7 @@ class ProfileDataWindow(Screen):
         self.activityupdateInput.text = users_data[current_username]["activity"]
 
     def on_leave(self):
+        self.errorMessage.text = ""
         Window.unbind(on_keyboard=self.on_keyboard)
 
     def on_keyboard(self, window, key, *args):
@@ -1145,6 +1161,19 @@ class StatisticsWindow(Screen):
         )
         self.window.add_widget(self.toast)
 
+        self.loadingLabel = ColoredLabel(
+            text = "[b]Loading...[/b]",
+            font_size = 50,
+            size_hint = (0.8, 0.85),
+            pos_hint = {"x": 0.1, "top": 0.85},
+            color=(1, 1, 1, 1),
+            text_color=(0, 0, 0, 1),
+            markup=True,
+            opacity=1,
+            disabled= False
+        )
+        self.window.add_widget(self.loadingLabel)
+
         ###
 
         self.add_widget(self.window)
@@ -1175,6 +1204,8 @@ class StatisticsWindow(Screen):
 
     def on_enter(self): 
         Window.bind(on_keyboard=self.on_keyboard)
+        self.loadingLabel.opacity = 1
+        self.loadingLabel.disabled = False
 
         global current_username
         bmi_temp, bmi_color = check_bmi(float(users_data[current_username]["weight"]), float(users_data[current_username]["height"]))
@@ -1220,6 +1251,8 @@ class StatisticsWindow(Screen):
                     file.write(response.content)
                 self.graphWeight.source = "weight_history.png"
                 self.graphWeight.reload()
+                self.loadingLabel.opacity = 0
+                self.loadingLabel.disabled = True
             else:
                 print("Error:", response.json())
 
@@ -1342,6 +1375,17 @@ class MenuWindow(Screen):
         )
         self.window.add_widget(self.newMenuButton)
 
+        self.errorMessage = ColoredLabel(
+            text = "",
+            font_size = 50,
+            size_hint = (0.8, 0.05),
+            pos_hint = {"x": 0.1, "top": 0.075},
+            color=(1, 1, 1, 1),
+            text_color=(0.718, 0.11, 0.11, 1),
+            markup=True,
+        )
+        self.window.add_widget(self.errorMessage)
+
         ###
 
         self.add_widget(self.window)
@@ -1354,6 +1398,9 @@ class MenuWindow(Screen):
         self.manager.current = "main"
 
     def on_enter(self):
+        if not need_update:
+            self.errorMessage.text = ""
+
         Window.bind(on_keyboard=self.on_keyboard)
         day = datetime.now().strftime("%A")
         self.dayInput.text = day
@@ -1364,6 +1411,9 @@ class MenuWindow(Screen):
             self.mealInput.text = "Lunch"
         else:
             self.mealInput.text = "Dinner"
+
+        if need_update:
+            self.errorMessage.text = "[b]Warning: Your data changed since last menu[/b]"
         
         self._update_meal(self.dayInput, self.dayInput.text)
         
@@ -1427,7 +1477,7 @@ class MenuWindow(Screen):
     def newMenu(self, instance):
         global menu_request_window
         menu_request_window = "menu"
-
+        
         self.manager.current = "loading"
 
     def _adjust_label_height(self, *args):
@@ -3110,8 +3160,8 @@ class Registration1Window(Screen):
         gender_input = self.genderInput.text
         if(weight_input == "" or height_input == "" or age_input == "" or gender_input == "Select a Gender"):
             self.errorMessage.text = "[b]Please fill in all fields[/b]"
-        elif(int(weight_input) < 40):
-            self.errorMessage.text = "[b]Weight must be greater than 40 kg[/b]"
+        elif(int(weight_input) < 40 or int(weight_input) > 300):
+            self.errorMessage.text = "[b]Weight must be between 40 and 300 kg[/b]"
         elif(int(height_input) < 140 or int(height_input) > 250):
             self.errorMessage.text = "[b]Height must be between 140 and 250 cm[/b]"
         elif(int(age_input) < 18 or int(age_input) > 100):
@@ -3593,8 +3643,8 @@ class Registration4Window(Screen):
     def next(self, instance):
         if(self.goalweightInput.text == ""):
             self.errorMessage.text = "[b]Please fill in the field[/b]"
-        elif(int(self.goalweightInput.text) < 40):
-            self.errorMessage.text = "[b]Weight must be greater than 40 kg[/b]"
+        elif(int(self.goalweightInput.text) < 40 or int(self.goalweightInput.text) > 300):
+            self.errorMessage.text = "[b]Weight must be between 40 and 300 kg[/b]"
         else:
             self.errorMessage.text = ""
             global info
@@ -3752,6 +3802,8 @@ class Registration5Window(Screen):
         )
         self.window.add_widget(self.nextPage)
 
+        self.mintime = 0
+
         ###
 
         self.add_widget(self.window)
@@ -3768,6 +3820,8 @@ class Registration5Window(Screen):
             self.errorMessage.text = "[b]Please fill in the field[/b]"
         elif(int(self.timeInput.text) <= 0):
             self.errorMessage.text = "[b]Time must be greater than 0 weeks[/b]"
+        elif(int(self.timeInput.text) < 0.75 * self.time):
+            self.errorMessage.text = f"[b]Time must be more than {self.mintime} weeks[/b]"
         else:
             self.errorMessage.text = ""
             global info
@@ -3783,6 +3837,8 @@ class Registration5Window(Screen):
         global info
         self.time = time_of_change(int(info.weight), int(info.goal_weight))
         self.suggestedTime.text = "Suggested time: " + str(self.time) + " weeks (" + f'{(self.time * 7 /30):.1f}' + " months)"
+        self.mintime = self.ceiling(0.75 * self.time)
+        self.errorMessage.text = f""
 
     def on_leave(self):
         Window.unbind(on_keyboard=self.on_keyboard)
@@ -3796,6 +3852,9 @@ class Registration5Window(Screen):
 
     def _update_border(self, instance, value):
         self.border.rectangle = (instance.x, instance.y, instance.width, instance.height)
+
+    def ceiling(self, x):
+        return int(x) if x == int(x) else int(x) + 1
 
 ################################
 
@@ -3890,6 +3949,8 @@ class LoadingWindow(Screen):
         self.rect.size = instance.size
 
     def next(self):
+        global need_update
+        need_update = False
         if(menu_request_window == "main"):
             self.resetData()
             self.manager.current = "main"
