@@ -1165,7 +1165,7 @@ class StatisticsWindow(Screen):
 
         self.loading = ColoredLabel(
             text = "Loading",
-            font_size = 50,
+            font_size = 150,
             size_hint = (0.8, 0.55),
             pos_hint = {"x": 0.1, "top": 0.85},
             color=(1, 1, 1, 1),
