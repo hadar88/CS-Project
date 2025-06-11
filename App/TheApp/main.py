@@ -31,8 +31,6 @@ SPINNER_TEXT = (0.784, 0.902, 0.788, 1)     # light green
 
 SERVER_URL = "https://cs-project-m5hy.onrender.com/"
 
-need_update = False
-
 #######################################################################
 
 class Info(object):
@@ -926,16 +924,16 @@ class ProfileDataWindow(Screen):
                 users_data[current_username]["history_bmi"] = users_data[current_username]["history_bmi"] + [bmi(float(users_data[current_username]["weight"]), float(users_data[current_username]["height"]))]
                 users_data[current_username]["history_times"] = users_data[current_username]["history_times"] + [day]
             
-            with open(USERS_DATA_PATH, "w") as file:
-                json.dump(users_data, file)
 
             self.weightupdateButton.background_normal = "pencil.png"
             self.weightupdateInput.disabled = not self.weightupdateInput.disabled
             self.errorMessage.text = ""
 
-            global need_update
-            need_update = True
-        
+            users_data[current_username]["need_update"] = True
+            
+            with open(USERS_DATA_PATH, "w") as file:
+                json.dump(users_data, file)
+
     def heightupdate(self, instance):
         if self.heightupdateInput.disabled:
             self.heightupdateButton.background_normal = "vee.png"
@@ -953,14 +951,15 @@ class ProfileDataWindow(Screen):
                 users_data[current_username]["history_weight"] = users_data[current_username]["history_weight"] + [float(users_data[current_username]["weight"])]
                 users_data[current_username]["history_bmi"] = users_data[current_username]["history_bmi"] + [bmi(float(users_data[current_username]["weight"]), float(users_data[current_username]["height"]))]
                 users_data[current_username]["history_times"] = users_data[current_username]["history_times"] + [day]
-            with open(USERS_DATA_PATH, "w") as file:
-                json.dump(users_data, file)
+            
             self.heightupdateButton.background_normal = "pencil.png"
             self.heightupdateInput.disabled = not self.heightupdateInput.disabled
             self.errorMessage.text = ""
 
-            global need_update
-            need_update = True
+            users_data[current_username]["need_update"] = True
+
+            with open(USERS_DATA_PATH, "w") as file:
+                json.dump(users_data, file)
 
     def targetweightupdate(self, instance):
         if self.targetweightupdateInput.disabled:
@@ -971,26 +970,29 @@ class ProfileDataWindow(Screen):
         else:
             global current_username
             users_data[current_username]["goal weight"] = self.targetweightupdateInput.text
-            with open(USERS_DATA_PATH, "w") as file:
-                json.dump(users_data, file)
+
+                
             self.targetweightupdateButton.background_normal = "pencil.png"
             self.targetweightupdateInput.disabled = not self.targetweightupdateInput.disabled
             self.errorMessage.text = ""
 
-            global need_update
-            need_update = True
+            users_data[current_username]["need_update"] = True
+
+            with open(USERS_DATA_PATH, "w") as file:
+                json.dump(users_data, file)
 
     def activityupdate(self, instance):
         if self.activityupdateInput.disabled:
             self.activityupdateButton.background_normal = "vee.png"
         else:
             users_data[current_username]["activity"] = self.activityupdateInput.text
-            with open(USERS_DATA_PATH, "w") as file:
-                json.dump(users_data, file)
+
             self.activityupdateButton.background_normal = "pencil.png"
 
-            global need_update
-            need_update = True
+            users_data[current_username]["need_update"] = True
+
+            with open(USERS_DATA_PATH, "w") as file:
+                json.dump(users_data, file)
 
         self.activityupdateInput.disabled = not self.activityupdateInput.disabled
     
@@ -1161,10 +1163,10 @@ class StatisticsWindow(Screen):
         )
         self.window.add_widget(self.toast)
 
-        self.loadingLabel = ColoredLabel(
-            text = "[b]Loading...[/b]",
+        self.loading = ColoredLabel(
+            text = "Loading",
             font_size = 50,
-            size_hint = (0.8, 0.85),
+            size_hint = (0.8, 0.55),
             pos_hint = {"x": 0.1, "top": 0.85},
             color=(1, 1, 1, 1),
             text_color=(0, 0, 0, 1),
@@ -1172,11 +1174,17 @@ class StatisticsWindow(Screen):
             opacity=1,
             disabled= False
         )
-        self.window.add_widget(self.loadingLabel)
+        self.window.add_widget(self.loading)
+        self._loading_anim_event = None
+        self._loading_dots = 0
 
         ###
 
         self.add_widget(self.window)
+
+    def _animate_loading(self, dt):
+        self.loading.text = "Loading" + "." * self._loading_dots
+        self._loading_dots = (self._loading_dots + 1) % 4
 
     def hide_toast(self):
         self.toastLabel.pos_hint = {"x": 0.2, "top": 1}
@@ -1204,8 +1212,14 @@ class StatisticsWindow(Screen):
 
     def on_enter(self): 
         Window.bind(on_keyboard=self.on_keyboard)
-        self.loadingLabel.opacity = 1
-        self.loadingLabel.disabled = False
+        self._loading_dots = 0
+        self.loading.text = "Loading"
+        if self._loading_anim_event is None:
+            self._loading_anim_event = Clock.schedule_interval(self._animate_loading, 0.5)
+
+        threading.Thread(target=self.join, daemon=True).start()
+
+    def join(self):
 
         global current_username
         bmi_temp, bmi_color = check_bmi(float(users_data[current_username]["weight"]), float(users_data[current_username]["height"]))
@@ -1249,19 +1263,29 @@ class StatisticsWindow(Screen):
             if response.status_code == 200:
                 with open("weight_history.png", "wb") as file:
                     file.write(response.content)
-                self.graphWeight.source = "weight_history.png"
-                self.graphWeight.reload()
-                self.loadingLabel.opacity = 0
-                self.loadingLabel.disabled = True
+                def update_ui(dt):
+                    self.graphWeight.source = "weight_history.png"
+                    self.graphWeight.reload()
+                    self.loading.opacity = 0
+                    self.loading.disabled = True
+
+                    if self._loading_anim_event:
+                        self._loading_anim_event.cancel()
+                        self._loading_anim_event = None
+                    self._loading_dots = 0
+                    self.loading.text = "Loading"
+                Clock.schedule_once(update_ui, 0)
             else:
                 print("Error:", response.json())
 
         except Exception as e:
-            self.show_toast("No internet connection. Retrying...")
+            Clock.schedule_once(lambda dt: self.show_toast("No internet connection. Retrying..."), 0)
             Clock.schedule_once(lambda _: self.hide_toast(), 3)
             Clock.schedule_once(lambda dt: self.on_enter(), 3)
 
     def on_leave(self):
+        self.loading.opacity = 1
+        self.loading.disabled = False
         Window.unbind(on_keyboard=self.on_keyboard)
 
     def on_keyboard(self, window, key, *args):
@@ -1398,7 +1422,7 @@ class MenuWindow(Screen):
         self.manager.current = "main"
 
     def on_enter(self):
-        if not need_update:
+        if not users_data[current_username]["need_update"]:
             self.errorMessage.text = ""
 
         Window.bind(on_keyboard=self.on_keyboard)
@@ -1412,7 +1436,7 @@ class MenuWindow(Screen):
         else:
             self.mealInput.text = "Dinner"
 
-        if need_update:
+        if users_data[current_username]["need_update"]:
             self.errorMessage.text = "[b]Warning: Your data changed since last menu[/b]"
         
         self._update_meal(self.dayInput, self.dayInput.text)
@@ -3949,8 +3973,10 @@ class LoadingWindow(Screen):
         self.rect.size = instance.size
 
     def next(self):
-        global need_update
-        need_update = False
+        users_data[current_username]["need_update"] = False
+        with open(USERS_DATA_PATH, "w") as file:
+            json.dump(users_data, file)
+
         if(menu_request_window == "main"):
             self.resetData()
             self.manager.current = "main"
@@ -4023,8 +4049,10 @@ class LoadingWindow(Screen):
         if current_username not in users_data:
             users_data[current_username] = {}
         users_data[current_username]["menu"] = result
+        users_data[current_username]["need_update"] = False
         with open(USERS_DATA_PATH, "w") as file:
             json.dump(users_data, file)
+
         self.next()
 
     def _on_menu_error(self):
