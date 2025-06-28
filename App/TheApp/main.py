@@ -1220,7 +1220,6 @@ class StatisticsWindow(Screen):
         threading.Thread(target=self.join, daemon=True).start()
 
     def join(self):
-
         global current_username
         bmi_temp, bmi_color = check_bmi(float(users_data[current_username]["weight"]), float(users_data[current_username]["height"]))
         self.bmiLabel.text = "BMI: " + str(bmi(float(users_data[current_username]["weight"]), float(users_data[current_username]["height"]))) + " " + str(bmi_temp)
