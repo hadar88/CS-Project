@@ -1,4 +1,4 @@
-The project contains 4 folders:
+The project contains 6 folders:
 
 1. **data**: contains datasets and code for data processing.
     * The dataset of the foods and their nutritional values is in `data/food_data/foodData.json`
@@ -26,3 +26,4 @@ The project contains 4 folders:
 
 5. **Model**: Contains all the code that used to build the model but it is not use anymore.
     
+6. **Presentation**: Contains the presentation of the project.
